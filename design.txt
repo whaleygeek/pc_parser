@@ -13,6 +13,8 @@ Notes
 lexer
 =====
 
+whitespace 0 or more: [space, tab, newline]
+
 # comment to end of line
 
 IF THEN ELSE ENDIF WHILE ENDWHILE CASE OF ENDCASE FOR TO ENDFOR REPEAT UNTIL
@@ -35,11 +37,13 @@ NUMBER
 grammar
 =======
 
-program: /* empty */
+program:
+      /* empty */
     | statements
     ;
 
-statements: /* empty */
+statements:
+      /* empty */
     | statement
     | statements statement
     ;
@@ -54,8 +58,6 @@ statement:
     | return-statement
     | procedure-def-statement
     | proc-call-statement
-    | fn-call-statement
-    | readline-statement
     | writeline-statement
     | output-statement
     | var-assignment-statement
@@ -67,122 +69,166 @@ statement:
 # beware of dangling else problem
 
 if-statement:
-    #IF bexp THEN
-    #statements
-    #ENDIF
-
-    #IF bexp THEN
-    #statements
-    #ELSE
-    #statements
-    #ENDIF
+      IF bexpr THEN statements ENDIF
+    | IF bexpr THEN statements ELSE statements ENDIF
+    ;
 
 while-statement:
-    #WHILE bexp
-    #statements
-    #ENDWHILE
+    WHILE bexpr statements ENDWHILE
+    ;
+
+case-option:
+    expr : statements
+    ;
+
+case-options:
+      case-option
+    | case-options case-option
+    ;
 
 case-statement:
-    #CASE exp OF
-    #exp1: statements
-    #...
-    #expn: statements
-    #ELSE
-    #statements
-    #ENDCASE
+    CASE expr OF case-options
+    ELSE statements ENDCASE
 
 for-statement:
-    #FOR var <- iexp1 TO iexp2
-    #statements
-    #ENDFOR
+    FOR var <- iexpr1 TO iexpr2
+    statements
+    ENDFOR
 
 repeat-statement:
-    #REPEAT
-    #statements
-    #UNTIL bexp
+    REPEAT
+    statements
+    UNTIL bexpr
+
+funproc-def-params:
+      /* empty */
+    | expr
+    | funproc-def-params , expr
+    ;
+
+# fname??
 
 function-def-statement:
-    #FUNCTION fname(param1, ..., paramn)
-    #statements
-    #ENDFUNCTION
+    FUNCTION fname ( funproc-def-params )
+    statements
+    ENDFUNCTION
+    ;
 
 # beware of ambiguity of where return is and is-not allowed
 return-statement:
-    #RETURN exp
+    RETURN expr
+
+# pname??
 
 procedure-def-statement:
-    #PROCEDURE pname(param1, ..., paramn)
-    #statements
-    #ENDPROCEDURE
+    PROCEDURE pname ( funproc-def-params )
+    statements
+    ENDPROCEDURE
+    ;
+
+fnproc-call-params:
+      /* empty */
+    | expr
+    | fnproc-call-params , expr
+    ;
 
 # beware of ambiguity between fn call and proc call
 proc-call-statement:
-    #name(param1, ..., paramn)
+    pname ( fnproc-call-params )
+    ;
 
 fn-call-statement:
-    #name(param1, ..., paramn)
+    fname ( fnproc-call-params )
+    ;
+
+# file?
 
 readline-statement:
-    #READLINE(file, n)
+    READLINE ( file, iexpr )
+    ;
 
 writeline-statement:
-    #WRITELINE(file, n, value)
+    WRITELINE(file, iexpr, expr )
+    ;
 
 output-statement:
-    #OUTPUT message
+    OUTPUT texpr
+    ;
+
+#varname?
 
 var-assignment-statement:
-    #var <- exp
+    varname <- expr
+    ;
 
 array-assignment-statement:
-    #var[iexp] <- exp
+    varname [ iexpr ] <- expr
+    ;
 
 array2d-assignment-statement:
-    #var[iexp1][iexp2] <- exp
+    varname [ iexpr1 ] [ iexpr2 ] <- expr
+    ;
+
+initialiser-expression:
+      /* empty */
+    | expr
+    | initialiser-expression , expr
+    ;
 
 array-initialiser-statement:
-    #var <- [exp1, exp2, ..., expn]
+    varname <- [ initialiser-expr]
+    ;
 
 # can be any type of expression (iexpr, texpr, bexpr)
 # presumably type is stored along with the value
 
 expr:
-    #iexpr
-    #bexpr
-    #texpr
+      iexpr
+    | bexpr
+    | texpr
+    | fn-call-statement
+    | readline-statement
+    ;
 
 # note, define precedence in the hierarchy of the grammar
+# note, unary minus
+# note, unary plus
 
 iexpr:
-    ( iexpr )
-    #NUMBER
-    #LEN(var)
-    #USERINPUT
-    #iexpr
-    #iexpr + iexpr
-    #iexpr - iexpr
-    #iexpr * iexpr
-    #iexpr / iexpr
-    #iexpr MOD iexpr
+      ( iexpr )
+    | NUMBER
+    | LEN(var)
+    | USERINPUT
+    | iexpr
+    | iexpr + iexpr
+    | iexpr - iexpr
+    | iexpr * iexpr
+    | iexpr / iexpr
+    | iexpr MOD iexpr
+    | - iexpr
+    | + iexpr
+    ;
 
 texpr:
-    #" text "
+    " text "
+    ;
 
 # note, define precedence in the hierarchy of the grammar
 
 bexpr:
-    #TRUE
-    #FALSE
-    #( bexpr )
-    #NOT bexpr
-    #bexpr AND bexpr
-    #bexpr OR bexpr
-    #bexpr XOR bexpr
-    #iexpr = iexpr
-    #iexpr <> iexpr
-    #iexpr <= iexpr
-    #iexpr >= iexpr
-    #iexpr > iexpr
-    #iexpr < iexpr
+      TRUE
+    | FALSE
+    | ( bexpr )
+    | NOT bexpr
+    | bexpr AND bexpr
+    | bexpr OR bexpr
+    | bexpr XOR bexpr
+    | iexpr = iexpr
+    | iexpr <> iexpr
+    | iexpr <= iexpr
+    | iexpr >= iexpr
+    | iexpr > iexpr
+    | iexpr < iexpr
+    ;
 
 # END
