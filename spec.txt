@@ -1,0 +1,76 @@
+spec.txt
+
+
+FROM THE AQA GUIDE
+==================
+
+var <- exp
+var[iexp] <- exp
+var[iexp1][iexp2] <- exp
+var <- [exp1, exp2, ..., expn]
+
+IF bexp THEN
+statements
+ENDIF
+
+IF bexp THEN
+statements
+ELSE
+statements
+ENDIF
+
+CASE exp OF
+exp1: statements
+...
+expn: statements
+ELSE
+statements
+ENDCASE
+
+WHILE bexp
+statements
+ENDWHILE
+
+FOR var <- iexp1 TO iexp2
+statements
+ENDFOR
+
+REPEAT
+statements
+UNTIL bexp
+
+# some text
+
+FUNCTION fname(param1, ..., paramn)
+statements
+ENDFUNCTION
+
+RETURN exp
+
+PROCEDURE pname(param1, ..., paramn)
+statements
+ENDPROCEDURE
+
+name(param1, ..., paramn)
+
+iexp1 MOD iexp2
+
++ - * /
+
+AND OR XOR
+
+NOT
+
+= <> <= >= < >
+
+LEN(var)
+
+READLINE(file, n)
+
+WRITELINE(file, n, value)
+
+OUTPUT message
+
+USERINPUT
+
+

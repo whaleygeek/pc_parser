@@ -1,0 +1,188 @@
+design.txt
+
+Design of a grammar suitable for use with PLY.
+First cut grammar with rough notes...
+
+Notes
+- no explicit string expressions in their grammar?
+- but can assign string literals to variables
+- no obvious way to concatenate strings
+- userinput accepts numbers and strings
+- output accepts numbers and strings
+
+lexer
+=====
+
+# comment to end of line
+
+IF THEN ELSE ENDIF WHILE ENDWHILE CASE OF ENDCASE FOR TO ENDFOR REPEAT UNTIL
+FUNCTION ENDFUNCTION RETURN PROCEDURE ENDPROCEDURE
+READLINE WRITELINE OUTPUT USERINPUT LEN
+MOD NOT FALSE TRUE AND OR XOR
++ - * /
+= <> < <= > >=
+<-
+[ ]
+,
+( )
+:
+"
+
+NUMBER
+
+
+
+grammar
+=======
+
+program: /* empty */
+    | statements
+    ;
+
+statements: /* empty */
+    | statement
+    | statements statement
+    ;
+
+statement:
+      if-statement
+    | while-statement
+    | case-statement
+    | for-statement
+    | repeat-statement
+    | function-def-statement
+    | return-statement
+    | procedure-def-statement
+    | proc-call-statement
+    | fn-call-statement
+    | readline-statement
+    | writeline-statement
+    | output-statement
+    | var-assignment-statement
+    | array-assignment-statement
+    | array2d-assignment-statement
+    | array-initialiser-statement
+    ;
+
+# beware of dangling else problem
+
+if-statement:
+    #IF bexp THEN
+    #statements
+    #ENDIF
+
+    #IF bexp THEN
+    #statements
+    #ELSE
+    #statements
+    #ENDIF
+
+while-statement:
+    #WHILE bexp
+    #statements
+    #ENDWHILE
+
+case-statement:
+    #CASE exp OF
+    #exp1: statements
+    #...
+    #expn: statements
+    #ELSE
+    #statements
+    #ENDCASE
+
+for-statement:
+    #FOR var <- iexp1 TO iexp2
+    #statements
+    #ENDFOR
+
+repeat-statement:
+    #REPEAT
+    #statements
+    #UNTIL bexp
+
+function-def-statement:
+    #FUNCTION fname(param1, ..., paramn)
+    #statements
+    #ENDFUNCTION
+
+# beware of ambiguity of where return is and is-not allowed
+return-statement:
+    #RETURN exp
+
+procedure-def-statement:
+    #PROCEDURE pname(param1, ..., paramn)
+    #statements
+    #ENDPROCEDURE
+
+# beware of ambiguity between fn call and proc call
+proc-call-statement:
+    #name(param1, ..., paramn)
+
+fn-call-statement:
+    #name(param1, ..., paramn)
+
+readline-statement:
+    #READLINE(file, n)
+
+writeline-statement:
+    #WRITELINE(file, n, value)
+
+output-statement:
+    #OUTPUT message
+
+var-assignment-statement:
+    #var <- exp
+
+array-assignment-statement:
+    #var[iexp] <- exp
+
+array2d-assignment-statement:
+    #var[iexp1][iexp2] <- exp
+
+array-initialiser-statement:
+    #var <- [exp1, exp2, ..., expn]
+
+# can be any type of expression (iexpr, texpr, bexpr)
+# presumably type is stored along with the value
+
+expr:
+    #iexpr
+    #bexpr
+    #texpr
+
+# note, define precedence in the hierarchy of the grammar
+
+iexpr:
+    ( iexpr )
+    #NUMBER
+    #LEN(var)
+    #USERINPUT
+    #iexpr
+    #iexpr + iexpr
+    #iexpr - iexpr
+    #iexpr * iexpr
+    #iexpr / iexpr
+    #iexpr MOD iexpr
+
+texpr:
+    #" text "
+
+# note, define precedence in the hierarchy of the grammar
+
+bexpr:
+    #TRUE
+    #FALSE
+    #( bexpr )
+    #NOT bexpr
+    #bexpr AND bexpr
+    #bexpr OR bexpr
+    #bexpr XOR bexpr
+    #iexpr = iexpr
+    #iexpr <> iexpr
+    #iexpr <= iexpr
+    #iexpr >= iexpr
+    #iexpr > iexpr
+    #iexpr < iexpr
+
+# END
