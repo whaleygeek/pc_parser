@@ -132,7 +132,7 @@ statement:
 output_statement:
     OUTPUT texpr
     {
-    print(p[2])
+    backend.output(p)
     }
     ;
 
@@ -190,16 +190,13 @@ texpr:
     p[0] = p[1]
     }
 //    | ID
-//    {
-//    p[0] = p[1]
-//    }
     | LPAREN texpr RPAREN
     {
     p[0] = p[2]
     }
     | texpr PLUS texpr
     {
-    p[0] = p[1] + p[3]
+    backend.strcat(p)
     }
     ;
 
@@ -220,4 +217,9 @@ texpr:
 //    ;
 
 %%
+
+backend = None
+def set_backend(b):
+    global backend
+    backend = b
 

@@ -11,19 +11,11 @@ Notes
 - output accepts numbers and strings
 
 JUST DONE
-Got OUTPUT working in interpretive mode
+configurable backend architecture in place and working.
+
 
 TODO
-Gradually expand all the grammar and get it working,
-but put redirector functions in everything that just
-passes 'p' to a handler object with an appropriate method.
-
-This will allow the implementation to be changed independent
-of the grammar
-
-This will allow both interpreters and translators to be built
-using the same codebase and the translators can be switched in
-to generate code in different languages.
+Gradually expand all the grammar and get it working.
 
 Python is going to be the first output language, so that AQA
 style Pseudo code can be converted into first-cut python

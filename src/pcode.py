@@ -29,11 +29,19 @@ lex.lex()
 #print("building parser")
 from pcode_parser import * # this is the generated parser
 
+#TODO: parse command line args to get name of backend generator
+# import the module by name
+# call code in pcode_parser that sets it's emit instance.
+
+import pygen
+generator = pygen.Generator()
+set_backend(generator)
+
 import ply.yacc as yacc
 yacc.yacc()
 
-
 #print("running")
+
 
 while True:
     #TODO should just read STDIN and pass whole lines to yacc.parse()
