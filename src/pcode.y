@@ -1,19 +1,19 @@
 /* pcode.y  17/01/2016  D.J.Whale */
 
-%token IF THEN ELSE ENDIF WHILE ENDWHILE CASE OF ENDCASE FOR TO ENDFOR REPEAT UNTIL
-%token FUNCTION ENDFUNCTION RETURN PROCEDURE ENDPROCEDURE
-%token READLINE WRITELINE OUTPUT USERINPUT LEN
-%token MOD NOT FALSE TRUE AND OR XOR
 %token PLUS MINUS TIMES DIVIDE
-%token EQUAL NOTEQUAL LESS LESSEQUAL GREATER GREATEREQUAL
-%token ASSIGN
-%token LPAREN RPAREN
-%token LSQUARE RSQUARE
-%token COMMA COLON QUOTE
+%token EQUAL NOTEQUAL LESS LESSEQUAL GREATER
+%token GREATEREQUAL ASSIGN LPAREN RPAREN LSQUARE
+%token RSQUARE COMMA COLON
 
-%token RETURN
-%token TRUE FALSE
-%token NAME
+%token IF THEN ELSE ENDIF WHILE
+%token ENDWHILE CASE OF ENDCASE FOR
+%token TO ENDFOR REPEAT UNTIL FUNCTION
+%token ENDFUNCTION RETURN PROCEDURE ENDPROCEDURE READLINE
+%token WRITELINE OUTPUT USERINPUT LEN MOD
+%token NOT FALSE TRUE AND OR
+%token XOR RETURN
+
+%token NAME NUMBER STRLIT
 
 %start program
 
@@ -21,8 +21,7 @@
 %%
 
 program:
-      /* empty */
-    | statements
+    statements
     ;
 
 statements:
@@ -39,7 +38,7 @@ statement:
     | repeat-statement
     | function-def-statement
     | return-statement
-    | procedure-def-statement
+    | proc-def-statement
     | proc-call-statement
     | writeline-statement
     | output-statement
@@ -48,8 +47,6 @@ statement:
     | array2d-assignment-statement
     | array-initialiser-statement
     ;
-
-# beware of dangling else problem
 
 if-statement:
       IF bexpr THEN statements ENDIF
@@ -89,23 +86,17 @@ funproc-def-params:
     | funproc-def-params COMMA expr
     ;
 
-/* fname?? */
-
 function-def-statement:
-    FUNCTION fname LPAREN funproc-def-params RPAREN
+    FUNCTION NAME LPAREN funproc-def-params RPAREN
     statements
     ENDFUNCTION
     ;
 
-/*  beware of ambiguity of where return is and is-not allowed */
-
 return-statement:
     RETURN expr
 
-/* pname?? */
-
-procedure-def-statement:
-    PROCEDURE pname LPAREN funproc-def-params RPAREN
+proc-def-statement:
+    PROCEDURE NAME LPAREN funproc-def-params RPAREN
     statements
     ENDPROCEDURE
     ;
@@ -116,18 +107,19 @@ fnproc-call-params:
     | fnproc-call-params COMMA expr
     ;
 
-/* beware of ambiguity between fn call and proc call */
 proc-call-statement:
-    pname LPAREN fnproc-call-params RPAREN
+    NAME LPAREN fnproc-call-params RPAREN
     ;
 
-fn-call-statement:
-    fname LPAREN fnproc-call-params RPAREN
+fn-call-expr:
+    NAME LPAREN fnproc-call-params RPAREN
     ;
 
-/* file? */
+file:
+    texpr
+    ;
 
-readline-statement:
+readline-expr:
     READLINE LPAREN file COMMA iexpr RPAREN
     ;
 
@@ -139,53 +131,41 @@ output-statement:
     OUTPUT texpr
     ;
 
-/* varname? */
-
 var-assignment-statement:
-    varname ASSIGN expr
+    NAME ASSIGN expr
     ;
 
 array-assignment-statement:
-    varname LSQUARE iexpr RSQUARE ASSIGN expr
+    NAME LSQUARE iexpr RSQUARE ASSIGN expr
     ;
 
 array2d-assignment-statement:
-    varname LSQUARE iexpr1 RSQUARE LSQUARE iexpr2 RSQUARE ASSIGN expr
+    NAME LSQUARE iexpr1 RSQUARE LSQUARE iexpr2 RSQUARE ASSIGN expr
     ;
 
-initialiser-expression:
+initialiser-expr:
       /* empty */
     | expr
-    | initialiser-expression COMMA expr
+    | initialiser-expr COMMA expr
     ;
 
 array-initialiser-statement:
-    varname ASSIGN LSQUARE initialiser-expr RSQUARE
+    NAME ASSIGN LSQUARE initialiser-expr RSQUARE
     ;
-
-/* can be any type of expression (iexpr, texpr, bexpr)
- * presumably type is stored along with the value
- */
 
 expr:
       iexpr
     | bexpr
     | texpr
-    | fn-call-statement
-    | readline-statement
+    | fn-call-expr
+    | readline-expr
+    | USERINPUT
     ;
-
-/* note, define precedence in the hierarchy of the grammar
- * note, unary minus
- * note, unary plus
- * var? name?
- */
 
 iexpr:
       LPAREN iexpr RPAREN
     | NUMBER
-    | LEN LPAREN var RPAREN
-    | USERINPUT
+    | LEN LPAREN NAME RPAREN
     | iexpr
     | iexpr PLUS iexpr
     | iexpr MINUS iexpr
@@ -196,28 +176,27 @@ iexpr:
     | PLUS iexpr
     ;
 
-/* text? This might just be a STRLIT from lexer */
-
 texpr:
-    QUOTE text QUOTE
+      STRLIT
+    | NAME
+    | LPAREN texpr RPAREN
+    | texpr PLUS texpr
     ;
-
-/* note, define precedence in the hierarchy of the grammar */
 
 bexpr:
       TRUE
     | FALSE
-    | LPAREN bexpr RPAREN
     | NOT bexpr
-    | bexpr AND bexpr
-    | bexpr OR bexpr
-    | bexpr XOR bexpr
+    | LPAREN bexpr RPAREN
     | iexpr EQUAL iexpr
     | iexpr NOTEQUAL iexpr
     | iexpr LESEQUAL iexpr
     | iexpr GREATEREQUAL iexpr
     | iexpr GREATER iexpr
     | iexpr LESS iexpr
+    | bexpr AND bexpr
+    | bexpr OR bexpr
+    | bexpr XOR bexpr
     ;
 
 %%
