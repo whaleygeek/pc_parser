@@ -5,19 +5,7 @@ tokens = (
     'NAME','NUMBER', 'EQUALS', 'LPAREN', 'RPAREN', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE'
     )
 
-# yply generator generates invalid code if you use ')' at the end of a line
-#literals = ['=','+','-','*','/', '(',')']
-#TODO: see note in pcode_lexer, probably just fix and test this here
-#then propagate fix to pcode_lexer
-
 # token definitions
-
-t_NAME    = r'[a-zA-Z_][a-zA-Z0-9_]*'
-
-def t_NUMBER(t):
-    r'\d+'
-    t.value = int(t.value)
-    return t
 
 t_EQUALS    = r'='
 t_LPAREN    = r'\('
@@ -26,6 +14,13 @@ t_PLUS      = r'\+'
 t_MINUS     = r'\-'
 t_TIMES     = r'\*'
 t_DIVIDE    = r'/'
+
+t_NAME    = r'[a-zA-Z_][a-zA-Z0-9_]*'
+
+def t_NUMBER(t):
+    r'\d+'
+    t.value = int(t.value)
+    return t
 
 t_ignore = " \t"
 
