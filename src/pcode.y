@@ -31,7 +31,9 @@ statements:
     ;
 
 statement:
-//      if_statement
+      output_statement
+    | var_assignment_statement
+//    |  if_statement
 //    | while_statement
 //    | case_statement
 //    | for_statement
@@ -41,8 +43,6 @@ statement:
 //    | proc_def_statement
 //    | proc_call_statement
 //    | writeline_statement
-     output_statement
-//    | var_assignment_statement
 //    | array_assignment_statement
 //    | array2d_assignment_statement
 //    | array_initialiser_statement
@@ -132,16 +132,16 @@ statement:
 output_statement:
     OUTPUT texpr
     {
-    backend.output(p)
+    backend.output(p[2])
     }
     ;
 
-//var_assignment_statement:
-//    ID ASSIGN expr
-//    {
-//
-//    }
-//    ;
+var_assignment_statement:
+    ID ASSIGN expr
+    {
+    backend.var_assign(p[1], p[3])
+    }
+    ;
 
 //array_assignment_statement:
 //    ID LSQUARE iexpr RSQUARE ASSIGN expr
@@ -161,14 +161,17 @@ output_statement:
 //    ID ASSIGN LSQUARE initialiser_expr RSQUARE
 //    ;
 
-//expr:
-//      iexpr
-//    | bexpr
-//    | texpr
-//    | fn_call_expr
-//    | readline_expr
-//    | USERINPUT
-//    ;
+expr:
+    texpr
+    {
+    p[0] = p[1]
+    }
+//  | bexpr
+//  | iexpr
+//  | fn_call_expr
+//  | readline_expr
+//  | USERINPUT
+    ;
 
 //iexpr:
 //      LPAREN iexpr RPAREN
@@ -189,14 +192,17 @@ texpr:
     {
     p[0] = p[1]
     }
-//    | ID
+    | ID
+    {
+    p[0] = p[1]
+    }
     | LPAREN texpr RPAREN
     {
     p[0] = p[2]
     }
     | texpr PLUS texpr
     {
-    backend.strcat(p)
+    p[0] = backend.strcat(p[1], p[3])
     }
     ;
 

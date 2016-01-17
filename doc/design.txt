@@ -11,8 +11,16 @@ Notes
 - output accepts numbers and strings
 
 JUST DONE
-configurable backend architecture in place and working.
+Half implementation of an indentifier, using the back end
+Can now do this:
+name <- "david"
+OUTPUT name
 
+Can't add strings yet. But the trick here seems to be just
+pass python objects around the stack by returning them
+from the pygen module, and then the pygen action methods
+get python objects back that it knows what to do with
+when it instrospects their type.
 
 TODO
 Gradually expand all the grammar and get it working.

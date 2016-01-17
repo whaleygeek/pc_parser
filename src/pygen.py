@@ -3,12 +3,25 @@
 # Generator for pcode.py that generates python from each of the actions.
 
 class Generator():
-    def strcat(self, p):
-        print("strcat:%s %s" % (p[1], p[3]))
-        p[0] = p[1] + p[3]
+    def __init__(self):
+        self.vars = {}
 
-    def output(self, p):
-        print("output:%s" % p[2])
+    def strcat(self, first, second):
+        print("strcat:%s %s" % (first, second))
+        return first + second
+
+    def var_assign(self, var, value):
+        print("varassign:%s %s" % (var, value))
+        name = var.name
+        self.vars[name] = value
+
+    def output(self, msg):
+        if type(msg) == str:
+            print(msg)
+        else: # assume instance for now
+            name = msg.name
+            value = self.vars[name]
+            print(value)
 
 #----- TEST -------------------------------------------------------------------
 

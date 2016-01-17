@@ -53,6 +53,14 @@ def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value in keywords:
         t.type = t.value
+    else:
+        class Identifier():
+            def __init__(self, name):
+                self.name = name
+            def __repr__(self):
+                return "Identifier(" + self.name + ")"
+
+        t.value = Identifier(t.value)
     return t
 
 #def t_COMMENT(t):
