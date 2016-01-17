@@ -1,4 +1,6 @@
 #! /bin/bash
 
-python yply/yply.py ../src/calc.y > calc.out.py
+# note: you might have to ln -s yply/ply ply
+
+python yply/yply.py ../src/calc.y > calc_out.py
 
