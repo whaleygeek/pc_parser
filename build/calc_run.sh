@@ -1,5 +1,5 @@
 #! /bin/bash
 
-cp ../src/calc.py .
-cp ../src/calc_lexer.py .
+cd sandbox
 python calc.py
+cd ..

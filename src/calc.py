@@ -18,7 +18,7 @@ def p_error(p):
 #----- RUN --------------------------------------------------------------------
 
 # Build the lexer
-print("building lexer")
+#print("building lexer")
 from calc_lexer import *
 
 import ply.lex as lex
@@ -26,14 +26,14 @@ lex.lex()
 
 
 # Build the parser
-print("building parser")
+#print("building parser")
 from calc_parser import * # this is the generated parser
 
 import ply.yacc as yacc
 yacc.yacc()
 
 
-print("running")
+#print("running")
 
 while True:
     try:
