@@ -17,6 +17,7 @@
 
 %start program
 
+%left PLUS
 
 %%
 
@@ -130,6 +131,9 @@ statement:
 
 output_statement:
     OUTPUT texpr
+    {
+    print(p[2])
+    }
     ;
 
 //var_assignment_statement:
@@ -178,13 +182,16 @@ output_statement:
 //    ;
 
 texpr:
-      STRING
-      {
-        $0 = $1;
-      }
+    STRING
+    {
+    p[0] = p[1]
+    }
 //    | ID
 //    | LPAREN texpr RPAREN
-//    | texpr PLUS texpr
+    | texpr PLUS texpr
+    {
+    p[0] = p[1] + p[3]
+    }
     ;
 
 //bexpr:
