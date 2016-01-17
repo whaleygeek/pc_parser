@@ -4,7 +4,6 @@
 # Date  : October 2, 2006
 
 import sys
-sys.path.append("../..")
 
 from ply import *
 
