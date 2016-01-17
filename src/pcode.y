@@ -138,6 +138,9 @@ output_statement:
 
 //var_assignment_statement:
 //    ID ASSIGN expr
+//    {
+//
+//    }
 //    ;
 
 //array_assignment_statement:
@@ -187,7 +190,13 @@ texpr:
     p[0] = p[1]
     }
 //    | ID
-//    | LPAREN texpr RPAREN
+//    {
+//    p[0] = p[1]
+//    }
+    | LPAREN texpr RPAREN
+    {
+    p[0] = p[2]
+    }
     | texpr PLUS texpr
     {
     p[0] = p[1] + p[3]
