@@ -11,9 +11,9 @@
 %token ENDFUNCTION RETURN PROCEDURE ENDPROCEDURE READLINE
 %token WRITELINE OUTPUT USERINPUT LEN MOD
 %token NOT FALSE TRUE AND OR
-%token XOR RETURN
+%token XOR
 
-%token NAME NUMBER STRLIT
+%token ID NUMBER STRING
 
 %start program
 
@@ -26,178 +26,182 @@ program:
 
 statements:
       /* empty */
-    | statement
     | statements statement
     ;
 
 statement:
-      if-statement
-    | while-statement
-    | case-statement
-    | for-statement
-    | repeat-statement
-    | function-def-statement
-    | return-statement
-    | proc-def-statement
-    | proc-call-statement
-    | writeline-statement
-    | output-statement
-    | var-assignment-statement
-    | array-assignment-statement
-    | array2d-assignment-statement
-    | array-initialiser-statement
+//      if_statement
+//    | while_statement
+//    | case_statement
+//    | for_statement
+//    | repeat_statement
+//    | function_def_statement
+//    | return_statement
+//    | proc_def_statement
+//    | proc_call_statement
+//    | writeline_statement
+     output_statement
+//    | var_assignment_statement
+//    | array_assignment_statement
+//    | array2d_assignment_statement
+//    | array_initialiser_statement
     ;
 
-if-statement:
-      IF bexpr THEN statements ENDIF
-    | IF bexpr THEN statements ELSE statements ENDIF
-    ;
+//if_statement:
+//      IF bexpr THEN statements ENDIF
+//    | IF bexpr THEN statements ELSE statements ENDIF
+//    ;
 
-while-statement:
-    WHILE bexpr statements ENDWHILE
-    ;
+//while_statement:
+//    WHILE bexpr statements ENDWHILE
+//    ;
 
-case-option:
-    expr COLON statements
-    ;
+//case_option:
+//    expr COLON statements
+//    ;
 
-case-options:
-      case-option
-    | case-options case-option
-    ;
+//case_options:
+//      case_option
+//    | case_options case_option
+//    ;
 
-case-statement:
-    CASE expr OF case-options
-    ELSE statements ENDCASE
+//case_statement:
+//    CASE expr OF
+//    case_options
+//    ELSE statements
+//    ENDCASE
 
-for-statement:
-    FOR var ASSIGN iexpr1 TO iexpr2
-    statements
-    ENDFOR
+//for_statement:
+//    FOR var ASSIGN iexpr1 TO iexpr2
+//    statements
+//    ENDFOR
 
-repeat-statement:
-    REPEAT
-    statements
-    UNTIL bexpr
+//repeat_statement:
+//    REPEAT
+//    statements
+//    UNTIL bexpr
 
-funproc-def-params:
-      /* empty */
-    | expr
-    | funproc-def-params COMMA expr
-    ;
+//funproc_def_params:
+//      /* empty */
+//    | expr
+//    | funproc_def_params COMMA expr
+//    ;
 
-function-def-statement:
-    FUNCTION NAME LPAREN funproc-def-params RPAREN
-    statements
-    ENDFUNCTION
-    ;
+//function_def_statement:
+//    FUNCTION ID LPAREN funproc_def_params RPAREN
+//    statements
+//    ENDFUNCTION
+//    ;
 
-return-statement:
-    RETURN expr
+//return_statement:
+//    RETURN expr
 
-proc-def-statement:
-    PROCEDURE NAME LPAREN funproc-def-params RPAREN
-    statements
-    ENDPROCEDURE
-    ;
+//proc_def_statement:
+//    PROCEDURE ID LPAREN funproc_def_params RPAREN
+//    statements
+//    ENDPROCEDURE
+//    ;
 
-fnproc-call-params:
-      /* empty */
-    | expr
-    | fnproc-call-params COMMA expr
-    ;
+//fnproc_call_params:
+//      /* empty */
+//    | expr
+//    | fnproc_call_params COMMA expr
+//    ;
 
-proc-call-statement:
-    NAME LPAREN fnproc-call-params RPAREN
-    ;
+//proc_call_statement:
+//    ID LPAREN fnproc_call_params RPAREN
+//    ;
 
-fn-call-expr:
-    NAME LPAREN fnproc-call-params RPAREN
-    ;
+//fn_call_expr:
+//    ID LPAREN fnproc_call_params RPAREN
+//    ;
 
-file:
-    texpr
-    ;
+//file:
+//    texpr
+//    ;
 
-readline-expr:
-    READLINE LPAREN file COMMA iexpr RPAREN
-    ;
+//readline_expr:
+//    READLINE LPAREN file COMMA iexpr RPAREN
+//    ;
 
-writeline-statement:
-    WRITELINE LPAREN file COMMA iexpr COMMA expr RPAREN
-    ;
+//writeline_statement:
+//    WRITELINE LPAREN file COMMA iexpr COMMA expr RPAREN
+//    ;
 
-output-statement:
+output_statement:
     OUTPUT texpr
     ;
 
-var-assignment-statement:
-    NAME ASSIGN expr
-    ;
+//var_assignment_statement:
+//    ID ASSIGN expr
+//    ;
 
-array-assignment-statement:
-    NAME LSQUARE iexpr RSQUARE ASSIGN expr
-    ;
+//array_assignment_statement:
+//    ID LSQUARE iexpr RSQUARE ASSIGN expr
+//    ;
 
-array2d-assignment-statement:
-    NAME LSQUARE iexpr1 RSQUARE LSQUARE iexpr2 RSQUARE ASSIGN expr
-    ;
+//array2d_assignment_statement:
+//    ID LSQUARE iexpr1 RSQUARE LSQUARE iexpr2 RSQUARE ASSIGN expr
+//    ;
 
-initialiser-expr:
-      /* empty */
-    | expr
-    | initialiser-expr COMMA expr
-    ;
+//initialiser_expr:
+//      /* empty */
+//    | expr
+//    | initialiser_expr COMMA expr
+//    ;
 
-array-initialiser-statement:
-    NAME ASSIGN LSQUARE initialiser-expr RSQUARE
-    ;
+//array_initialiser_statement:
+//    ID ASSIGN LSQUARE initialiser_expr RSQUARE
+//    ;
 
-expr:
-      iexpr
-    | bexpr
-    | texpr
-    | fn-call-expr
-    | readline-expr
-    | USERINPUT
-    ;
+//expr:
+//      iexpr
+//    | bexpr
+//    | texpr
+//    | fn_call_expr
+//    | readline_expr
+//    | USERINPUT
+//    ;
 
-iexpr:
-      LPAREN iexpr RPAREN
-    | NUMBER
-    | LEN LPAREN NAME RPAREN
-    | iexpr
-    | iexpr PLUS iexpr
-    | iexpr MINUS iexpr
-    | iexpr TIMES iexpr
-    | iexpr DIVIDE iexpr
-    | iexpr MOD iexpr
-    | MINUS iexpr
-    | PLUS iexpr
-    ;
+//iexpr:
+//      LPAREN iexpr RPAREN
+//    | NUMBER
+//    | LEN LPAREN ID RPAREN
+//    | iexpr
+//    | iexpr PLUS iexpr
+//    | iexpr MINUS iexpr
+//    | iexpr TIMES iexpr
+//    | iexpr DIVIDE iexpr
+//    | iexpr MOD iexpr
+//    | MINUS iexpr
+//    | PLUS iexpr
+//    ;
 
 texpr:
-      STRLIT
-    | NAME
-    | LPAREN texpr RPAREN
-    | texpr PLUS texpr
+      STRING
+      {
+        $0 = $1;
+      }
+//    | ID
+//    | LPAREN texpr RPAREN
+//    | texpr PLUS texpr
     ;
 
-bexpr:
-      TRUE
-    | FALSE
-    | NOT bexpr
-    | LPAREN bexpr RPAREN
-    | iexpr EQUAL iexpr
-    | iexpr NOTEQUAL iexpr
-    | iexpr LESEQUAL iexpr
-    | iexpr GREATEREQUAL iexpr
-    | iexpr GREATER iexpr
-    | iexpr LESS iexpr
-    | bexpr AND bexpr
-    | bexpr OR bexpr
-    | bexpr XOR bexpr
-    ;
+//bexpr:
+//      TRUE
+//    | FALSE
+//    | NOT bexpr
+//    | LPAREN bexpr RPAREN
+//    | iexpr EQUAL iexpr
+//    | iexpr NOTEQUAL iexpr
+//    | iexpr LESEQUAL iexpr
+//    | iexpr GREATEREQUAL iexpr
+//    | iexpr GREATER iexpr
+//    | iexpr LESS iexpr
+//    | bexpr AND bexpr
+//    | bexpr OR bexpr
+//    | bexpr XOR bexpr
+//    ;
 
 %%
 

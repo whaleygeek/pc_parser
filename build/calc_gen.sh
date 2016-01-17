@@ -13,9 +13,6 @@ ln -s ../ply ply
 
 python ../yply/yply.py ../../src/calc.y > calc_parser.py
 
-# copy in other files required to run the application
-
-cp ../../src/calc.py .
-cp ../../src/calc_lexer.py .
+.
 
 

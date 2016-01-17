@@ -1,21 +1,22 @@
 # pcode_lexer.py  17/01/2016  D.J.Whale
 
-# token list
-tokens = (
-'PLUS',         'MINUS',        'TIMES',        'DIVIDE',
-'EQUAL',        'NOTEQUAL',     'LESS',         'LESSEQUAL',    'GREATER',
-'GREATEREQUAL', 'ASSIGN',       'LPAREN',       'RPAREN',       'LSQUARE',
-'RSQUARE',      'COMMA',        'COLON',
-
+keywords = (
 'IF',           'THEN',         'ELSE',         'ENDIF',        'WHILE',
 'ENDWHILE',     'CASE',         'OF',           'ENDCASE',      'FOR',
 'TO',           'ENDFOR',       'REPEAT',       'UNTIL',        'FUNCTION',
 'ENDFUNCTION',  'RETURN',       'PROCEDURE',    'ENDPROCEDURE', 'READLINE',
 'WRITELINE',    'OUTPUT',       'USERINPUT',    'LEN',          'MOD',
 'NOT',          'FALSE',        'TRUE',         'AND',          'OR',
-'XOR',          'RETURN',
+'XOR',
+)
 
-'NAME',         'NUMBER',       'STRLIT'
+tokens = keywords + (
+'PLUS',         'MINUS',        'TIMES',        'DIVIDE',
+'EQUAL',        'NOTEQUAL',     'LESS',         'LESSEQUAL',    'GREATER',
+'GREATEREQUAL', 'ASSIGN',       'LPAREN',       'RPAREN',       'LSQUARE',
+'RSQUARE',      'COMMA',        'COLON',        'COMMENT',
+
+'ID',           'NUMBER',       'STRING'
 )
 
 # token definitions
@@ -35,49 +36,27 @@ t_LPAREN        = r'\('
 t_RPAREN        = r'\)'
 t_LSQUARE       = r'\['
 t_RSQUARE       = r'\]'
-t_COMMA         = r','
+t_COMMA         = r'\,'
 t_COLON         = r':'
 
-t_IF            = r'IF'
-t_THEN          = r'THEN'
-t_ELSE          = r'ELSE'
-t_ENDIF         = r'ENDIF'
-t_WHILE         = r'WHILE'
-t_ENDWHILE      = r'ENDWHILE'
-t_CASE          = r'CASE'
-t_OF            = r'OF'
-t_ENDCASE       = r'ENDCASE'
-t_FOR           = r'FOR'
-t_TO            = r'TO'
-t_ENDFOR        = r'ENDFOR'
-t_REPEAT        = r'REPEAT'
-t_UNTIL         = r'UNTIL'
-t_FUNCTION      = r'FUNCTION'
-t_ENDFUNCTION   = r'ENDFUNCTION'
-t_RETURN        = r'RETURN'
-t_PROCEDURE     = r'PROCEDURE'
-t_ENDPROCEDURE  = r'ENDPROCEDURE'
-t_READLINE      = r'READLINE'
-t_WRITELINE     = r'WRITELINE'
-t_OUTPUT        = r'OUTPUT'
-t_USERINPUT     = r'USERINPUT'
-t_LEN           = r'LEN'
-t_MOD           = r'MOD'
-t_NOT           = r'NOT'
-t_FALSE         = r'FALSE'
-t_TRUE          = r'TRUE'
-t_AND           = r'AND'
-t_OR            = r'OR'
-t_XOR           = r'XOR'
-t_RETURN        = r'RETURN'
-
-t_NAME          = r'[a-zA-Z_][a-zA-Z0-9_]*'
-t_STRLIT        = r'\"[^\"]*\"'
+def t_STRING(t):
+    r'\".*?\"'
+    t.value = t.value[1:-1] # remove quotes
+    return t
 
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)
     return t
+
+def t_ID(t):
+    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    if t.value in keywords:
+        t.type = t.value
+    return t
+
+#def t_COMMENT(t):
+#    r'#.*'
 
 t_ignore = " \t"
 
@@ -85,9 +64,6 @@ def t_newline(t):
     r'\n+'
     t.lexer.lineno += t.value.count("\n")
 
-def t_comment(t):
-    r'#[^\n]*\n$'
-    print("comment:%s" % str(t))
 
 # END
 

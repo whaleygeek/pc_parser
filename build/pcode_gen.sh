@@ -13,9 +13,5 @@ ln -s ../ply ply
 
 python ../yply/yply.py ../../src/pcode.y > pcode_parser.py
 
-# copy in other files required to run the application
-
-cp ../../src/pcode.py .
-cp ../../src/pcode_lexer.py .
 
 
