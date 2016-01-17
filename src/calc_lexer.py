@@ -7,7 +7,8 @@ tokens = (
 
 # yply generator generates invalid code if you use ')' at the end of a line
 #literals = ['=','+','-','*','/', '(',')']
-
+#TODO: see note in pcode_lexer, probably just fix and test this here
+#then propagate fix to pcode_lexer
 
 # token definitions
 

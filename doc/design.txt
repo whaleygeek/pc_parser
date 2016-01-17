@@ -37,6 +37,12 @@ NUMBER
 grammar
 =======
 
+Note: when the .y file is written, this will be obsolete,
+as the .y file is a complete grammar spec.
+
+The plan is to put redirector actions in the generated file, so that
+the back end is completely configurable for different output formats.
+
 program:
       /* empty */
     | statements
