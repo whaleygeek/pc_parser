@@ -128,7 +128,7 @@ def p_rules(p):
              item = r[i]
              if item[0] == '{':    # A code block
                   if i == len(r) - 1:
-                      prodcode = item
+                      prodcode = item[1:-1] # DJW: remove curly braces
                       break
                   else:
                       # an embedded action
@@ -140,7 +140,7 @@ def p_rules(p):
                   prod.append(item)
         print "    '''%s : %s'''" % (rulename, " ".join(prod))
         # Emit code
-        print_code(prodcode,4)
+        print_code(prodcode,0) # DJW: no indent, .y source will include it anyway
         print
         rulecount += 1
 
@@ -213,5 +213,5 @@ def print_code(code,indent):
     if not emit_code: return
     codelines = code.splitlines()
     for c in codelines:
-         print "%s# %s" % (" "*indent,c)
+         print "%s%s" % (" "*indent,c) #DJW changed, to let python pass through
 
