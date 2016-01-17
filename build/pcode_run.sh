@@ -1,5 +1,5 @@
 #! /bin/bash
 
 cd sandbox
-python calc.py
+python pcode.py
 cd ..
