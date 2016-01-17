@@ -4,7 +4,6 @@
 %left TIMES DIVIDE
 %left UMINUS
 
-
 %start statement
 
 %%
