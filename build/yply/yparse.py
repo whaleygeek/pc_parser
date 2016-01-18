@@ -140,11 +140,15 @@ def p_rules(p):
                   prod.append(item)
         print "    '''%s : %s'''" % (rulename, " ".join(prod))
         # Emit code
-        print_code(prodcode,0) # DJW: no indent, .y source will include it anyway
+        #DJW add a default action if none given
+        if prodcode == "":
+            prodcode = "p[0] = p[1]"
+        print_code(prodcode,4)
         print
         rulecount += 1
 
     for e,code in embedded:
+        #DJW NOTE: This is currently broken for python generation
         print "def p_%s(p):" % e
         print "    '''%s : '''" % e
         print_code(code,4)
