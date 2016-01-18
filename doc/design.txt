@@ -11,19 +11,27 @@ Notes
 - output accepts numbers and strings
 
 JUST DONE
-Half implementation of an indentifier, using the back end
-Can now do this:
-name <- "david"
-OUTPUT name
-
-Can't add strings yet. But the trick here seems to be just
-pass python objects around the stack by returning them
-from the pygen module, and then the pygen action methods
-get python objects back that it knows what to do with
-when it instrospects their type.
+Implemented the full grammar.
+Had to add WHEN to case, to resolve a grammar ambiguity.
 
 TODO
-Gradually expand all the grammar and get it working.
+Add the grammar actions back into the grammar.
+
+Seems a shame to pollute the grammar with this detail.
+
+A cleaner way might be like this
+{backend.IF(p, 1, 3)}
+
+* Let the IF statement handler assign any desired result to p[0]
+* get the yply parser to sort out any indents for us. Might just work.
+
+rather than:
+    {
+    p[0] = backend.IF(p[1], p[3])
+    }
+
+
+
 
 Python is going to be the first output language, so that AQA
 style Pseudo code can be converted into first-cut python

@@ -7,7 +7,7 @@ keywords = (
 'ENDFUNCTION',  'RETURN',       'PROCEDURE',    'ENDPROCEDURE', 'READLINE',
 'WRITELINE',    'OUTPUT',       'USERINPUT',    'LEN',          'MOD',
 'NOT',          'FALSE',        'TRUE',         'AND',          'OR',
-'XOR',
+'XOR', 'WHEN'
 )
 
 tokens = keywords + (
