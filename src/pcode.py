@@ -42,15 +42,31 @@ yacc.yacc()
 
 #print("running")
 
+import sys
 
-while True:
-    #TODO should just read STDIN and pass whole lines to yacc.parse()
-    #For now, let's use it interactively, to aid testing
-    try:
-        s = raw_input('pcode> ')
-    except EOFError:
-        break
-    if not s: continue
+if sys.stdin.isatty():
+    # interactive mode
+    PROMPT = "pcode> "
+    while True:
+        #TODO should just read STDIN and pass whole lines to yacc.parse()
+        #For now, let's use it interactively, to aid testing
+        try:
+            s = raw_input(PROMPT)
+        except EOFError:
+            break
+        if not s: continue
+        yacc.parse(s)
+else:
+    # file mode
+    s = ""
+    while True:
+        line = sys.stdin.read()
+        if line != "":
+            s += line
+        else:
+            break
+
     yacc.parse(s)
+
 
 # END

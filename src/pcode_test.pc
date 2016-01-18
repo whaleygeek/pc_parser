@@ -1,0 +1,33 @@
+OUTPUT "hello world"
+PROCEDURE awesomeFunction()
+    a <- "h"
+    IF a = "h" THEN
+        OUTPUT "hi"
+        OUTPUT "this is great"
+    ENDIF
+    IF a = "f" THEN
+        OUTPUT "oreo"
+        OUTPUT "thor"
+        IF a = "f" THEN
+            OUTPUT "HI"
+        ELSE
+            IF bob = bob OR bob = bob THEN
+                OUTPUT "hello"
+                OUTPUT "thing"
+            ELSE
+                IF h = b THEN
+                    OUTPUT "hi"
+                    OUTPUT "test"
+                ELSE
+                    OUTPUT "bob"
+                ENDIF
+            ENDIF
+        ENDIF
+        OUTPUT "hi"
+    ENDIF
+    OUTPUT "hello world"
+ENDPROCEDURE
+
+awesomeFunction()
+
+OUTPUT "end"

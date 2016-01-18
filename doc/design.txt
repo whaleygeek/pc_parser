@@ -11,24 +11,28 @@ Notes
 - output accepts numbers and strings
 
 JUST DONE
-Implemented the full grammar.
-Had to add WHEN to case, to resolve a grammar ambiguity.
+Dummy actions (printing) added
+Brought in gbaman's test code.
+This is not valid syntax for various reasons,
+so simplified the test case
 
 TODO
-Add the grammar actions back into the grammar.
+Looks like newline processing is not correct yet
+due to the way the main loop passes line at a time
+to yacc.parse(), so it essentially parses the whole string
+to EOF at end of line.
 
-Seems a shame to pollute the grammar with this detail.
+The way to solve this is to invert the control flow,
+so that the lexer reads a token at a time and offers
+it to the yacc parser state machine, and thus it will
+process a stream of data, rather than trying to parse
+to completion line at a time,
 
-A cleaner way might be like this
-{backend.IF(p, 1, 3)}
+A quick fix is to read the whole thing in from a file,
+and pass the string to yacc.parse
 
-* Let the IF statement handler assign any desired result to p[0]
-* get the yply parser to sort out any indents for us. Might just work.
 
-rather than:
-    {
-    p[0] = backend.IF(p[1], p[3])
-    }
+
 
 
 
