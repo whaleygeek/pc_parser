@@ -37,6 +37,11 @@ Additionally:
 
 * The function/proc is not called
 
+* The AQA grammar is ambiguous with the CASE statement, it generates a lot of
+shift/reduce parse warnings. I have added WHEN prior to the case option expressions
+to resolve this ambiguity in the grammar - appart from that, the grammar is identical
+to that (loosly) specified in the AQA document linked above.
+
 I have modified my src/pcode_test.pc to fix these issues.
 
 
