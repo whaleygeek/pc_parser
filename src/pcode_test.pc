@@ -1,5 +1,5 @@
 OUTPUT "hello world"
-PROCEDURE awesomeFunction()
+PROCEDURE awesome()
     a <- "h"
     IF a = "h" THEN
         OUTPUT "hi"
@@ -28,6 +28,6 @@ PROCEDURE awesomeFunction()
     OUTPUT "hello world"
 ENDPROCEDURE
 
-awesomeFunction()
+awesome()
 
 OUTPUT "end"
