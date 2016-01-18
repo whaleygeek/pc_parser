@@ -31,6 +31,7 @@ program:
 
 statements:
     /* empty */
+    {p[0] = ""}
     | statements statement
     {backend.concat(p, 1, 2)}
     ;
@@ -75,6 +76,7 @@ array2d_assignment_statement:
 
 initialiser_expr:
     /* empty */
+    {p[0]=""}
     | expr
     | initialiser_expr COMMA expr
     {backend.concat(p, 1, 3)}
@@ -132,6 +134,7 @@ case_option:
 
 case_options:
     /* empty */
+    {p[0]=""}
     | case_options case_option
     {backend.concat(p, 1, 2)}
     ;
@@ -147,6 +150,7 @@ case_statement:
 
 fnproc_def_params:
     /* empty */
+    {p[0]=""}
     | ID
     | fnproc_def_params COMMA ID
     {backend.defparams(p, 1, 3)}
@@ -173,6 +177,7 @@ proc_def_statement:
 
 fnproc_call_params:
     /* empty */
+    {p[0]=""}
     | expr
     | fnproc_call_params COMMA expr
     {backend.callparams(p, 1, 3)}
