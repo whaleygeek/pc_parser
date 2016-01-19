@@ -57,10 +57,16 @@ class Generator():
         p[0]="Ifelse"
         print("else:")
 
-    def WHILE(self, p, i_expr, i_statements):
-        ##TODO use embed to pass header only
+    def WHILE(self, p, i_expr):
         p[0]="While"
         #self.out(p[0])
+        expr = p[i_expr]
+        print("while %s:" % expr)
+        #TODO increment indent
+
+    def ENDWHILE(self, p):
+        pass # TODO decrement indent
+        print("#endwhile")
 
     def REPEAT(self, p, i_statements, i_expr):
         ##TODO use embed to pass header only
@@ -70,11 +76,6 @@ class Generator():
     def FOR(self, p, i_id, i_from, i_to, i_statements):
         ##TODO use embed to pass header only
         p[0]="For"
-        #self.out(p[0])
-
-    def WHILE(self, p, i_expr, i_statements):
-        ##TODO use embed to pass header only
-        p[0]="While"
         #self.out(p[0])
 
     def caseoption(self, p, i_expr, i_statements):
@@ -149,11 +150,12 @@ class Generator():
         #self.out(p[0])
 
     def plus(self, p, i_left, i_right):
-        p[0]="Add"
+        #p[0]="Add"
         #self.out(p[0])
         left = p[i_left]
         right = p[i_right]
-        print("%s + %s" % (left, right))
+        r = "%s + %s" % (left, right)
+        p[0] = r
 
     def minus(self, p, i_left, i_right):
         p[0]="Sub"
@@ -207,7 +209,10 @@ class Generator():
         #self.out(p[0])
 
     def less(self, p, i_left, i_right):
-        p[0]="Less"
+        left = p[i_left]
+        right = p[i_right]
+        r = "%s < %s" % (left, right)
+        p[0]=r
         #self.out(p[0])
 
     def AND(self, p, i_left, i_right):

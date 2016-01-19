@@ -109,8 +109,9 @@ if_statement:
     ;
 
 while_statement:
-    WHILE expr {} statements ENDWHILE {}
-//    {backend.WHILE(p, 2, 3)}
+    WHILE expr      {backend.WHILE(p, -1)}
+    statements
+    ENDWHILE        {backend.ENDWHILE(p)}
     ;
 
 repeat_statement:

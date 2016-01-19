@@ -30,4 +30,10 @@ ENDPROCEDURE
 
 awesome()
 
+a <- 0
+WHILE a < 10
+    OUTPUT "hello"
+    a <- a + 1
+ENDWHILE
+
 OUTPUT "end"
