@@ -38,6 +38,8 @@ statement:
     output_statement
     | var_assignment_statement
     | array_assignment_statement
+    | array2d_assignment_statement
+    | array_initialiser_statement
     | if_statement
     | while_statement
     | repeat_statement
@@ -47,8 +49,6 @@ statement:
     | function_def_statement
     | return_statement
     | writeline_statement
-    | array2d_assignment_statement
-    | array_initialiser_statement
     | case_statement
     ;
 
@@ -122,13 +122,13 @@ while_statement:
 repeat_statement:
     REPEAT          {backend.REPEAT(p)}
     statements
-    UNTIL expr      {backend.UNTIL(p, 2)}
+    UNTIL expr      {backend.UNTIL(p, 5)}
     ;
 
 for_statement:
     FOR ID ASSIGN expr TO expr  {backend.FOR(p, -5, -3, -1)}
     statements
-    ENDFOR                      {backend.FOR(p)}
+    ENDFOR                      {backend.ENDFOR(p)}
     ;
 
 case_option:
@@ -146,7 +146,7 @@ case_statement:
     CASE expr OF        {backend.CASE(p, -2)}
     case_options
     ELSE                {backend.CASEELSE(p)}
-    statements
+    statements          {backend.ENDCASEELSE(p)}
     ENDCASE             {backend.ENDCASE(p)}
     ;
 

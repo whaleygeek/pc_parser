@@ -1,39 +1,165 @@
-OUTPUT "hello world"
-PROCEDURE awesome()
-    a <- "h"
-    IF a = "h" THEN
-        OUTPUT "hi"
-        OUTPUT "this is great"
-    ENDIF
-    IF a = "f" THEN
-        OUTPUT "oreo"
-        OUTPUT "thor"
-        IF a = "f" THEN
-            OUTPUT "HI"
-        ELSE
-            IF bob = bob OR bob = bob THEN
-                OUTPUT "hello"
-                OUTPUT "thing"
-            ELSE
-                IF h = b THEN
-                    OUTPUT "hi"
-                    OUTPUT "test"
-                ELSE
-                    OUTPUT "bob"
-                ENDIF
-            ENDIF
-        ENDIF
-        OUTPUT "hi"
-    ENDIF
-    OUTPUT "hello world"
+PROCEDURE test_output()
+    OUTPUT "hello"
+    a <- "me"
+    OUTPUT a
+    OUTPUT 1
+    OUTPUT "a" + "b"
+    c <- a + a + a
+    OUTPUT a
 ENDPROCEDURE
 
-awesome()
+PROCEDURE test_assign()
+    a <- 1
+    b <- 2
+    c <- "var"
+ENDPROCEDURE
 
-a <- 0
-WHILE a < 10
-    OUTPUT "hello"
-    a <- a + 1
-ENDWHILE
+PROCEDURE test_array1d_assign()
+ENDPROCEDURE
 
-OUTPUT "end"
+PROCEDURE test_array2d_assign()
+ENDPROCEDURE
+
+PROCEDURE test_array_init()
+ENDPROCEDURE
+
+
+PROCEDURE test_if()
+    a <- 1
+    IF a = 1 THEN
+        OUTPUT "one"
+    ENDIF
+ENDPROCEDURE
+
+PROCEDURE test_if_else()
+    a <- 1
+    IF a = 1 THEN
+        OUTPUT "one"
+    ELSE
+        OUTPUT "not one"
+    ENDIF
+
+    b <- 2
+    IF a = 1 THEN
+        IF b = 1 THEN
+            OUTPUT "one one"
+        ELSE
+            OUTPUT "one notone"
+        ENDIF
+    ELSE
+        IF b = 1 THEN
+            OUTPUT "notone one"
+        ELSE
+            OUTPUT "notone notone"
+        ENDIF
+    ENDIF
+ENDPROCEDURE
+
+PROCEDURE test_while()
+    a <- 0
+    WHILE a < 10
+        OUTPUT "hello"
+        a <- a + 1
+    ENDWHILE
+ENDPROCEDURE
+
+PROCEDURE test_repeat()
+    a <- 0
+    REPEAT
+        OUTPUT a
+        a <- a + 1
+    UNTIL a > 10
+ENDPROCEDURE
+
+PROCEDURE test_for()
+    FOR i <- 1 TO 10
+        OUTPUT i
+    ENDFOR
+ENDPROCEDURE
+
+FUNCTION test_func_noparams()
+    RETURN 1
+ENDFUNCTION
+
+FUNCTION test_func_params(a,b,c)
+    RETURN a
+ENDFUNCTION
+
+PROCEDURE test_writeline()
+    WRITELINE("test.txt", 1, "hello")
+ENDPROCEDURE
+
+PROCEDURE test_case()
+    a <- 1
+    CASE a OF
+    WHEN 1:
+        OUTPUT "one"
+    WHEN 2:
+        OUTPUT "two"
+    WHEN 3:
+        OUTPUT "three"
+        OUTPUT "lots"
+    ELSE
+        OUTPUT "something else"
+        OUTPUT "dont know what"
+    ENDCASE
+ENDPROCEDURE
+
+PROCEDURE test_or()
+    a <- 1
+    b <- 2
+    IF a = 1 OR b = 1 THEN
+        OUTPUT "one of them is one"
+    ENDIF
+ENDPROCEDURE
+
+PROCEDURE test_and()
+    a <- 1
+    b <- 2
+    IF a = 1 AND b = 1 THEN
+        OUTPUT "both of them are one"
+    ENDIF
+ENDPROCEDURE
+
+test_output()
+test_assign()
+test_array1d_assign()
+test_array2d_assign()
+test_array_init()
+test_if()
+test_if_else()
+test_while()
+test_repeat()
+test_for()
+test_case()
+
+TRUE
+FALSE
+NUMBER
+ID
+STRING
+(ex)
+LEN(n)
++
+- * /
+MOD
+-x
++x
+=
+<=
+>=
+<>
+>
+<
+AND
+OR
+XOR
+READLINE
+r=fncall(1param)
+r=fncall(2param)
+proccall(1param)
+proccall(2param)
+
+test_or()
+test_and()
+

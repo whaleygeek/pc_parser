@@ -7,6 +7,7 @@ import sys
 class Generator():
     def __init__(self):
         self.indentlev = 0
+        #TODO stack for case statement expressions
 
     def indent(self):
         self.indentlev += 4
@@ -81,11 +82,12 @@ class Generator():
         self.out("# endwhile")
 
     def REPEAT(self, p):
-        self.out("# repeat")
+        self.out("while True:")
         self.indent()
 
     def UNTIL(self, p, i_expr):
         expr = p[i_expr]
+        self.out("if %s: break" % expr)
         self.outdent()
         self.out("# enduntil")
 
@@ -104,16 +106,30 @@ class Generator():
         expr = p[i_expr]
         #TODO must keep a stack of case expressions for later use
         self.out("# case %s" % expr)
+        self.out("if 1==0:pass") # dummy for now
+        #self.indent()
+
+    def WHEN(self, p, i_expr):
+        expr = p[i_expr]
+        #TODO if on first one, elif on next ones, for execution speed
+        self.out("elif xx == %s:" % expr) # TODO must keep a stack of case expressions
         self.indent()
 
-    #TODO: 'WHEN <expr>:'
-    def caseoption(self, p, i_expr):
-        expr = p[i_expr]
-        self.out("if xx == %s:" % expr) # TODO must keep a stack of case expressions
+    def ENDWHEN(self, p):
+        self.outdent()
+        self.out("# endwhen")
+
+    def CASEELSE(self, p):
+        self.out("# caseelse")
+        self.out("else:")
         self.indent()
+
+    def ENDCASEELSE(self, p):
+        self.outdent()
+        self.out("# end case else")
 
     def ENDCASE(self, p):
-        self.outdent()
+        #self.outdent()
         self.out("# endcase")
 
     def defparams(self, p, i_params, i_id):
