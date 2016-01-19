@@ -1,3 +1,8 @@
+# pcode_test.pc  19/01/2016  D.J.Whale
+
+PROCEDURE test_proc()
+ENDPROCEDURE
+
 PROCEDURE test_output()
     OUTPUT "hello"
     a <- "me"
@@ -15,14 +20,28 @@ PROCEDURE test_assign()
 ENDPROCEDURE
 
 PROCEDURE test_array1d_assign()
+    a[0] <- 1
+    a[1] <- 2
+    b <- 10
+    a[b] <- 10
+    a[b+1] <- 10
 ENDPROCEDURE
 
 PROCEDURE test_array2d_assign()
+    a[0][0] <- 1
+    a[1][1] <- 2
+    x <- 10
+    y <- 20
+    a[x][y] <- x + y
+    a[x+1][y+1] <- x + y * 2
 ENDPROCEDURE
 
 PROCEDURE test_array_init()
+    a <- [1,2,3,4]
+    b <- 10
+    c <- 20
+    d <- [b,c,b,c,b+1,c+10]
 ENDPROCEDURE
-
 
 PROCEDURE test_if()
     a <- 1
@@ -105,11 +124,106 @@ PROCEDURE test_case()
     ENDCASE
 ENDPROCEDURE
 
-PROCEDURE test_or()
+PROCEDURE test_true_false()
+    a <- TRUE
+    b <- FALSE
+ENDPROCEDURE
+
+PROCEDURE test_number()
     a <- 1
-    b <- 2
-    IF a = 1 OR b = 1 THEN
-        OUTPUT "one of them is one"
+    b <- 1234
+    c <- 9999
+    d <- 65535
+    e <- 4000000000
+ENDPROCEDURE
+
+PROCEDURE test_id()
+    a <- 1
+    fred <- 2
+    var2 <- 3
+    var_with_underscores <- 4
+ENDPROCEDURE
+
+PROCEDURE test_string()
+    a <- "hello world"
+ENDPROCEDURE
+
+PROCEDURE test_brackets()
+    a <- (1*2+(3+(4-5)))
+ENDPROCEDURE
+
+PROCEDURE test_len()
+    a <- "hello"
+    b <- LEN(a)
+ENDPROCEDURE
+
+PROCEDURE test_plus()
+    a <- 1 + 2
+ENDPROCEDURE
+
+PROCEDURE test_minus()
+    a <- 1 - 2
+ENDPROCEDURE
+
+PROCEDURE test_times()
+    a <- 1 * 2
+ENDPROCEDURE
+
+PROCEDURE test_divide()
+    a <- 1 / 2
+ENDPROCEDURE
+
+PROCEDURE test_mod()
+    a <- 1 MOD 2
+ENDPROCEDURE
+
+PROCEDURE test_uminus()
+    a <- -1
+ENDPROCEDURE
+
+PROCEDURE test_uplus()
+    a <- +1
+ENDPROCEDURE
+
+PROCEDURE test_equal()
+    a <- 1
+    IF a = 1 THEN
+        OUTPUT "yes"
+    ENDIF
+ENDPROCEDURE
+
+PROCEDURE test_notequal()
+    a <- 1
+    IF a <> 1 THEN
+        OUTPUT "yes"
+    ENDIF
+ENDPROCEDURE
+
+PROCEDURE test_less()
+    a <- 1
+    IF a < 1 THEN
+        OUTPUT "yes"
+    ENDIF
+ENDPROCEDURE
+
+PROCEDURE test_greater()
+    a <- 1
+    IF a > 1 THEN
+        OUTPUT "yes"
+    ENDIF
+ENDPROCEDURE
+
+PROCEDURE test_lessequal()
+    a <- 1
+    IF a <= 1 THEN
+        OUTPUT "yes"
+    ENDIF
+ENDPROCEDURE
+
+PROCEDURE test_greaterequal()
+    a <- 1
+    IF a >= 1 THEN
+        OUTPUT "yes"
     ENDIF
 ENDPROCEDURE
 
@@ -121,6 +235,65 @@ PROCEDURE test_and()
     ENDIF
 ENDPROCEDURE
 
+PROCEDURE test_or()
+    a <- 1
+    b <- 2
+    IF a = 1 OR b = 1 THEN
+        OUTPUT "one of them is one"
+    ENDIF
+ENDPROCEDURE
+
+PROCEDURE test_xor()
+    a <- 1
+    b <- 2
+    c <- a XOR b
+ENDPROCEDURE
+
+PROCEDURE test_readline()
+    a <- READLINE("words.txt", 1)
+ENDPROCEDURE
+
+FUNCTION fn0()
+    RETURN 1
+ENDFUNCTION
+
+FUNCTION fn1(a)
+    RETURN a+1
+ENDFUNCTION
+
+FUNCTION fn2(a, b)
+    RETURN a+b
+ENDFUNCTION
+
+PROCEDURE test_fncall_noparams()
+    a <- fn0()
+ENDPROCEDURE
+
+PROCEDURE test_fncall_1param()
+    a <- fn1(10)
+ENDPROCEDURE
+
+PROCEDURE test_fncall_2params()
+    a <- fn2(10, 20)
+ENDPROCEDURE
+
+PROCEDURE proc1(a)
+    OUTPUT a
+ENDPROCEDURE
+
+PROCEDURE proc2(a, b)
+    OUTPUT a+b
+ENDPROCEDURE
+
+PROCEDURE test_proccall_1param()
+    proc1(10)
+ENDPROCEDURE
+
+PROCEDURE test_proccall_2params()
+    proc2(10 ,20)
+ENDPROCEDURE
+
+test_proc()
 test_output()
 test_assign()
 test_array1d_assign()
@@ -132,34 +305,38 @@ test_while()
 test_repeat()
 test_for()
 test_case()
+test_true_false()
+test_number()
+test_id()
+test_string()
+test_brackets()
+test_len()
+test_plus()
+test_minus()
+test_times()
+test_divide()
+test_mod()
+test_uminus()
+test_uplus()
 
-TRUE
-FALSE
-NUMBER
-ID
-STRING
-(ex)
-LEN(n)
-+
-- * /
-MOD
--x
-+x
-=
-<=
->=
-<>
->
-<
-AND
-OR
-XOR
-READLINE
-r=fncall(1param)
-r=fncall(2param)
-proccall(1param)
-proccall(2param)
+test_equal()
+test_lessequal()
+test_greaterequal()
+test_less()
+test_greater()
+test_notequal()
 
-test_or()
 test_and()
+test_or()
+test_xor()
+
+test_readline()
+
+test_fncall_noparams()
+test_fncall_1param()
+test_fncall_2params()
+
+test_proccall_1param()
+test_proccall_2params()
+
 

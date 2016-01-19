@@ -74,8 +74,9 @@ array2d_assignment_statement:
 
 initialiser_expr:
     /* empty */
-    {p[0]=""}
+    {backend.empty(p)}
     | expr
+    {backend.copy(p, 1)}
     | initialiser_expr COMMA expr
     {backend.concat(p, 1, 3)}
     ;
@@ -87,6 +88,7 @@ array_initialiser_statement:
 
 file:
     expr
+    {backend.copy(p, 1)}
     ;
 
 readline_expr:
@@ -152,10 +154,11 @@ case_statement:
 
 fnproc_def_params:
     /* empty */
-    {p[0]=""}
+    {backend.empty(p)}
     | ID
+    {backend.copy(p, 1)}
     | fnproc_def_params COMMA ID
-//    {backend.defparams(p, 1, 3)} // concat?
+    {backend.comma(p, 1, 3)}
     ;
 
 function_def_statement:
@@ -176,10 +179,11 @@ proc_def_statement:
 
 fnproc_call_params:
     /* empty */
-    {p[0]=""}
+    {backend.empty(p)}
     | expr
+    {backend.copy(p, 1)}
     | fnproc_call_params COMMA expr
-//    {backend.callparams(p, 1, 3)} // concat?
+    {backend.comma(p, 1, 3)}
     ;
 
 proc_call_statement:
@@ -191,12 +195,12 @@ fn_call_expr:
     ;
 
 expr:
-      TRUE
-    | FALSE
+      TRUE                      {backend.boolean(p, "True")}
+    | FALSE                     {backend.boolean(p, "False")}
     | NUMBER                    {backend.number(p, 1)}
     | ID                        {backend.id(p, 1)}
     | STRING                    {backend.string(p, 1)}
-    | LPAREN expr RPAREN        {p[0] = p[2]}
+    | LPAREN expr RPAREN        {backend.bracket(p, 1)}
     | USERINPUT                 {backend.USERINPUT(p)}
     | LEN LPAREN ID RPAREN      {backend.LEN(p, 3)}
     | expr PLUS expr            {backend.plus(p, 1, 3)}
@@ -216,8 +220,8 @@ expr:
     | expr AND expr             {backend.AND(p, 1, 3)}
     | expr OR expr              {backend.OR(p, 1, 3)}
     | expr XOR expr             {backend.XOR(p, 1, 3)}
-    | readline_expr
-    | fn_call_expr
+    | readline_expr             {backend.copy(p, 1)}
+    | fn_call_expr              {backend.copy(p, 1)}
     ;
 
 

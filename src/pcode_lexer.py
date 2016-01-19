@@ -39,6 +39,10 @@ t_RSQUARE       = r'\]'
 t_COMMA         = r'\,'
 t_COLON         = r':'
 
+def t_comment(t):
+    r"[ ]*\043[^\n]*"  # \043 is '#'
+    pass
+
 def t_STRING(t):
     r'\".*?\"'
     #t.value = t.value[1:-1] # remove quotes

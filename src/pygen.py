@@ -50,13 +50,15 @@ class Generator():
     def READLINE(self, p, i_file, i_expr):
         file = p[i_file]
         expr = p[i_expr]
-        self.out("readline(%s, %s)" % (file, expr))
+        p[0] = "readline(%s, %s)" % (file, expr)
+        #TODO runtime support required
 
     def WRITELINE(self, p, i_file, i_expr1, i_expr2):
         file = p[i_file]
         expr1 = p[i_expr1]
         expr2 = p[i_expr2]
         self.out("writeline(%s, %s, %s" % (file, expr1, expr2))
+        #TODO runtime support required
 
     def IF(self, p, i_expr):
         expr = p[i_expr]
@@ -70,7 +72,7 @@ class Generator():
 
     def ENDIF(self, p):
         self.outdent()
-        self.out("# endif")
+        #self.out("")
 
     def WHILE(self, p, i_expr):
         expr = p[i_expr]
@@ -79,7 +81,7 @@ class Generator():
 
     def ENDWHILE(self, p):
         self.outdent()
-        self.out("# endwhile")
+        #self.out("")
 
     def REPEAT(self, p):
         self.out("while True:")
@@ -89,7 +91,7 @@ class Generator():
         expr = p[i_expr]
         self.out("if %s: break" % expr)
         self.outdent()
-        self.out("# enduntil")
+        #self.out("")
 
     def FOR(self, p, i_id, i_from, i_to):
         id = p[i_id]
@@ -100,7 +102,7 @@ class Generator():
 
     def ENDFOR(self, p):
         self.outdent()
-        self.out("# endfor")
+        #self.out("")
 
     def CASE(self, p, i_expr):
         expr = p[i_expr]
@@ -117,25 +119,26 @@ class Generator():
 
     def ENDWHEN(self, p):
         self.outdent()
-        self.out("# endwhen")
+        #self.out("")
 
     def CASEELSE(self, p):
-        self.out("# caseelse")
         self.out("else:")
         self.indent()
 
     def ENDCASEELSE(self, p):
         self.outdent()
-        self.out("# end case else")
+        #self.out("")
 
     def ENDCASE(self, p):
         #self.outdent()
-        self.out("# endcase")
+        #self.out("")
+        pass
 
     def defparams(self, p, i_params, i_id):
         params = p[i_params]
         id = p[i_id]
-        #TODO
+        r = params + ", " + id
+        p[0] = id
 
     def FUNCTION(self, p, i_id, i_params):
         id = p[i_id]
@@ -150,23 +153,23 @@ class Generator():
 
     def ENDFUNCTION(self, p):
         self.outdent()
-        self.out("# endfunction")
+        #self.out("")
 
     def PROCEDURE(self, p, i_id, i_params):
         id = p[i_id]
-        params = p[i_params]
         params = p[i_params]
         self.out("def %s(%s):" % (id, params))
         self.indent()
 
     def ENDPROCEDURE(self, p):
         self.outdent()
-        self.out("# endprocedure")
+        #self.out("")
 
     def callparams(self, p, i_params, i_expr):
         params = p[i_params]
         expr = p[i_expr]
-        #TODO
+        r = params + ", " + expr
+        p[0] = r
 
     def proccall(self, p, i_id, i_params):
         id = p[i_id]
@@ -176,7 +179,34 @@ class Generator():
     def fncall(self, p, i_id, i_params):
         id = p[i_id]
         params = p[i_params]
-        self.out("%s(%s)" % (id, params))
+        r = "%s(%s)" % (id, params)
+        p[0] = r
+
+    def bracket(self, p, i_expr):
+        expr = p[i_expr]
+        r = "(" + expr + ")"
+        p[0] = r
+
+    def copy(self, p, i_item):
+        item = p[i_item]
+        r = item
+        p[0] = r
+
+    def empty(self, p):
+        p[0] = ""
+
+    def boolean(self, p, value):
+        r = value
+        p[0] = r
+
+    def comma(self, p, i_left, i_right):
+        left = p[i_left]
+        right = p[i_right]
+        try:
+            r = left + ", " + right
+        except TypeError:
+            r = str(left) + ", " + str(right)
+        p[0] = r
 
 
     #---- PASSED ON THE PARSE STACK -------------------------------------------
@@ -225,7 +255,7 @@ class Generator():
         r = str(left) + " / " + str(right)
         p[0] = r
 
-    def mod(self, p, i_left, i_right):
+    def MOD(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
         r = str(left) + " % " + str(right)
@@ -303,7 +333,10 @@ class Generator():
     def concat(self, p, i_one, i_two):
         one = p[i_one]
         two = p[i_two]
-        both = one + two
+        try:
+            both = one + two
+        except TypeError:
+            both = str(one) + str(two)
         p[0] = both
 
 

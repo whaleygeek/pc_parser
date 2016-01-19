@@ -17,11 +17,12 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-yply strips out curly braces on embeds
-Resolved IF ambiguity
+Most of backend now implemented.
 
 TODO
-finish rest of backend
+Array initialisation woudl benefit from using a list rather than a string
+parameter definition, same
+parameter passing, same
 
 
 
