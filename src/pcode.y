@@ -33,7 +33,7 @@ statements:
     /* empty */
     {p[0] = ""}
     | statements statement
-    {backend.concat(p, 1, 2)}
+//    {backend.concat(p, 1, 2)}
     ;
 
 statement:
@@ -101,51 +101,51 @@ writeline_statement:
     {backend.WRITELINE(p, 3, 5, 7)}
     ;
 
+//TODO must resolve the conflict here with the grammar
+//dangling else solution might solve this??
 if_statement:
     IF expr THEN statements ENDIF
-    {backend.IF(p, 2, 4)}
     | IF expr THEN statements ELSE statements ENDIF
-    {backend.IFELSE(p, 2, 4, 6)}
     ;
 
 while_statement:
-    WHILE expr statements ENDWHILE
-    {backend.WHILE(p, 2, 3)}
+    WHILE expr {} statements ENDWHILE {}
+//    {backend.WHILE(p, 2, 3)}
     ;
 
 repeat_statement:
-    REPEAT
+    REPEAT {}
     statements
-    UNTIL expr
-    {backend.REPEAT(p, 2, 4)}
+    UNTIL expr {}
+//    {backend.REPEAT(p, 2, 4)}
     ;
 
 for_statement:
-    FOR ID ASSIGN expr TO expr
+    FOR ID ASSIGN expr TO expr {}
     statements
-    ENDFOR
-    {backend.FOR(p, 2, 4, 6, 7)}
+    ENDFOR {}
+//    {backend.FOR(p, 2, 4, 6, 7)}
     ;
 
 case_option:
-    WHEN expr COLON statements // <-- 'WHEN' added to resolve grammar ambiguity
-    {backend.caseoption(p, 2, 4)}
+    WHEN expr COLON {} statements // <-- 'WHEN' added to resolve grammar ambiguity
+//    {backend.caseoption(p, 2, 4)}
     ;
 
 case_options:
     /* empty */
     {p[0]=""}
     | case_options case_option
-    {backend.concat(p, 1, 2)}
+//    {backend.concat(p, 1, 2)}
     ;
 
 case_statement:
-    CASE expr OF
+    CASE expr OF {}
     case_options
-    ELSE
+    ELSE {}
     statements
-    ENDCASE
-    {backend.CASE(p, 2, 4, 6)}
+    ENDCASE {}
+//    {backend.CASE(p, 2, 4, 6)}
     ;
 
 fnproc_def_params:
@@ -153,14 +153,14 @@ fnproc_def_params:
     {p[0]=""}
     | ID
     | fnproc_def_params COMMA ID
-    {backend.defparams(p, 1, 3)}
+//    {backend.defparams(p, 1, 3)} // concat?
     ;
 
 function_def_statement:
-    FUNCTION ID LPAREN fnproc_def_params RPAREN
+    FUNCTION ID LPAREN fnproc_def_params RPAREN {}
     statements
-    ENDFUNCTION
-    {backend.FUNCTION(p, 2, 4, 6)}
+    ENDFUNCTION {}
+//    {backend.FUNCTION(p, 2, 4, 6)}
     ;
 
 return_statement:
@@ -169,10 +169,10 @@ return_statement:
     ;
 
 proc_def_statement:
-    PROCEDURE ID LPAREN fnproc_def_params RPAREN
+    PROCEDURE ID LPAREN fnproc_def_params RPAREN {}
     statements
-    ENDPROCEDURE
-    {backend.PROCEDURE(p, 2, 4, 6)}
+    ENDPROCEDURE {}
+//    {backend.PROCEDURE(p, 2, 4, 6)}
     ;
 
 fnproc_call_params:
@@ -180,7 +180,7 @@ fnproc_call_params:
     {p[0]=""}
     | expr
     | fnproc_call_params COMMA expr
-    {backend.callparams(p, 1, 3)}
+//    {backend.callparams(p, 1, 3)} // concat?
     ;
 
 proc_call_statement:
@@ -196,52 +196,29 @@ fn_call_expr:
 expr:
     TRUE
     | FALSE
-    | NUMBER
-    {backend.number(p)}
-    | ID
-    {backend.id(p)}
-    | STRING
-    {backend.string(p)}
-    | LPAREN expr RPAREN
-    {p[0] = p[2]}
-    | USERINPUT
-    {backend.USERINPUT(p)}
-    | LEN LPAREN ID RPAREN
-    {backend.LEN(p, 3)}
-    | expr PLUS expr
-    {backend.plus(p, 1, 3)}
-    | expr MINUS expr
-    {backend.minus(p, 1, 3)}
-    | expr TIMES expr
-    {backend.times(p, 1, 3)}
-    | expr DIVIDE expr
-    {backend.divide(p, 1, 3)}
-    | expr MOD expr
-    {backend.MOD(p, 1, 3)}
-    | MINUS expr %prec UNARY
-    {backend.uminus(p,2)}
-    | PLUS expr
-    {backend.uplus(p, 2)}
-    | NOT expr %prec UNARY
-    {backend.NOT(p, 2)}
-    | expr EQUAL expr
-    {backend.equal(p, 1, 3)}
-    | expr NOTEQUAL expr
-    {backend.notequal(p, 1, 3)}
-    | expr LESSEQUAL expr
-    {backend.lessequal(p, 1, 3)}
-    | expr GREATEREQUAL expr
-    {backend.greaterequal(p, 1, 3)}
-    | expr GREATER expr
-    {backend.greater(p, 1, 3)}
-    | expr LESS expr
-    {backend.less(p, 1, 3)}
-    | expr AND expr
-    {backend.AND(p, 1, 3)}
-    | expr OR expr
-    {backend.OR(p, 1, 3)}
-    | expr XOR expr
-    {backend.XOR(p, 1, 3)}
+    | NUMBER                    {backend.number(p)}
+    | ID                        {backend.id(p)}
+    | STRING                    {backend.string(p)}
+    | LPAREN expr RPAREN        {p[0] = p[2]}
+    | USERINPUT                 {backend.USERINPUT(p)}
+    | LEN LPAREN ID RPAREN      {backend.LEN(p, 3)}
+    | expr PLUS expr            {backend.plus(p, 1, 3)}
+    | expr MINUS expr           {backend.minus(p, 1, 3)}
+    | expr TIMES expr           {backend.times(p, 1, 3)}
+    | expr DIVIDE expr          {backend.divide(p, 1, 3)}
+    | expr MOD expr             {backend.MOD(p, 1, 3)}
+    | MINUS expr %prec UNARY    {backend.uminus(p,2)}
+    | PLUS expr                 {backend.uplus(p, 2)}
+    | NOT expr %prec UNARY      {backend.NOT(p, 2)}
+    | expr EQUAL expr           {backend.equal(p, 1, 3)}
+    | expr NOTEQUAL expr        {backend.notequal(p, 1, 3)}
+    | expr LESSEQUAL expr       {backend.lessequal(p, 1, 3)}
+    | expr GREATEREQUAL expr    {backend.greaterequal(p, 1, 3)}
+    | expr GREATER expr         {backend.greater(p, 1, 3)}
+    | expr LESS expr            {backend.less(p, 1, 3)}
+    | expr AND expr             {backend.AND(p, 1, 3)}
+    | expr OR expr              {backend.OR(p, 1, 3)}
+    | expr XOR expr             {backend.XOR(p, 1, 3)}
     | readline_expr
     | fn_call_expr
     ;

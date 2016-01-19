@@ -10,36 +10,40 @@ Notes
 - userinput accepts numbers and strings
 - output accepts numbers and strings
 
-JUST DONE
-Dummy actions (printing) added
-Brought in gbaman's test code.
-This is not valid syntax for various reasons,
-so simplified the test case
-
-TODO
-Looks like newline processing is not correct yet
-due to the way the main loop passes line at a time
-to yacc.parse(), so it essentially parses the whole string
-to EOF at end of line.
-
-The way to solve this is to invert the control flow,
-so that the lexer reads a token at a time and offers
-it to the yacc parser state machine, and thus it will
-process a stream of data, rather than trying to parse
-to completion line at a time,
-
-A quick fix is to read the whole thing in from a file,
-and pass the string to yacc.parse
-
-
-
-
-
-
-
 Python is going to be the first output language, so that AQA
 style Pseudo code can be converted into first-cut python
 for further development. This will be useful for school children
 to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
+
+JUST DONE
+Started to flesh out first prototype backend
+
+IF {} THEN ENDIF
+| IF {} THEN ELSE ENDIF
+
+This introduces a conflict due to THEN appearing after in both cases.
+Consult the standard dangling-else grammar solution to see if we can
+solve this with a hierarchy in the grammar.
+
+
+
+
+TODO
+Split the following headers out, don't pass statement lists,
+but generate statement lists as we go along.
+IF
+IFELSE
+WHILE
+REPEAT
+FOR
+PROCEDURE
+FUNCTION
+
+
+
+
+
+
+
 
