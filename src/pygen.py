@@ -9,9 +9,10 @@ class Generator():
         self.indentlev = 0
         # stack of active case statements being parsed
         # holds a list [exprstr, optioncounter]
-        self.case_stack = []
-        self.for_stack  = []
-        self.procfn = None
+        self.case_stack  = []
+        self.for_stack   = []
+        self.while_stack = []
+        self.procfn      = None
 
     def indent(self):
         self.indentlev += 4
@@ -84,8 +85,12 @@ class Generator():
         expr = p[i_expr]
         self.out("while %s:" % expr)
         self.indent()
+        self.while_stack.append(0) # count of statements in this while
 
     def ENDWHILE(self, p):
+        c = self.while_stack.pop()
+        if c == 0: # There were no statements in this while loop
+            self.out("pass")
         self.outdent()
         #self.out("")
 
@@ -369,6 +374,9 @@ class Generator():
 
         if len(self.for_stack) != 0:
             self.for_stack[-1] += 1
+
+        if len(self.while_stack) != 0:
+            self.while_stack[-1] += 1
 
 
 

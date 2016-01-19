@@ -85,6 +85,16 @@ PROCEDURE test_while()
     ENDWHILE
 ENDPROCEDURE
 
+PROCEDURE test_empty_while()
+    WHILE TRUE
+    ENDWHILE
+
+    WHILE TRUE
+        WHILE TRUE
+        ENDWHILE
+    ENDWHILE
+ENDPROCEDURE
+
 PROCEDURE test_repeat()
     a <- 0
     REPEAT
@@ -340,6 +350,7 @@ test_array_init()
 test_if()
 test_if_else()
 test_while()
+test_empty_while()
 test_repeat()
 test_for()
 test_empty_for()
