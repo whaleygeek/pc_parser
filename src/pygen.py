@@ -9,7 +9,8 @@ class Generator():
         self.indentlev = 0
         # stack of active case statements being parsed
         # holds a list [exprstr, optioncounter]
-        self.case = []
+        self.case_stack = []
+        self.for_stack  = []
         self.procfn = None
 
     def indent(self):
@@ -103,19 +104,23 @@ class Generator():
         f = p[i_from]
         t = p[i_to]
         self.out("for %s in range(%s, %s):" % (id, f, t))
+        self.for_stack.append(0) # counter of statements in this FOR loop
         self.indent()
 
     def ENDFOR(self, p):
+        c = self.for_stack.pop()
+        if c == 0: # There were no statements in this for loop
+            self.out("pass")
         self.outdent()
         #self.out("")
 
     def CASE(self, p, i_expr):
         expr = p[i_expr]
-        self.case.append([expr, 0])
+        self.case_stack.append([expr, 0])
 
     def WHEN(self, p, i_expr):
         expr = p[i_expr]
-        info = self.case[-1]
+        info = self.case_stack[-1]
         check, count = info
 
         if count == 0:
@@ -124,7 +129,7 @@ class Generator():
             self.out("elif %s == %s:" % (check, expr))
         self.indent()
         count += 1
-        (self.case[-1])[1] = count
+        (self.case_stack[-1])[1] = count
 
     def ENDWHEN(self, p):
         self.outdent()
@@ -138,7 +143,7 @@ class Generator():
         self.outdent()
 
     def ENDCASE(self, p):
-        self.case.pop()
+        self.case_stack.pop()
 
     def defparams(self, p, i_params, i_id):
         params = p[i_params]
@@ -361,6 +366,9 @@ class Generator():
     def statement(self, p):
         if self.procfn != None:
             self.procfn += 1
+
+        if len(self.for_stack) != 0:
+            self.for_stack[-1] += 1
 
 
 

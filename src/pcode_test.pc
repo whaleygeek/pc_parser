@@ -99,6 +99,16 @@ PROCEDURE test_for()
     ENDFOR
 ENDPROCEDURE
 
+PROCEDURE test_empty_for()
+    FOR a <- 1 TO 10
+    ENDFOR
+
+    FOR b <- 1 TO 10
+        FOR c <- 1 TO 10
+        ENDFOR
+    ENDFOR
+ENDPROCEDURE
+
 FUNCTION test_func_noparams()
     RETURN 1
 ENDFUNCTION
@@ -332,6 +342,7 @@ test_if_else()
 test_while()
 test_repeat()
 test_for()
+test_empty_for()
 test_case()
 test_true_false()
 test_number()

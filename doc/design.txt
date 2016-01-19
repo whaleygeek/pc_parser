@@ -17,11 +17,9 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-empty proc and empty fn now generate a 'pass'
+empty for loop now has a pass
 
 TODO
-empty for loop needs a pass
-  (can nest, so need a stack)
 empty while loop needs a pass
   (can nest, so need a stack)
 
