@@ -32,6 +32,16 @@ need a runtime for array expansion (sparse arrays)
   (read error is ok)
   So we need an auto-expanding list runtime
 
+class Array():
+    def __init__(self):
+        self.rows = []
+
+    def __setitem__(self, index, value):
+        pass
+
+    def __getitem__(self, index):
+        pass
+
 
 
 
