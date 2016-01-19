@@ -141,8 +141,8 @@ def p_rules(p):
         print "    '''%s : %s'''" % (rulename, " ".join(prod))
         # Emit code
         #DJW add a default action if none given
-        if prodcode == "":
-            prodcode = "p[0] = p[1]"
+        #disabled: if prodcode == "":
+        #    prodcode = "p[0] = p[1]"
         print_code(prodcode,4)
         print
         rulecount += 1
