@@ -124,7 +124,7 @@ class Generator():
     def FUNCTION(self, p, i_id, i_params):
         id = p[i_id]
         params = p[i_params]
-        self.out("def %s(%s):\n" % (id, params))
+        self.out("def %s(%s):" % (id, params))
         self.indent()
 
     def RETURN(self, p, i_expr):
@@ -140,7 +140,7 @@ class Generator():
         id = p[i_id]
         params = p[i_params]
         params = p[i_params]
-        self.out("def %s(%s):\n" % (id, params))
+        self.out("def %s(%s):" % (id, params))
         self.indent()
 
     def ENDPROCEDURE(self, p):

@@ -31,9 +31,7 @@ program:
 
 statements:
     /* empty */
-    {p[0] = ""}
     | statements statement
-//    {backend.concat(p, 1, 2)}
     ;
 
 statement:
@@ -102,7 +100,7 @@ writeline_statement:
     ;
 
 //TODO must resolve the conflict here with the grammar
-//dangling else solution might solve this??
+//dangling else solution might solve this?? Split on THEN??
 if_statement:
     IF expr THEN statements ENDIF
     | IF expr THEN statements ELSE statements ENDIF
@@ -115,38 +113,34 @@ while_statement:
     ;
 
 repeat_statement:
-    REPEAT {}
+    REPEAT          {backend.REPEAT(p)}
     statements
-    UNTIL expr {}
-//    {backend.REPEAT(p, 2, 4)}
+    UNTIL expr      {backend.UNTIL(p, 2)}
     ;
 
 for_statement:
-    FOR ID ASSIGN expr TO expr {}
+    FOR ID ASSIGN expr TO expr  {backend.FOR(p, -5, -3, -1)}
     statements
-    ENDFOR {}
-//    {backend.FOR(p, 2, 4, 6, 7)}
+    ENDFOR                      {backend.FOR(p)}
     ;
 
 case_option:
-    WHEN expr COLON {} statements // <-- 'WHEN' added to resolve grammar ambiguity
-//    {backend.caseoption(p, 2, 4)}
+    WHEN expr COLON             {backend.WHEN(p, -2)} // <-- 'WHEN' added to resolve grammar ambiguity
+    statements
+    {backend.ENDWHEN(p)}
     ;
 
 case_options:
     /* empty */
-    {p[0]=""}
     | case_options case_option
-//    {backend.concat(p, 1, 2)}
     ;
 
 case_statement:
-    CASE expr OF {}
+    CASE expr OF        {backend.CASE(p, -2)}
     case_options
-    ELSE {}
+    ELSE                {backend.CASEELSE(p)}
     statements
-    ENDCASE {}
-//    {backend.CASE(p, 2, 4, 6)}
+    ENDCASE             {backend.ENDCASE(p)}
     ;
 
 fnproc_def_params:
@@ -158,22 +152,19 @@ fnproc_def_params:
     ;
 
 function_def_statement:
-    FUNCTION ID LPAREN fnproc_def_params RPAREN {}
+    FUNCTION ID LPAREN fnproc_def_params RPAREN     {backend.FUNCTION(p, -4, -2)}
     statements
-    ENDFUNCTION {}
-//    {backend.FUNCTION(p, 2, 4, 6)}
+    ENDFUNCTION                                     {backend.ENDFUNCTION(p)}
     ;
 
 return_statement:
-    RETURN expr
-    {backend.RETURN(p, 2)}
+    RETURN expr                                     {backend.RETURN(p, 2)}
     ;
 
 proc_def_statement:
-    PROCEDURE ID LPAREN fnproc_def_params RPAREN {}
+    PROCEDURE ID LPAREN fnproc_def_params RPAREN    {backend.PROCEDURE(p, -4, -2)}
     statements
-    ENDPROCEDURE {}
-//    {backend.PROCEDURE(p, 2, 4, 6)}
+    ENDPROCEDURE                                    {backend.ENDPROCEDURE(p)}
     ;
 
 fnproc_call_params:
@@ -185,13 +176,11 @@ fnproc_call_params:
     ;
 
 proc_call_statement:
-    ID LPAREN fnproc_call_params RPAREN
-    {backend.proccall(p, 1, 3)}
+    ID LPAREN fnproc_call_params RPAREN             {backend.proccall(p, 1, 3)}
     ;
 
 fn_call_expr:
-    ID LPAREN fnproc_call_params RPAREN
-    {backend.fncall(p, 1, 3)}
+    ID LPAREN fnproc_call_params RPAREN             {backend.fncall(p, 1, 3)}
     ;
 
 expr:
