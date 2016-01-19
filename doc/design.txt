@@ -17,10 +17,9 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-if/else/endif empty detection added
+Tested nested if/for/else, seems to be ok.
 
 TODO
-nested if/for/while will conflict with empty check?
 
 need a runtime for readline (what opens, seeks, reads and closes the file?)
 need a runtime for writeline (what opens, seeks, writes and closes the file?)

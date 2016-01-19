@@ -93,6 +93,18 @@ PROCEDURE test_empty_if_else()
     ENDIF
 ENDPROCEDURE
 
+PROCEDURE test_empty_everything()
+    # nested if/while/for is a challenging test case
+    # It's probably ok the way it is implemented.
+    FOR a <- 1 TO 10
+        IF a > 1 THEN
+            WHILE a < 10
+            ENDWHILE
+        ELSE
+        ENDIF
+    ENDFOR
+ENDPROCEDURE
+
 PROCEDURE test_while()
     a <- 0
     WHILE a < 10
