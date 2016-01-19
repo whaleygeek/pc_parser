@@ -17,7 +17,7 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Tested nested if/for/else, seems to be ok.
+Simplified nest statement counting for 'pass' insertion
 
 TODO
 

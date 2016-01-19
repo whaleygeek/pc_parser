@@ -6,6 +6,17 @@ ENDPROCEDURE
 FUNCTION test_emptyfn()
 ENDFUNCTION
 
+#PROCEDURE test_nested_proc()
+#    PROCEDURE nestproc()
+#    ENDPROCEDURE
+#ENDPROCEDURE
+
+#PROCEDURE test_nested_fn()
+#    PROCEDURE nestfn()
+#    ENDPROCEDURE
+#ENDPROCEDURE
+
+
 PROCEDURE test_output()
     OUTPUT "hello"
     a <- "me"

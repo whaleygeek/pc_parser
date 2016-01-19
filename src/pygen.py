@@ -7,13 +7,9 @@ import sys
 class Generator():
     def __init__(self):
         self.indentlev = 0
-        # stack of active case statements being parsed
-        # holds a list [exprstr, optioncounter]
+        self.nest_stack  = []
         self.case_stack  = []
-        self.for_stack   = []
-        self.while_stack = []
-        self.if_stack    = []
-        self.procfn      = None
+        self.procfn      = 0
 
     def indent(self):
         self.indentlev += 4
@@ -72,19 +68,19 @@ class Generator():
         expr = p[i_expr]
         self.out("if %s:" % expr)
         self.indent()
-        self.if_stack.append(0) # count of statements in IF
+        self.nest_stack.append(0) # count of statements in IF
 
     def ELSE(self, p):
-        c = self.if_stack.pop()
+        c = self.nest_stack.pop()
         if c == 0: # no statements in THEN
             self.out("pass")
         self.outdent()
         self.out("else:")
         self.indent()
-        self.if_stack.append(0) # count of statements in ELSE
+        self.nest_stack.append(0) # count of statements in ELSE
 
     def ENDIF(self, p):
-        c = self.if_stack.pop()
+        c = self.nest_stack.pop()
         if c == 0: # no statements in preceeding THEN or ELSE
             self.out("pass")
         self.outdent()
@@ -94,10 +90,10 @@ class Generator():
         expr = p[i_expr]
         self.out("while %s:" % expr)
         self.indent()
-        self.while_stack.append(0) # count of statements in this while
+        self.nest_stack.append(0) # count of statements in this while
 
     def ENDWHILE(self, p):
-        c = self.while_stack.pop()
+        c = self.nest_stack.pop()
         if c == 0: # There were no statements in this while loop
             self.out("pass")
         self.outdent()
@@ -118,11 +114,11 @@ class Generator():
         f = p[i_from]
         t = p[i_to]
         self.out("for %s in range(%s, %s):" % (id, f, t))
-        self.for_stack.append(0) # counter of statements in this FOR loop
+        self.nest_stack.append(0) # counter of statements in this FOR loop
         self.indent()
 
     def ENDFOR(self, p):
-        c = self.for_stack.pop()
+        c = self.nest_stack.pop()
         if c == 0: # There were no statements in this for loop
             self.out("pass")
         self.outdent()
@@ -130,20 +126,19 @@ class Generator():
 
     def CASE(self, p, i_expr):
         expr = p[i_expr]
-        self.case_stack.append([expr, 0])
+        self.case_stack.append([0, expr])
 
     def WHEN(self, p, i_expr):
         expr = p[i_expr]
         info = self.case_stack[-1]
-        check, count = info
+        count, check = info
 
         if count == 0:
             self.out("if %s == %s:" % (check, expr))
         else:
             self.out("elif %s == %s:" % (check, expr))
         self.indent()
-        count += 1
-        (self.case_stack[-1])[1] = count
+        (self.case_stack[-1])[0] += 1
 
     def ENDWHEN(self, p):
         self.outdent()
@@ -166,40 +161,44 @@ class Generator():
         p[0] = id
 
     def FUNCTION(self, p, i_id, i_params):
-        if self.procfn != None:
+        if self.procfn != 0:
             raise RuntimeError("Nested procedure/function not allowed")
 
         id = p[i_id]
         params = p[i_params]
         self.out("def %s(%s):" % (id, params))
         self.indent()
-        self.procfn = 0
+        self.nest_stack.append(0) # count of statements in function
+        self.procfn += 1
 
     def RETURN(self, p, i_expr):
         expr = p[i_expr]
         self.out("return %s" % str(expr))
 
     def ENDFUNCTION(self, p):
-        if self.procfn == 0:
+        c = self.nest_stack.pop()
+        if c == 0:
             self.out("pass")
         self.outdent()
-        self.procfn = None
+        self.procfn -= 1
 
     def PROCEDURE(self, p, i_id, i_params):
-        if self.procfn != None:
+        if self.procfn != 0:
             raise RuntimeError("Nested procedure/function not allowed")
 
         id = p[i_id]
         params = p[i_params]
         self.out("def %s(%s):" % (id, params))
         self.indent()
-        self.procfn = 0
+        self.procfn += 1
+        self.nest_stack.append(0) # count of statements in function
 
     def ENDPROCEDURE(self, p):
-        if self.procfn == 0:
+        c = self.nest_stack.pop()
+        if c == 0:
             self.out("pass")
         self.outdent()
-        self.procfn = None
+        self.procfn -= 1
 
     def callparams(self, p, i_params, i_expr):
         params = p[i_params]
@@ -378,20 +377,12 @@ class Generator():
         p[0] = both
 
     def statement(self, p):
-        if self.procfn != None:
-            self.procfn += 1
+        #if self.procfn != None:
+        #    self.procfn += 1
 
-        #TODO: this will not work with nested for/while/if
-        #probably just need a single stack shared by all three?
-        #as the nests will be symmetrical, this should then work
-        if len(self.for_stack) != 0:
-            self.for_stack[-1] += 1
-
-        if len(self.while_stack) != 0:
-            self.while_stack[-1] += 1
-
-        if len(self.if_stack) != 0:
-            self.if_stack[-1] += 1
+        if len(self.nest_stack) != 0:
+            # Increment counter of statements at this nest level
+            self.nest_stack[-1] += 1
 
 
 
