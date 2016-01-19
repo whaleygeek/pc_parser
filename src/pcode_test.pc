@@ -1,7 +1,10 @@
 # pcode_test.pc  19/01/2016  D.J.Whale
 
-PROCEDURE test_proc()
+PROCEDURE test_emptyproc()
 ENDPROCEDURE
+
+FUNCTION test_emptyfn()
+ENDFUNCTION
 
 PROCEDURE test_output()
     OUTPUT "hello"
@@ -317,7 +320,8 @@ PROCEDURE test_proccall_2params()
     proc2(10 ,20)
 ENDPROCEDURE
 
-test_proc()
+test_emptyproc()
+test_emptyfn()
 test_output()
 test_assign()
 test_array1d_assign()

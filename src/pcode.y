@@ -32,6 +32,7 @@ program:
 statements:
     /* empty */
     | statements statement
+    {backend.statement(p)}
     ;
 
 statement:

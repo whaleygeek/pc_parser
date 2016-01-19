@@ -10,6 +10,7 @@ class Generator():
         # stack of active case statements being parsed
         # holds a list [exprstr, optioncounter]
         self.case = []
+        self.procfn = None
 
     def indent(self):
         self.indentlev += 4
@@ -146,30 +147,40 @@ class Generator():
         p[0] = id
 
     def FUNCTION(self, p, i_id, i_params):
+        if self.procfn != None:
+            raise RuntimeError("Nested procedure/function not allowed")
+
         id = p[i_id]
         params = p[i_params]
         self.out("def %s(%s):" % (id, params))
         self.indent()
+        self.procfn = 0
 
     def RETURN(self, p, i_expr):
         expr = p[i_expr]
-        p[0]="Return"
         self.out("return %s" % str(expr))
 
     def ENDFUNCTION(self, p):
+        if self.procfn == 0:
+            self.out("pass")
         self.outdent()
-        #self.out("")
+        self.procfn = None
 
     def PROCEDURE(self, p, i_id, i_params):
+        if self.procfn != None:
+            raise RuntimeError("Nested procedure/function not allowed")
+
         id = p[i_id]
         params = p[i_params]
         self.out("def %s(%s):" % (id, params))
         self.indent()
-        self.out("pass") # temporary fix for empty procedures
+        self.procfn = 0
 
     def ENDPROCEDURE(self, p):
+        if self.procfn == 0:
+            self.out("pass")
         self.outdent()
-        #self.out("")
+        self.procfn = None
 
     def callparams(self, p, i_params, i_expr):
         params = p[i_params]
@@ -346,6 +357,10 @@ class Generator():
         except TypeError:
             both = str(one) + str(two)
         p[0] = both
+
+    def statement(self, p):
+        if self.procfn != None:
+            self.procfn += 1
 
 
 

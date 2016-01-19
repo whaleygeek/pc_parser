@@ -17,15 +17,13 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Got the case statement to work correctly, using a case stack
+empty proc and empty fn now generate a 'pass'
 
 TODO
-
-If a procedure has no statements, must put "pass" in it to be valid python
-(same with function)
-(same with for loop)
-(same with while loop)
-
+empty for loop needs a pass
+  (can nest, so need a stack)
+empty while loop needs a pass
+  (can nest, so need a stack)
 
 need a runtime for readline (what opens, seeks, reads and closes the file?)
 need a runtime for writeline (what opens, seeks, writes and closes the file?)
