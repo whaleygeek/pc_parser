@@ -77,6 +77,22 @@ PROCEDURE test_if_else()
     ENDIF
 ENDPROCEDURE
 
+PROCEDURE test_empty_if_else()
+    a <- 1
+    IF a = 1 THEN
+    ENDIF
+
+    IF a = 1 THEN
+    ELSE
+    ENDIF
+
+    IF a = 1 THEN
+        IF a = 2 THEN
+        ELSE
+        ENDIF
+    ENDIF
+ENDPROCEDURE
+
 PROCEDURE test_while()
     a <- 0
     WHILE a < 10
@@ -349,6 +365,7 @@ test_array2d_assign()
 test_array_init()
 test_if()
 test_if_else()
+test_empty_if_else()
 test_while()
 test_empty_while()
 test_repeat()

@@ -17,10 +17,10 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-empty while loop now has a pass
+if/else/endif empty detection added
 
 TODO
-empty if/else needs a pass (needs a stack, it can nest)
+nested if/for/while will conflict with empty check?
 
 need a runtime for readline (what opens, seeks, reads and closes the file?)
 need a runtime for writeline (what opens, seeks, writes and closes the file?)

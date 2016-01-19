@@ -12,6 +12,7 @@ class Generator():
         self.case_stack  = []
         self.for_stack   = []
         self.while_stack = []
+        self.if_stack    = []
         self.procfn      = None
 
     def indent(self):
@@ -71,13 +72,21 @@ class Generator():
         expr = p[i_expr]
         self.out("if %s:" % expr)
         self.indent()
+        self.if_stack.append(0) # count of statements in IF
 
     def ELSE(self, p):
+        c = self.if_stack.pop()
+        if c == 0: # no statements in THEN
+            self.out("pass")
         self.outdent()
         self.out("else:")
         self.indent()
+        self.if_stack.append(0) # count of statements in ELSE
 
     def ENDIF(self, p):
+        c = self.if_stack.pop()
+        if c == 0: # no statements in preceeding THEN or ELSE
+            self.out("pass")
         self.outdent()
         #self.out("")
 
@@ -372,11 +381,17 @@ class Generator():
         if self.procfn != None:
             self.procfn += 1
 
+        #TODO: this will not work with nested for/while/if
+        #probably just need a single stack shared by all three?
+        #as the nests will be symmetrical, this should then work
         if len(self.for_stack) != 0:
             self.for_stack[-1] += 1
 
         if len(self.while_stack) != 0:
             self.while_stack[-1] += 1
+
+        if len(self.if_stack) != 0:
+            self.if_stack[-1] += 1
 
 
 
