@@ -2,135 +2,168 @@
 #
 # Generator for pcode.py that generates python from each of the actions.
 
+import sys
+
 class Generator():
     def __init__(self):
-        pass
+        self.indentlev = 0
+
+    def indent(self):
+        self.indentlev += 4
+
+    def outdent(self):
+        self.indentlev -= 4
 
     def out(self, msg):
-        import sys
-        sys.stdout.write(msg + " ")
+        print((" " * self.indentlev) + msg)
+
+    #----- GENERATED ON THE FLY -----------------------------------------------
 
     def OUTPUT(self, p, i_expr):
-        p[0]="Output"
         expr = p[i_expr]
-        print("print(%s)" % str(expr))
+        self.out("print(%s)" % str(expr))
 
     def assign(self, p, i_id, i_expr):
-        p[0]="Varassign"
-        #self.out(p[0])
         id = p[i_id]
         expr = p[i_expr]
-        print("%s = %s" % (id, expr))
+        self.out("%s = %s" % (id, expr))
 
     def array1assign(self, p, i_id, i_indexexpr, i_valueexpr):
         id = p[i_id]
         indexexpr = p[i_indexexpr]
         valueexpr = p[i_valueexpr]
-        p[0]="Array1assign"
-        #self.out(p[0])
+        self.out("%s[%s] = %s" % (id, indexexpr, valueexpr))
 
     def array2assign(self, p, i_id, i_index1expr, i_index2expr, i_valueexpr):
         id = p[i_id]
         index1expr = p[i_index1expr]
         index2expr = p[i_index2expr]
         valueexpr  = p[i_valueexpr]
-        p[0]="Array2assign"
-        #self.out(p[0])
+        self.out("%s[%s][%s] = %s" % (id, index1expr, index2expr, valueexpr))
 
     def arrayinit(self, p, i_id, i_initialiser):
         id = p[i_id]
         initialiser = p[i_initialiser]
-        p[0]="Arrayinit"
-        #self.out(p[0])
+        self.out("%s = %s" % (id, initialiser))
 
     def READLINE(self, p, i_file, i_expr):
         file = p[i_file]
         expr = p[i_expr]
-        p[0]="Readline"
-        #self.out(p[0])
+        self.out("readline(%s, %s)" % (file, expr))
 
     def WRITELINE(self, p, i_file, i_expr1, i_expr2):
         file = p[i_file]
         expr1 = p[i_expr1]
         expr2 = p[i_expr2]
-        p[0]="Writeline"
-        #self.out(p[0])
+        self.out("writeline(%s, %s, %s" % (file, expr1, expr2))
 
     def IF(self, p, i_expr):
-        p[0]="If"
-        #self.out(p[0])
         expr = p[i_expr]
-        print("if %s:" % expr)
+        self.out("if %s:" % expr)
+        self.indent()
 
     def ELSE(self, p):
-        p[0]="Ifelse"
-        print("else:")
+        self.outdent()
+        self.out("else:")
+        self.indent()
+
+    def ENDIF(self, p):
+        self.outdent()
+        self.out("# endif")
 
     def WHILE(self, p, i_expr):
-        p[0]="While"
         expr = p[i_expr]
-        print("while %s:" % expr)
-        #TODO increment indent
+        self.out("while %s:" % expr)
+        self.indent()
 
     def ENDWHILE(self, p):
-        pass # TODO decrement indent
-        print("#endwhile")
+        self.outdent()
+        self.out("# endwhile")
+
+    def REPEAT(self, p):
+        self.out("# repeat")
+        self.indent()
 
     def UNTIL(self, p, i_expr):
         expr = p[i_expr]
-        p[0]="Until"
+        self.outdent()
+        self.out("# enduntil")
 
     def FOR(self, p, i_id, i_from, i_to):
         id = p[i_id]
         f = p[i_from]
         t = p[i_to]
-        p[0]="For"
+        self.out("for %s in range(%s, %s):" % (id, f, t))
+        self.indent()
 
-    def caseoption(self, p, i_expr):
-        expr = p[i_expr]
-        p[0]="Caseoption"
+    def ENDFOR(self, p):
+        self.outdent()
+        self.out("# endfor")
 
     def CASE(self, p, i_expr):
         expr = p[i_expr]
-        p[0]="Case"
+        #TODO must keep a stack of case expressions for later use
+        self.out("# case %s" % expr)
+        self.indent()
+
+    #TODO: 'WHEN <expr>:'
+    def caseoption(self, p, i_expr):
+        expr = p[i_expr]
+        self.out("if xx == %s:" % expr) # TODO must keep a stack of case expressions
+        self.indent()
+
+    def ENDCASE(self, p):
+        self.outdent()
+        self.out("# endcase")
 
     def defparams(self, p, i_params, i_id):
         params = p[i_params]
         id = p[i_id]
-        p[0]="Defparams"
+        #TODO
 
     def FUNCTION(self, p, i_id, i_params):
-        p[0]="Function"
         id = p[i_id]
         params = p[i_params]
-        print("def %s(%s):\n" % (id, params))
+        self.out("def %s(%s):\n" % (id, params))
+        self.indent()
 
     def RETURN(self, p, i_expr):
         expr = p[i_expr]
         p[0]="Return"
+        self.out("return %s" % str(expr))
+
+    def ENDFUNCTION(self, p):
+        self.outdent()
+        self.out("# endfunction")
 
     def PROCEDURE(self, p, i_id, i_params):
         id = p[i_id]
         params = p[i_params]
-        p[0]="Procedure"
         params = p[i_params]
-        print("def %s(%s):\n" % (id, params))
+        self.out("def %s(%s):\n" % (id, params))
+        self.indent()
+
+    def ENDPROCEDURE(self, p):
+        self.outdent()
+        self.out("# endprocedure")
 
     def callparams(self, p, i_params, i_expr):
         params = p[i_params]
         expr = p[i_expr]
-        p[0]="Callparams"
+        #TODO
 
     def proccall(self, p, i_id, i_params):
-        p[0]="Proccall"
         id = p[i_id]
         params = p[i_params]
-        print("%s(%s)" % (id, params))
+        self.out("%s(%s)" % (id, params))
 
     def fncall(self, p, i_id, i_params):
         id = p[i_id]
         params = p[i_params]
-        p[0]="Fncall"
+        self.out("%s(%s)" % (id, params))
+
+
+    #---- PASSED ON THE PARSE STACK -------------------------------------------
 
     def number(self, p, i_number):
         number = p[i_number]
