@@ -99,11 +99,18 @@ writeline_statement:
     {backend.WRITELINE(p, 3, 5, 7)}
     ;
 
-//TODO must resolve the conflict here with the grammar
-//dangling else solution might solve this?? Split on THEN??
+
 if_statement:
-    IF expr THEN statements ENDIF
-    | IF expr THEN statements ELSE statements ENDIF
+    IF expr THEN            {backend.IF(p, -2)}
+    statements
+    else_clause
+    ENDIF                   {backend.ENDIF(p)}
+    ;
+
+else_clause:
+    /* empty */
+    | ELSE                  {backend.ELSE(p)}
+    statements
     ;
 
 while_statement:

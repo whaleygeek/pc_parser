@@ -17,34 +17,11 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Started to flesh out first prototype backend
-
-IF {} THEN ENDIF
-| IF {} THEN ELSE ENDIF
-
-This introduces a conflict due to THEN appearing after in both cases.
-Consult the standard dangling-else grammar solution to see if we can
-solve this with a hierarchy in the grammar.
-
-Need to decide if expr is going to be passed up the parse stack,
-or generated in place. It affects where the embed {} actions go
-(e.g. in WHILE expr)
-
-decision: expressions will be passed up the parse stack,
-and statements will be generated on the fly.
-See existing implementation of WHILE a<1 statements ENDWHILE for example.
-
+yply strips out curly braces on embeds
+Resolved IF ambiguity
 
 TODO
-Split the following headers out, don't pass statement lists,
-but generate statement lists as we go along.
-IF
-IFELSE
-WHILE
-REPEAT
-FOR
-PROCEDURE
-FUNCTION
+finish rest of backend
 
 
 

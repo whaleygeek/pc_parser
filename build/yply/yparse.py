@@ -127,8 +127,9 @@ def p_rules(p):
         for i in range(len(r)):
              item = r[i]
              if item[0] == '{':    # A code block
+                  item = item[1:-1] #DJW: strip curly braces
                   if i == len(r) - 1:
-                      prodcode = item[1:-1] # DJW: remove curly braces
+                      prodcode = item
                       break
                   else:
                       # an embedded action
