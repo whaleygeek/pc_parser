@@ -2,21 +2,20 @@ class Cells():
     def __init__(self):
         self.cells = []
 
-    def check(self, index):
+    def __setitem__(self, index, value):
         l = len(self.cells)
         if index > l:
             missing = 1+(index - l)
-            print("creating %d items" % missing)
             self.cells.extend([0 for i in range(missing)])
-
-    def __setitem__(self, index, value):
-        self.check(index)
         self.cells[index] = value
 
     def __getitem__(self, index):
-        print("getitem:%d" % index)
-        self.check(index)
+        if index > len(self.cells):
+            return 0 # lazy construction
         return self.cells[index]
+
+    def __len__(self):
+        return len(self.cells)
 
     def __repr__(self):
         return str(self.cells)
