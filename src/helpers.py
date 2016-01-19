@@ -1,3 +1,8 @@
+# helpers.py  19/01/2016  D.J.Whale
+#
+# Destined to be a runtime support library for code that has been converted
+# from AQA pseudocode into python.
+
 class Array():
     def __init__(self):
         self.data = []
@@ -35,11 +40,36 @@ class Array2D():
     def __repr__(self):
         return str(self.rows)
 
+# simplest possible implementation. Only really works well
+# for small files.
 
-#TODO: helper for readline
-#TODO: helper for writeline
+def readline(filename, lineno):
+    f = open(filename)
+    lines = f.readlines()
+    f.close()
+    return lines[lineno-1] # runtime error if does not exist
 
-def test():
+def writeline(filename, lineno, data):
+    # read all lines in
+    f = open(filename)
+    lines = f.readlines()
+    f.close()
+
+    # modify in-memory copy first
+    lineno -= 1
+    if lineno >= len(lines):
+        # pad out extra lines as blanks
+        for i in range(1+lineno-len(lines)):
+            lines.append("")
+    lines[lineno] = data
+
+    # now create a brand new file and write all the lines out
+    f = open(filename, "w")
+    f.writelines(lines)
+    f.close()
+
+
+def test_arrays():
     a = Array()
     a[20] = "Fred"
     print(a[20])
@@ -50,5 +80,9 @@ def test():
     print(b[4][5])
     print(b)
 
+def test_files():
+    pass
+
 if __name__ == "__main__":
-    test()
+    test_arrays()
+    # test_files()
