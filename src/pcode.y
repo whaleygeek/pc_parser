@@ -195,11 +195,11 @@ fn_call_expr:
     ;
 
 expr:
-    TRUE
+      TRUE
     | FALSE
-    | NUMBER                    {backend.number(p)}
-    | ID                        {backend.id(p)}
-    | STRING                    {backend.string(p)}
+    | NUMBER                    {backend.number(p, 1)}
+    | ID                        {backend.id(p, 1)}
+    | STRING                    {backend.string(p, 1)}
     | LPAREN expr RPAREN        {p[0] = p[2]}
     | USERINPUT                 {backend.USERINPUT(p)}
     | LEN LPAREN ID RPAREN      {backend.LEN(p, 3)}

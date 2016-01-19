@@ -41,7 +41,7 @@ t_COLON         = r':'
 
 def t_STRING(t):
     r'\".*?\"'
-    t.value = t.value[1:-1] # remove quotes
+    #t.value = t.value[1:-1] # remove quotes
     return t
 
 def t_NUMBER(t):
@@ -58,7 +58,7 @@ def t_ID(t):
             def __init__(self, name):
                 self.name = name
             def __repr__(self):
-                return "Identifier(" + self.name + ")"
+                return self.name
 
         t.value = Identifier(t.value)
     return t

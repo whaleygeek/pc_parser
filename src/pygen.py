@@ -2,11 +2,6 @@
 #
 # Generator for pcode.py that generates python from each of the actions.
 
-
-#TODO: Add in all parameter signatures
-#TODO: Add in all debug bodies
-#TODO: Add in p[0] assignment values
-
 class Generator():
     def __init__(self):
         pass
@@ -28,22 +23,36 @@ class Generator():
         print("%s = %s" % (id, expr))
 
     def array1assign(self, p, i_id, i_indexexpr, i_valueexpr):
+        id = p[i_id]
+        indexexpr = p[i_indexexpr]
+        valueexpr = p[i_valueexpr]
         p[0]="Array1assign"
         #self.out(p[0])
 
     def array2assign(self, p, i_id, i_index1expr, i_index2expr, i_valueexpr):
+        id = p[i_id]
+        index1expr = p[i_index1expr]
+        index2expr = p[i_index2expr]
+        valueexpr  = p[i_valueexpr]
         p[0]="Array2assign"
         #self.out(p[0])
 
     def arrayinit(self, p, i_id, i_initialiser):
+        id = p[i_id]
+        initialiser = p[i_initialiser]
         p[0]="Arrayinit"
         #self.out(p[0])
 
     def READLINE(self, p, i_file, i_expr):
+        file = p[i_file]
+        expr = p[i_expr]
         p[0]="Readline"
         #self.out(p[0])
 
     def WRITELINE(self, p, i_file, i_expr1, i_expr2):
+        file = p[i_file]
+        expr1 = p[i_expr1]
+        expr2 = p[i_expr2]
         p[0]="Writeline"
         #self.out(p[0])
 
@@ -59,7 +68,6 @@ class Generator():
 
     def WHILE(self, p, i_expr):
         p[0]="While"
-        #self.out(p[0])
         expr = p[i_expr]
         print("while %s:" % expr)
         #TODO increment indent
@@ -68,170 +76,182 @@ class Generator():
         pass # TODO decrement indent
         print("#endwhile")
 
-    def REPEAT(self, p, i_statements, i_expr):
-        ##TODO use embed to pass header only
-        p[0]="Repeat"
-        #self.out(p[0])
+    def UNTIL(self, p, i_expr):
+        expr = p[i_expr]
+        p[0]="Until"
 
-    def FOR(self, p, i_id, i_from, i_to, i_statements):
-        ##TODO use embed to pass header only
+    def FOR(self, p, i_id, i_from, i_to):
+        id = p[i_id]
+        f = p[i_from]
+        t = p[i_to]
         p[0]="For"
-        #self.out(p[0])
 
-    def caseoption(self, p, i_expr, i_statements):
-        ##TODO use embed to pass header only
+    def caseoption(self, p, i_expr):
+        expr = p[i_expr]
         p[0]="Caseoption"
-        #self.out(p[0])
 
-    def CASE(self, p, i_expr, i_options, i_elsestatements):
-        ##TODO use embed to pass header only
+    def CASE(self, p, i_expr):
+        expr = p[i_expr]
         p[0]="Case"
-        #self.out(p[0])
 
     def defparams(self, p, i_params, i_id):
+        params = p[i_params]
+        id = p[i_id]
         p[0]="Defparams"
-        #self.out(p[0])
 
-    def FUNCTION(self, p, i_id, i_params, i_statements):
-        ##TODO use an embed to pass header only
+    def FUNCTION(self, p, i_id, i_params):
         p[0]="Function"
-        #self.out(p[0])
         id = p[i_id]
         params = p[i_params]
-        statements = p[i_statements]
-        print("def %s(%s):\n\t%s" % (id, params, statements))
+        print("def %s(%s):\n" % (id, params))
 
     def RETURN(self, p, i_expr):
+        expr = p[i_expr]
         p[0]="Return"
-        #self.out(p[0])
 
-    def PROCEDURE(self, p, i_id, i_params, i_statements):
-        ##TODO use an embed to pass header only
-        p[0]="Procedure"
-        #self.out(p[0])
+    def PROCEDURE(self, p, i_id, i_params):
         id = p[i_id]
         params = p[i_params]
-        statements = p[i_statements]
-        print("def %s(%s):\n\t%s" % (id, params, statements))
+        p[0]="Procedure"
+        params = p[i_params]
+        print("def %s(%s):\n" % (id, params))
 
     def callparams(self, p, i_params, i_expr):
+        params = p[i_params]
+        expr = p[i_expr]
         p[0]="Callparams"
-        #self.out(p[0])
 
     def proccall(self, p, i_id, i_params):
         p[0]="Proccall"
-        #self.out(p[0])
         id = p[i_id]
         params = p[i_params]
         print("%s(%s)" % (id, params))
 
     def fncall(self, p, i_id, i_params):
+        id = p[i_id]
+        params = p[i_params]
         p[0]="Fncall"
-        #self.out(p[0])
 
-    def number(self, p):
-        p[0]="Number"
-        #self.out(p[0])
+    def number(self, p, i_number):
+        number = p[i_number]
+        p[0]=str(number)
 
-    def id(self, p):
-        p[0]="Id"
-        #self.out(p[0])
+    def id(self, p, i_id):
+        id = p[i_id]
+        p[0]=id
 
-    def string(self, p):
-        p[0]="String"
-        #self.out(p[0])
+    def string(self, p, i_string):
+        string = p[i_string]
+        p[0]=string
 
     def USERINPUT(self, p):
-        p[0]="Userinput"
-        #self.out(p[0])
+        p[0]="raw_input()"
 
     def LEN(self, p, i_id):
-        p[0]="Len"
-        #self.out(p[0])
+        id = p[i_id]
+        r = "len(%s)" % id
+        p[0] = r
 
     def plus(self, p, i_left, i_right):
-        #p[0]="Add"
-        #self.out(p[0])
         left = p[i_left]
         right = p[i_right]
-        r = "%s + %s" % (left, right)
+        r = str(left) + " + " + str(right)
         p[0] = r
 
     def minus(self, p, i_left, i_right):
-        p[0]="Sub"
-        #self.out(p[0])
-
-    def times(self, p, i_left, i_right):
-        p[0]="Times"
-        #self.out(p[0])
-
-    def divide(self, p, i_left, i_right):
-        p[0]="Divide"
-        #self.out(p[0])
-
-    def mod(self, p, i_left, i_right):
-        p[0]="Mod"
-        #self.out(p[0])
-
-    def uminus(self, p, i_expr):
-        p[0]="Uminus"
-        #self.out(p[0])
-
-    def uplus(self, p, i_expr):
-        p[0]="Uplus"
-        #self.out(p[0])
-
-    def NOT(self, p, i_expr):
-        p[0]="Not"
-        #self.out(p[0])
-
-    def equal(self, p, i_left, i_right):
-        p[0]="Equal"
-        #self.out(p[0])
         left = p[i_left]
         right = p[i_right]
-        print("%s == %s" % (left, right))
+        r = str(left) + " - " + str(right)
+        p[0] = r
+
+    def times(self, p, i_left, i_right):
+        left = p[i_left]
+        right = p[i_right]
+        r = str(left) + " * " + str(right)
+        p[0] = r
+
+    def divide(self, p, i_left, i_right):
+        left = p[i_left]
+        right = p[i_right]
+        r = str(left) + " / " + str(right)
+        p[0] = r
+
+    def mod(self, p, i_left, i_right):
+        left = p[i_left]
+        right = p[i_right]
+        r = str(left) + " % " + str(right)
+        p[0] = r
+
+    def uminus(self, p, i_expr):
+        expr = p[i_expr]
+        r = "-" + str(expr)
+        p[0] = r
+
+    def uplus(self, p, i_expr):
+        expr = p[i_expr]
+        r = expr
+        p[0] = r
+
+    def NOT(self, p, i_expr):
+        expr = p[i_expr]
+        r = "! " + str(expr)
+        p[0] = r
+
+    def equal(self, p, i_left, i_right):
+        left = p[i_left]
+        right = p[i_right]
+        r = str(left) + " == " + str(right)
+        p[0] = r
 
     def notequal(self, p, i_left, i_right):
-        p[0]="Notequal"
-        #self.out(p[0])
+        left = p[i_left]
+        right = p[i_right]
+        r = str(left) + " != " + str(right)
+        p[0] = r
 
     def lessequal(self, p, i_left, i_right):
-        p[0]="Lessequal"
-        #self.out(p[0])
+        left = p[i_left]
+        right = p[i_right]
+        r = str(left) + " <= " + str(right)
+        p[0] = r
 
     def greaterequal(self, p, i_left, i_right):
-        p[0]="Greaterequal"
-        #self.out(p[0])
+        left = p[i_left]
+        right = p[i_right]
+        r = str(left) + " >= " + str(right)
+        p[0] = r
 
     def greater(self, p, i_left, i_right):
-        p[0]="Greater"
-        #self.out(p[0])
+        left = p[i_left]
+        right = p[i_right]
+        r = str(left) + " > " + str(right)
+        p[0] = r
 
     def less(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = "%s < %s" % (left, right)
-        p[0]=r
-        #self.out(p[0])
+        r = str(left) + " < " + str(right)
+        p[0] = r
 
     def AND(self, p, i_left, i_right):
-        p[0]="And"
-        #self.out(p[0])
+        left = p[i_left]
+        right = p[i_right]
+        r = str(left) + " and " + str(right)
+        p[0] = r
 
     def OR(self, p, i_left, i_right):
-        p[0]="Or"
-        #self.out(p[0])
+        left = p[i_left]
+        right = p[i_right]
+        r = str(left) + " or " + str(right)
+        p[0] = r
 
     def XOR(self, p, i_left, i_right):
-        p[0]="Xor"
-        #self.out(p[0])
+        left = p[i_left]
+        right = p[i_right]
+        r = str(left) + "^" + str(right)
+        p[0] = r
 
     def concat(self, p, i_one, i_two):
-        ##TODO not sure what to do with this, perhaps make p[0] a list with two items??
-        #merge any lists inside one and two into a single list?
-        #p[0]="Concat"
-        #self.out(p[0])
         one = p[i_one]
         two = p[i_two]
         both = one + two
