@@ -1,15 +1,5 @@
 design.txt
 
-Design of a grammar suitable for use with PLY.
-First cut grammar with rough notes...
-
-Notes
-- no explicit string expressions in their grammar?
-- but can assign string literals to variables
-- no obvious way to concatenate strings
-- userinput accepts numbers and strings
-- output accepts numbers and strings
-
 Python is going to be the first output language, so that AQA
 style Pseudo code can be converted into first-cut python
 for further development. This will be useful for school children
@@ -17,30 +7,22 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Simplified nest statement counting for 'pass' insertion
+Written runtime for arrays.
+Written runtime for readline/writeline
 
 TODO
+Add assignment to the Array class, so that the initialiser can be implemented
 
-need a runtime for readline (what opens, seeks, reads and closes the file?)
-need a runtime for writeline (what opens, seeks, writes and closes the file?)
+a = [1,2,3,4,5]
 
-need a runtime for array expansion (sparse arrays)
-  a[x][y] = 4
+becomes:
 
-  if a is not defined as a [][] there is a problem
-  if a is not big enough for [x][y], will get undefined error on write
-  (read error is ok)
-  So we need an auto-expanding list runtime
+a = Array(1,2,3,4,5)
 
-class Array():
-    def __init__(self):
-        self.rows = []
+Then __init__ uses *args and just initialises elements from those.
+If none, then inner array is empty on start.
 
-    def __setitem__(self, index, value):
-        pass
 
-    def __getitem__(self, index):
-        pass
 
 
 
