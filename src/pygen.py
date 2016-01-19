@@ -7,7 +7,9 @@ import sys
 class Generator():
     def __init__(self):
         self.indentlev = 0
-        #TODO stack for case statement expressions
+        # stack of active case statements being parsed
+        # holds a list [exprstr, optioncounter]
+        self.case = []
 
     def indent(self):
         self.indentlev += 4
@@ -33,6 +35,7 @@ class Generator():
         id = p[i_id]
         indexexpr = p[i_indexexpr]
         valueexpr = p[i_valueexpr]
+        #TODO arrays need to auto-size, for this to work
         self.out("%s[%s] = %s" % (id, indexexpr, valueexpr))
 
     def array2assign(self, p, i_id, i_index1expr, i_index2expr, i_valueexpr):
@@ -40,12 +43,13 @@ class Generator():
         index1expr = p[i_index1expr]
         index2expr = p[i_index2expr]
         valueexpr  = p[i_valueexpr]
+        #TODO arrays need to auto-size, for this to work
         self.out("%s[%s][%s] = %s" % (id, index1expr, index2expr, valueexpr))
 
     def arrayinit(self, p, i_id, i_initialiser):
         id = p[i_id]
         initialiser = p[i_initialiser]
-        self.out("%s = %s" % (id, initialiser))
+        self.out("%s = [%s]" % (id, initialiser))
 
     def READLINE(self, p, i_file, i_expr):
         file = p[i_file]
@@ -57,7 +61,7 @@ class Generator():
         file = p[i_file]
         expr1 = p[i_expr1]
         expr2 = p[i_expr2]
-        self.out("writeline(%s, %s, %s" % (file, expr1, expr2))
+        self.out("writeline(%s, %s, %s)" % (file, expr1, expr2))
         #TODO runtime support required
 
     def IF(self, p, i_expr):
@@ -106,16 +110,20 @@ class Generator():
 
     def CASE(self, p, i_expr):
         expr = p[i_expr]
-        #TODO must keep a stack of case expressions for later use
-        self.out("# case %s" % expr)
-        self.out("if 1==0:pass") # dummy for now
-        #self.indent()
+        self.case.append([expr, 0])
 
     def WHEN(self, p, i_expr):
         expr = p[i_expr]
-        #TODO if on first one, elif on next ones, for execution speed
-        self.out("elif xx == %s:" % expr) # TODO must keep a stack of case expressions
+        info = self.case[-1]
+        check, count = info
+
+        if count == 0:
+            self.out("if %s == %s:" % (check, expr))
+        else:
+            self.out("elif %s == %s:" % (check, expr))
         self.indent()
+        count += 1
+        (self.case[-1])[1] = count
 
     def ENDWHEN(self, p):
         self.outdent()
@@ -127,12 +135,9 @@ class Generator():
 
     def ENDCASEELSE(self, p):
         self.outdent()
-        #self.out("")
 
     def ENDCASE(self, p):
-        #self.outdent()
-        #self.out("")
-        pass
+        self.case.pop()
 
     def defparams(self, p, i_params, i_id):
         params = p[i_params]
@@ -160,6 +165,7 @@ class Generator():
         params = p[i_params]
         self.out("def %s(%s):" % (id, params))
         self.indent()
+        self.out("pass") # temporary fix for empty procedures
 
     def ENDPROCEDURE(self, p):
         self.outdent()
@@ -187,25 +193,8 @@ class Generator():
         r = "(" + expr + ")"
         p[0] = r
 
-    def copy(self, p, i_item):
-        item = p[i_item]
-        r = item
-        p[0] = r
-
-    def empty(self, p):
-        p[0] = ""
-
     def boolean(self, p, value):
         r = value
-        p[0] = r
-
-    def comma(self, p, i_left, i_right):
-        left = p[i_left]
-        right = p[i_right]
-        try:
-            r = left + ", " + right
-        except TypeError:
-            r = str(left) + ", " + str(right)
         p[0] = r
 
 
@@ -234,31 +223,31 @@ class Generator():
     def plus(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = str(left) + " + " + str(right)
+        r = str(left) + "+" + str(right)
         p[0] = r
 
     def minus(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = str(left) + " - " + str(right)
+        r = str(left) + "-" + str(right)
         p[0] = r
 
     def times(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = str(left) + " * " + str(right)
+        r = str(left) + "*" + str(right)
         p[0] = r
 
     def divide(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = str(left) + " / " + str(right)
+        r = str(left) + "/" + str(right)
         p[0] = r
 
     def MOD(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = str(left) + " % " + str(right)
+        r = str(left) + "%" + str(right)
         p[0] = r
 
     def uminus(self, p, i_expr):
@@ -279,37 +268,37 @@ class Generator():
     def equal(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = str(left) + " == " + str(right)
+        r = str(left) + "==" + str(right)
         p[0] = r
 
     def notequal(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = str(left) + " != " + str(right)
+        r = str(left) + "!=" + str(right)
         p[0] = r
 
     def lessequal(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = str(left) + " <= " + str(right)
+        r = str(left) + "<=" + str(right)
         p[0] = r
 
     def greaterequal(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = str(left) + " >= " + str(right)
+        r = str(left) + ">=" + str(right)
         p[0] = r
 
     def greater(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = str(left) + " > " + str(right)
+        r = str(left) + ">" + str(right)
         p[0] = r
 
     def less(self, p, i_left, i_right):
         left = p[i_left]
         right = p[i_right]
-        r = str(left) + " < " + str(right)
+        r = str(left) + "<" + str(right)
         p[0] = r
 
     def AND(self, p, i_left, i_right):
@@ -328,6 +317,25 @@ class Generator():
         left = p[i_left]
         right = p[i_right]
         r = str(left) + "^" + str(right)
+        p[0] = r
+
+    #----- HELPERS ------------------------------------------------------------
+
+    def copy(self, p, i_item):
+        item = p[i_item]
+        r = item
+        p[0] = r
+
+    def empty(self, p):
+        p[0] = ""
+
+    def comma(self, p, i_left, i_right):
+        left = p[i_left]
+        right = p[i_right]
+        try:
+            r = left + ", " + right
+        except TypeError:
+            r = str(left) + ", " + str(right)
         p[0] = r
 
     def concat(self, p, i_one, i_two):

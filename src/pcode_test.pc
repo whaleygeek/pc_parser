@@ -118,9 +118,33 @@ PROCEDURE test_case()
     WHEN 3:
         OUTPUT "three"
         OUTPUT "lots"
-    ELSE
+    ELSE #TODO: ELSE is mandatory in grammar at the moment
         OUTPUT "something else"
         OUTPUT "dont know what"
+    ENDCASE
+
+    # nested case
+    CASE a OF
+    WHEN 1:
+        CASE b OF
+        WHEN 10:
+            OUTPUT 10
+        WHEN 20:
+            OUTPUT 20
+        ELSE
+            OUTPUT 0
+        ENDCASE
+    WHEN 2:
+        CASE c OF
+        WHEN 10:
+            OUTPUT 10
+        WHEN 20:
+            OUTPUT 20
+        ELSE
+            OUTPUT 0
+        ENDCASE
+    ELSE
+        OUTPUT(99)
     ENDCASE
 ENDPROCEDURE
 

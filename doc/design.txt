@@ -17,26 +17,26 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Most of backend now implemented.
+Got the case statement to work correctly, using a case stack
 
 TODO
-Array initialisation woudl benefit from using a list rather than a string
-parameter definition, same
-parameter passing, same
 
 If a procedure has no statements, must put "pass" in it to be valid python
 (same with function)
 (same with for loop)
 (same with while loop)
-(not necessary for repeat loop as it has a break in it)
-
-build a case expression stack, so that the presently parsing case statement
-knows what expression to put in the if statement
-
-Remember the number of case expressions on the stack, so we know if to generate
-if, or elif
 
 
+need a runtime for readline (what opens, seeks, reads and closes the file?)
+need a runtime for writeline (what opens, seeks, writes and closes the file?)
+
+need a runtime for array expansion (sparse arrays)
+  a[x][y] = 4
+
+  if a is not defined as a [][] there is a problem
+  if a is not big enough for [x][y], will get undefined error on write
+  (read error is ok)
+  So we need an auto-expanding list runtime
 
 
 

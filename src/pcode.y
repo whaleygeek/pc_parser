@@ -78,7 +78,7 @@ initialiser_expr:
     | expr
     {backend.copy(p, 1)}
     | initialiser_expr COMMA expr
-    {backend.concat(p, 1, 3)}
+    {backend.comma(p, 1, 3)}
     ;
 
 array_initialiser_statement:
