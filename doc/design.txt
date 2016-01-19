@@ -24,6 +24,17 @@ Array initialisation woudl benefit from using a list rather than a string
 parameter definition, same
 parameter passing, same
 
+If a procedure has no statements, must put "pass" in it to be valid python
+(same with function)
+(same with for loop)
+(same with while loop)
+(not necessary for repeat loop as it has a break in it)
+
+build a case expression stack, so that the presently parsing case statement
+knows what expression to put in the if statement
+
+Remember the number of case expressions on the stack, so we know if to generate
+if, or elif
 
 
 

@@ -116,15 +116,15 @@ else_clause:
     ;
 
 while_statement:
-    WHILE expr      {backend.WHILE(p, -1)}
+    WHILE expr              {backend.WHILE(p, -1)}
     statements
-    ENDWHILE        {backend.ENDWHILE(p)}
+    ENDWHILE                {backend.ENDWHILE(p)}
     ;
 
 repeat_statement:
-    REPEAT          {backend.REPEAT(p)}
+    REPEAT                  {backend.REPEAT(p)}
     statements
-    UNTIL expr      {backend.UNTIL(p, 5)}
+    UNTIL expr              {backend.UNTIL(p, 5)}
     ;
 
 for_statement:
@@ -200,7 +200,7 @@ expr:
     | NUMBER                    {backend.number(p, 1)}
     | ID                        {backend.id(p, 1)}
     | STRING                    {backend.string(p, 1)}
-    | LPAREN expr RPAREN        {backend.bracket(p, 1)}
+    | LPAREN expr RPAREN        {backend.bracket(p, 2)}
     | USERINPUT                 {backend.USERINPUT(p)}
     | LEN LPAREN ID RPAREN      {backend.LEN(p, 3)}
     | expr PLUS expr            {backend.plus(p, 1, 3)}
