@@ -4,8 +4,11 @@
 # from AQA pseudocode into python.
 
 class Array():
-    def __init__(self):
+    def __init__(self, *args):
         self.data = []
+        if len(args) != 0:
+            for a in args:
+                self.data.append(a)
 
     def __setitem__(self, index, value):
         l = len(self.data)

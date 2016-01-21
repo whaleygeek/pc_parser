@@ -7,21 +7,41 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Written runtime for arrays.
-Written runtime for readline/writeline
+
+Added Array assighment to allow this
+  a = [1,2,3,4,5]
+to become this:
+  a = Array(1,2,3,4,5)
 
 TODO
-Add assignment to the Array class, so that the initialiser can be implemented
+manual import arrays for now
+auto generate 1d array setup
+auto generate 2d array setup
+auto generate array init setup
+auto generate array 1d read
+auto generate array 2d read
+auto generate array 1d write
+auto generate array 2d write
+(allow array copy??)
 
-a = [1,2,3,4,5]
+write test cases for all of above and test them
 
-becomes:
+detect use of any arrays, and import array module only if it is needed.
+Auto generate the array module file from parser text, so users don't need
+to have an extra file (perhaps just copy the file from a file in the project dir?)
 
-a = Array(1,2,3,4,5)
+auto generate readline code
+auto generate writeline code
 
-Then __init__ uses *args and just initialises elements from those.
-If none, then inner array is empty on start.
+write test cases for readline
+write test cases for writeline
 
+detect use of readline or writeline and import io helper module only if it is needed
+embed this file in the project and copy into user dir if needed, so user doesn't
+need to manage an extra file
+
+
+I *think* when we get here, the project is finished.
 
 
 
