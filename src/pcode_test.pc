@@ -57,6 +57,19 @@ PROCEDURE test_array_init()
     d <- [b,c,b,c,b+1,c+10]
 ENDPROCEDURE
 
+PROCEDURE test_array_read()
+    a <- [1,2,3,4]
+    #OUTPUT a[0] #TODO grammar missing
+ENDPROCEDURE
+
+PROCEDURE test_array2d_read()
+    a[0][0] <- 0
+    a[0][1] <- 1
+    a[1][0] <- 10
+    a[1][1] <- 1
+    #OUTPUT a[1][1]
+ENDPROCEDURE
+
 PROCEDURE test_if()
     a <- 1
     IF a = 1 THEN
@@ -386,6 +399,8 @@ test_assign()
 test_array1d_assign()
 test_array2d_assign()
 test_array_init()
+test_array_read()
+test_array2d_read()
 test_if()
 test_if_else()
 test_empty_if_else()

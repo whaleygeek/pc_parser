@@ -12,12 +12,22 @@ Added Array assighment to allow this
   a = [1,2,3,4,5]
 to become this:
   a = Array(1,2,3,4,5)
+manual import helpers.py for now
 
 TODO
-manual import arrays for now
+add to grammar, read expression a[expr]
+add to grammar, read expression a[expr][expr]
+
+
+
 auto generate 1d array setup
+- need scope tracking. First assignment in a scope needs to create it first
+
 auto generate 2d array setup
+- need scope tracking. First assignment in a scope needs to create it first
+
 auto generate array init setup
+
 auto generate array 1d read
 auto generate array 2d read
 auto generate array 1d write
