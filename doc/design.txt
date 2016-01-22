@@ -7,38 +7,27 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-
-Added Array assighment to allow this
-  a = [1,2,3,4,5]
-to become this:
-  a = Array(1,2,3,4,5)
-manual import helpers.py for now
+added to grammar, read expression a[expr]
+addded to grammar, read expression a[expr][expr]
 
 TODO
-add to grammar, read expression a[expr]
-add to grammar, read expression a[expr][expr]
 
-
-
-auto generate 1d array setup
+auto generate 1d array constructor call Array()
 - need scope tracking. First assignment in a scope needs to create it first
 
-auto generate 2d array setup
+auto generate 2d array constructor call Array2D()
 - need scope tracking. First assignment in a scope needs to create it first
 
-auto generate array init setup
+auto generate array init constructor call Array()
 
-auto generate array 1d read
-auto generate array 2d read
-auto generate array 1d write
-auto generate array 2d write
 (allow array copy??)
-
-write test cases for all of above and test them
 
 detect use of any arrays, and import array module only if it is needed.
 Auto generate the array module file from parser text, so users don't need
 to have an extra file (perhaps just copy the file from a file in the project dir?)
+
+
+---------
 
 auto generate readline code
 auto generate writeline code

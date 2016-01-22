@@ -223,6 +223,8 @@ expr:
     | expr XOR expr             {backend.XOR(p, 1, 3)}
     | readline_expr             {backend.copy(p, 1)}
     | fn_call_expr              {backend.copy(p, 1)}
+    | ID LSQUARE expr RSQUARE   {backend.array1dexpr(p, 1, 3)}
+    | ID LSQUARE expr RSQUARE LSQUARE expr RSQUARE {backend.array2dexpr(p, 1, 3, 6)}
     ;
 
 

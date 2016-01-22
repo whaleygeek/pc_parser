@@ -351,6 +351,19 @@ class Generator():
         r = str(left) + "^" + str(right)
         p[0] = r
 
+    def array1dexpr(self, p, i_id, i_expr):
+        id   = p[i_id]
+        expr = p[i_expr]
+        r = "%s[%s]" % (id, expr)
+        p[0] = r
+
+    def array2dexpr(self, p, i_id, i_expr1, i_expr2):
+        id   = p[i_id]
+        expr1 = p[i_expr1]
+        expr2 = p[i_expr2]
+        r = "%s[%s][%s]" % (id, expr1, expr2)
+        p[0] = r
+
     #----- HELPERS ------------------------------------------------------------
 
     def copy(self, p, i_item):

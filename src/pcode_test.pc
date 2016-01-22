@@ -59,7 +59,7 @@ ENDPROCEDURE
 
 PROCEDURE test_array_read()
     a <- [1,2,3,4]
-    #OUTPUT a[0] #TODO grammar missing
+    OUTPUT a[0]
 ENDPROCEDURE
 
 PROCEDURE test_array2d_read()
@@ -67,7 +67,10 @@ PROCEDURE test_array2d_read()
     a[0][1] <- 1
     a[1][0] <- 10
     a[1][1] <- 1
-    #OUTPUT a[1][1]
+    OUTPUT a[1][1]
+    x <- 1
+    y <- 0
+    OUTPUT a[x*2+1][y-2*3]
 ENDPROCEDURE
 
 PROCEDURE test_if()
