@@ -13,74 +13,74 @@ Added code to check for read past end of file.
 TODO - ARRAYS
 
 SPEC
-globals - are we going to allow them? Yes.
-Simpler model than python, i.e. if you define a variable in global
-scope, it is globally accessible as read/write.
+globals allowed
+locals allowed in fnproc
+no fnproc nesting
+no scopes local to if/else/case etc
+not possible to create globals inside a fn/proc.
+possible to create globals inside a top level scope
+Array copy, yes
+  a <- [1,2,3]
+  b <- b
+  OUTPUT b[2]
 
-If you define a variable in any local scope, it's lifetime lasts
-for the fn/proc that it was defined in, and it's visibility is limited
-to that function.
-
-It's not possible to create globals inside a fn/proc.
-
-It is possible to create globals inside a top level scope (e.g. an 'if'
-at the outer level).
-
-Nesting is two level only - outer scope (global) and fn/proc scope (local).
-fn/proc's are disallowed from being nested.
-
-Are we going to allow array copy? Yes, deep copy.
-
-i.e.
-a <- [1,2,3]
-b <- b
-OUTPUT b[2]
-
-b is an independent copy of a (not a reference to it).
-This could be quite computationally expensive with large arrays,
-but the semantics are simpler to explain as they are consistent
-with scalar variables.
+  b is an independent copy of a (not a reference to it).
+  This could be quite computationally expensive with large arrays,
+  but the semantics are simpler to explain as they are consistent
+  with scalar variables.
 
 
 DESIGN
 
-Put this at the top of every generated file:
-
-from aqa_array import * # Array() and Array2D()
-
-Have a copy of the aqa_array.py inside the package, and just
-open the file, read it, and write it to the script directory.
-This way the copy is platform indepenent.
-
-
-
 A list of variables in the global scope. Lifetime for the runtime of the program.
+    global_varnames = []
 
-A list of variables in local scope of present fn/proc, lifetime for the
+A list of variables in local scope of present fn/proc being parsed, lifetime for the
 execution of that fn/proc.
+    local_varnames = []
 
-If you call another fn/proc, a new local scope is created, and you can only
-see variables in global scope and the present local scope (i.e. no nested
-scope visibility).
+When reading an array variable:
+  if it is not defined in local or global
+    raise an undefined variable error.
 
-Thus, we can't use the nest stack as that is used for IF/ELSE also. We
-need a separate fnproc stack
+When writing to an array variable:
+  if we are not in a fnproc,
+    check global_varnames
+    if not known,
+      if this is a 1D array, generate Array()
+      if this is a 2D array, generate Array2D()
+      add to global_varnames
+  else we are in a fnproc
+    check local_varnames
+    if not known,
+      if this is a 1D array, generate Array()
+      if this is a 2D array, generate Array2D()
+      add to local_varnames
 
-When reading a variable, if it is not defined, can raise an undefined variable error.
-This might also be possible at compile time as it is known.
+When initialising an array variable:
+  if not in fnproc
+   check global_varnames
+   if not known,
+     create Array()
+     add to global_varnames
+  if is fnproc
+    check local_varnames
+    if not known,
+      crate Array()
+      add to local_varnames
 
-When writing to a variable, if it is not in the list of defined live variables,
-then generate an initialisation and add it to the list.
+When starting a new fnproc defn:
+  empty the local_varnames
+
+When ending a fnproc defn:
+  empty the local_varnames
 
 
-auto generate 1d array constructor call Array()
-auto generate 2d array constructor call Array2D()
-auto generate array init constructor call Array()
 
-detect use of any arrays, and import array module only if it is needed.
-Auto generate the array module file from parser text, so users don't need
-to have an extra file (perhaps just copy the file from a file in the project dir?)
-
+array deep copy - this is tricky, need to know at runtime that it is an
+array and not somethign else, and then do the deep copy.
+Is there a pythonic way with a meta method to detect a copy and make it
+deep rather than a reference??
 
 
 --------------------------------------------------------------------------------
