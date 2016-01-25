@@ -7,68 +7,57 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-added to grammar, read expression a[expr]
-addded to grammar, read expression a[expr][expr]
+Updated TODO lists and plans
 
 
-TODO
-* create a runtime folder
-* put io.py in runtime
-* put array.py in runtime
-* work out path to user script
+--------------------------------------------------------------------------------
+TODO - IO
+
+* write test cases for readline
+* write test cases for writeline
+* test readline and writeline
+
+
+--------------------------------------------------------------------------------
+TODO - runtime embedding
+
+* run an experiment to work out the best way to embed a whole
+  python module inside a python module, so that it can be
+  programatically streamed out when embedded in a zip file.
+  Code it up manually, be careful of escaping quotes etc.
+
+* work out what the interface to this module is - probably
+  just call a function with a file handle, and it appends it's
+  docstring contents to that file handle (much better than returning
+  a string and then writing that, more efficient)
+
+* write a tool that embeds all of the files in a nominated folder
+  into a single python file as big docstrings - this will be useful
+  for embedding code into a zip package in a way that it can then
+  just be streamed out on demand to another file in the filing system.
+  Be careful of escaping quotes etc properly.
+
+* Put this tool in the build dir
+
+* Change the build script so that it runs this on the runtime folder
+  and generates a runtime.py
+
+* work out path to user script when parser runs
+
+* Test that we can put this inside a zip file, run the zip file
+  from python and it generates
+
 * on parser run, auto copy io.py and array.py to user script dir
   (use file read/write rather than copy, so it works from within zip?
   need to verify we can find a way to read resources from a zip, might
   have to embed the code as a docstring so that we can read it out
   as a resource, in case the .zip is execute only.)
+
 * auto import io.py and array.py at top of every program
 
------ I/O
 
-ANALYSIS
-The runtime helpers have been written, so semantics are known.
-
-If the parser senses use of a READLINE, it needs to insert the readline()
-function at the top of the generated python. This is mucky as it implies
-a two pass generation process.
-
-We could always import aqaio which has a readline and writeline
-implementation in it, but then for simple programs, this makes the python
-look more complex than it needs to be. It also means that you have to have
-a copy of the runtime modules for this to work.
-
-The runtime modules could be auto-generated in the script folder if
-needed - this would then mean that the import is optional, and the two
-pass generation is still required.
-
-Could always auto generate and always import on every build. That way
-the generated python would look quite simple, you wouldn't have to
-keep copies of the runtime files yourself.
-
-SPEC
-
-Put this at the top of every generated file
-
-from aqa_io import * # readline() and writeline()
-
-Have a copy of the aqa_io.py inside the package, and just
-open the file, read it, and write it to the script directory.
-This way the copy is platform independent.
-
-DESIGN
-* work out path to user script
-* read/write file aqa_io.py from package directory into user script directory
-* write test cases for readline
-* write test cases for writeline
-* write code for readline
-* write code for writeline
-* test both
-
-
-
-
-
------ ARRAYS
+--------------------------------------------------------------------------------
+TODO - ARRAYS
 
 SPEC
 globals - are we going to allow them? Yes.
@@ -140,8 +129,8 @@ Auto generate the array module file from parser text, so users don't need
 to have an extra file (perhaps just copy the file from a file in the project dir?)
 
 
-
------ PACKAGING AND DISTRIBUTION
+--------------------------------------------------------------------------------
+PACKAGING AND DISTRIBUTION
 
 Need to test this works with python2 and python3
 
