@@ -3,11 +3,25 @@
 # simplest possible implementation. Only really works well
 # for small files. Poor efficiency on large files.
 
+class FileIOException(Exception):
+    pass
+
 def readline(filename, lineno):
+    if type(lineno) != int:
+        raise FileIOException("Line number must be an integer")
+
+    if lineno < 1:
+        raise FileIOException("Cannot read line number less than 1: %d" % lineno)
+
+    lineno -= 1 # file offsets lines from zero
+
     f = open(filename)
     lines = f.readlines()
     f.close()
-    return lines[lineno-1] # runtime error if does not exist
+    if lineno >= len(lines):
+        raise FileIOException("Attempt to read a line that does not exist in file: wanted:%d max:%d" % (lineno, len(lines)-1))
+
+    return lines[lineno-1]
 
 def writeline(filename, lineno, data):
     # read all lines in
@@ -41,7 +55,7 @@ def tests():
     # write to a file that adds a new line way past the end (padding)
     # write to a file that modifies a line to make it longer
     # write to a file that modifies a line to make it shorter
-    
+
     # read from a file that does not exist
     # read from a file in a dir with no permissions, get error
     # read from a file without read permissions, get error

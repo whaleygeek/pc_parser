@@ -7,18 +7,7 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-readline/writeline test cases written
-imports added
-Proved that if we manually put Array constructor in, code is error free.
-test script copies io.py and array.py for now, to allow testing to advance.
-
-
---------------------------------------------------------------------------------
-TODO - IO
-
-* if you read from a file past EOF, what happens?
-  Does it just return a blank string?
-
+Added code to check for read past end of file.
 
 --------------------------------------------------------------------------------
 TODO - ARRAYS
