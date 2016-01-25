@@ -8,6 +8,7 @@ cp ../../src/pcode.py .
 cp ../../src/pcode_lexer.py .
 cp ../../src/pygen.py .
 cp ../../src/pcode_test.pc .
+cp ../../src/runtime/*.py .
 
 python pcode.py < pcode_test.pc
 cd ..

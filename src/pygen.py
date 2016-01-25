@@ -11,8 +11,8 @@ class Generator():
         self.case_stack  = []
         self.procfn      = 0
 
-        # testing
-        self.out("import helpers.py")
+        self.out("from io import *")
+        self.out("from array import *")
 
     def indent(self):
         self.indentlev += 4

@@ -182,12 +182,11 @@ FUNCTION test_func_params(a,b,c)
     RETURN a
 ENDFUNCTION
 
-PROCEDURE test_writeline()
-    WRITELINE("test.txt", 1, "hello")
-ENDPROCEDURE
 
 PROCEDURE test_case()
     a <- 1
+    b <- 10
+    c <- 1
     CASE a OF
     WHEN 1:
         OUTPUT "one"
@@ -351,8 +350,17 @@ PROCEDURE test_xor()
     c <- a XOR b
 ENDPROCEDURE
 
+PROCEDURE test_writeline()
+    FOR n <- 1 TO 10
+        WRITELINE("test.txt", n, "some data")
+    ENDFOR
+ENDPROCEDURE
+
 PROCEDURE test_readline()
-    a <- READLINE("words.txt", 1)
+    FOR n <- 1 TO 10
+        a <- READLINE("words.txt", n)
+        OUTPUT a
+    ENDFOR
 ENDPROCEDURE
 
 FUNCTION fn0()

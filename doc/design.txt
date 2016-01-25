@@ -7,53 +7,17 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Updated TODO lists and plans
+readline/writeline test cases written
+imports added
+Proved that if we manually put Array constructor in, code is error free.
+test script copies io.py and array.py for now, to allow testing to advance.
 
 
 --------------------------------------------------------------------------------
 TODO - IO
 
-* write test cases for readline
-* write test cases for writeline
-* test readline and writeline
-
-
---------------------------------------------------------------------------------
-TODO - runtime embedding
-
-* run an experiment to work out the best way to embed a whole
-  python module inside a python module, so that it can be
-  programatically streamed out when embedded in a zip file.
-  Code it up manually, be careful of escaping quotes etc.
-
-* work out what the interface to this module is - probably
-  just call a function with a file handle, and it appends it's
-  docstring contents to that file handle (much better than returning
-  a string and then writing that, more efficient)
-
-* write a tool that embeds all of the files in a nominated folder
-  into a single python file as big docstrings - this will be useful
-  for embedding code into a zip package in a way that it can then
-  just be streamed out on demand to another file in the filing system.
-  Be careful of escaping quotes etc properly.
-
-* Put this tool in the build dir
-
-* Change the build script so that it runs this on the runtime folder
-  and generates a runtime.py
-
-* work out path to user script when parser runs
-
-* Test that we can put this inside a zip file, run the zip file
-  from python and it generates
-
-* on parser run, auto copy io.py and array.py to user script dir
-  (use file read/write rather than copy, so it works from within zip?
-  need to verify we can find a way to read resources from a zip, might
-  have to embed the code as a docstring so that we can read it out
-  as a resource, in case the .zip is execute only.)
-
-* auto import io.py and array.py at top of every program
+* if you read from a file past EOF, what happens?
+  Does it just return a blank string?
 
 
 --------------------------------------------------------------------------------
@@ -128,6 +92,44 @@ detect use of any arrays, and import array module only if it is needed.
 Auto generate the array module file from parser text, so users don't need
 to have an extra file (perhaps just copy the file from a file in the project dir?)
 
+
+
+--------------------------------------------------------------------------------
+TODO - runtime embedding
+
+* run an experiment to work out the best way to embed a whole
+  python module inside a python module, so that it can be
+  programatically streamed out when embedded in a zip file.
+  Code it up manually, be careful of escaping quotes etc.
+
+* work out what the interface to this module is - probably
+  just call a function with a file handle, and it appends it's
+  docstring contents to that file handle (much better than returning
+  a string and then writing that, more efficient)
+
+* write a tool that embeds all of the files in a nominated folder
+  into a single python file as big docstrings - this will be useful
+  for embedding code into a zip package in a way that it can then
+  just be streamed out on demand to another file in the filing system.
+  Be careful of escaping quotes etc properly.
+
+* Put this tool in the build dir
+
+* Change the build script so that it runs this on the runtime folder
+  and generates a runtime.py
+
+* work out path to user script when parser runs
+
+* Test that we can put this inside a zip file, run the zip file
+  from python and it generates
+
+* on parser run, auto copy io.py and array.py to user script dir
+  (use file read/write rather than copy, so it works from within zip?
+  need to verify we can find a way to read resources from a zip, might
+  have to embed the code as a docstring so that we can read it out
+  as a resource, in case the .zip is execute only.)
+
+* auto import io.py and array.py at top of every program
 
 --------------------------------------------------------------------------------
 PACKAGING AND DISTRIBUTION
