@@ -7,97 +7,9 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Array constructors added and tested
-
---------------------------------------------------------------------------------
-TODO - ARRAYS
-
-SPEC
-globals allowed
-locals allowed in fnproc
-no fnproc nesting
-no scopes local to if/else/case etc
-not possible to create globals inside a fn/proc.
-possible to create globals inside a top level scope
-Array copy, yes
-  a <- [1,2,3]
-  b <- b
-  OUTPUT b[2]
-
-  b is an independent copy of a (not a reference to it).
-  This could be quite computationally expensive with large arrays,
-  but the semantics are simpler to explain as they are consistent
-  with scalar variables.
-
-Decided that array copy is too hard. Because variables don't have type
-until runtime, there is no way to track the type at compile time and
-insert deep copy code, without making the python look very non pythonic.
-Although, there is no way to detect this with generic assignment, so:
-
-a = [1,2,3]
-b = a
-
-Will mean b is a copy of a.
-
-a = 1
-b = a
-
-Will mean that b is a value independent of a.
-
-So, we should just document that array assignment is a shallow copy,
-and let people work within those semantics. It does mean it is then
-possible to create an array inside a proc and let it leak outside
-by assigning it to an already defined global variable. That might
-be handy.
+Array constructors added and tested - code generated looks fine.
 
 
-
-DESIGN
-
-(Y) A list of variables in the global scope. Lifetime for the runtime of the program.
-    global_varnames = []
-
-(Y) A list of variables in local scope of present fn/proc being parsed, lifetime for the
-execution of that fn/proc.
-    local_varnames = []
-
-(Y) When reading an array variable:
-  if it is not defined in local or global
-    raise an undefined variable error.
-
-(Y) When writing to an array variable:
-  if we are not in a fnproc,
-    check global_varnames
-    if not known,
-      if this is a 1D array, generate Array()
-      if this is a 2D array, generate Array2D()
-      add to global_varnames
-  else we are in a fnproc
-    check local_varnames
-    if not known,
-      if this is a 1D array, generate Array()
-      if this is a 2D array, generate Array2D()
-      add to local_varnames
-
-(Y) When initialising an array variable:
-  if not in fnproc
-   check global_varnames
-   if not known,
-     create Array()
-     add to global_varnames
-  if is fnproc
-    check local_varnames
-    if not known,
-      crate Array()
-      add to local_varnames
-
-(Y) When starting a new fnproc defn:
-  empty the local_varnames
-
-(Y) When ending a fnproc defn:
-  empty the local_varnames
-
-All test cases pass.
 
 --------------------------------------------------------------------------------
 TODO running real code
@@ -105,9 +17,67 @@ TODO running real code
 Need to run the real python code and make sure it generates correct answers.
 Including array accesses, and readline/writeline, input and output.
 
+Might be worth forking the test script into two scripts, one for syntax tests,
+one for runtime tests. The current test generates valid python, but it's a
+garbage program semantically because it doesn't do anything useful and
+testable. e.g.
+
+Traceback (most recent call last):
+  File "out.py", line 264, in <module>
+    test_array2d_read()
+  File "out.py", line 54, in test_array2d_read
+    print(a[x*2+1][y-2*3])
+  File "/Users/davidw/git_work/pc_parser/build/sandbox/array.py", line 23, in __getitem__
+    return self.data[index]
+IndexError: list index out of range
+
+Might tighten up the runtime checking in the Array() and Array2D()
+classes, although the above error is actually quite meaningful.
+
+Also the script is really big now, and there is no way apart from 'didn't see
+a syntax error' and capture/compare testing the whole script, to check it is
+actually correct. Perhaps introduction of a UnitTest would help here.
+
+This would require a way to poke in a script portion from a string into the
+parser, rather than getting the parser to always read it from a file stream.
+i.e. the input reader would need to be modified. It is possible to pass
+a whole string to the parser.
+
+Actually looking at how it is coded, it loads the whole file into a string
+until EOF then sends it to yacc.parse (not overly efficient), but this
+same scheme could easily be used in a UnitTest suite.
+
+    # file mode
+    s = ""
+    while True:
+        line = sys.stdin.read()
+        if line != "":
+            s += line
+        else:
+            break
+
+    yacc.parse(s)
+
+Might be worth looking into how we can send a stream of tokens to the lexer
+rather than a string to the parser, as that will be a more memory efficient
+solution for larger scripts.
+
 
 --------------------------------------------------------------------------------
 TODO - runtime embedding
+
+The point of this is to be able to package the whole toolsuite up as a python
+zip archive with a __main__ in it, and for the runtime support files to magically
+pop out of the zip file into the user script directory when you run the tool.
+This will make distribution and use much easier.
+
+In theory, just distribute a zip file and give them an instruction on how to
+run the tool. All the necessary files will then be bound into a single file,
+which works nice as a distributable package.
+
+Could add an option to blurt out the io and array contents into the top of the
+out.py file, instead of as separate files, thus generating a single python file
+that can be distributed by the end user.
 
 * run an experiment to work out the best way to embed a whole
   python module inside a python module, so that it can be
@@ -156,6 +126,12 @@ The aqa_io.py and aqa_array.py modules will be embedded inside a folder in the z
 and bytestream'ed out into the user script directory every time they run the tool.
 That way if they damage the file, it will be replaced on each build.
 
+--------------------------------------------------------------------------------
+
+TIDY UP
+Need to add blank lines around fn/proc definitions to space the thing out a bit.
+perhaps put a comment tag with the date and time stamp of the conversion,
+and perhaps some traceability to the release date and time stamp of the conversion tool.
 
 
 
