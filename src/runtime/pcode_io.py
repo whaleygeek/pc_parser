@@ -1,7 +1,7 @@
 # pcode_io.py  19/01/2016  D.J.Whale
 
 # simplest possible implementation. Only really works well
-# for small files.
+# for small files. Poor efficiency on large files.
 
 def readline(filename, lineno):
     f = open(filename)
@@ -27,5 +27,30 @@ def writeline(filename, lineno, data):
     f = open(filename, "w")
     f.writelines(lines)
     f.close()
+
+
+#----- TEST HARNESS -----------------------------------------------------------
+
+def tests():
+    pass
+    # write to a file that does not exist, to create it
+    # write to a file that does exist, to modify it
+    # write to a file that is locked, get an error
+    # write to a file that does not exist, no dir permissions, get error
+    # write to a file that adds a new line at the end
+    # write to a file that adds a new line way past the end (padding)
+    # write to a file that modifies a line to make it longer
+    # write to a file that modifies a line to make it shorter
+    
+    # read from a file that does not exist
+    # read from a file in a dir with no permissions, get error
+    # read from a file without read permissions, get error
+    # read from a file that exists
+    # read a line that does not exist
+    # read a line that does exist
+
+
+if __name__ == "__main__":
+    tests()
 
 # END
