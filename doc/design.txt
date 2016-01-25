@@ -10,15 +10,35 @@ JUST DONE
 added to grammar, read expression a[expr]
 addded to grammar, read expression a[expr][expr]
 
-TODO
+
+SPEC
+globals - are we going to allow them?
+
+Nesting - perhaps keep it really simple, fn/proc level only.
+That way if you create an array in an if statement, it is usable outside
+of the if statement later as it is still in scope.
+
+The outer scope might need a list of live variables, but we could obscure
+this list on entry to a function if globals not allowed.
+
+DESIGN
+The scope tracking could be really simple, on entry to a proc/fn create a scope
+list, on exit from proc/fn clear the list.
+
+If we do globals, then all we need is a global list and a proc/fn list.
+If no globals, just clear the list on entry and exit to function.
+
+When reading a variable, if it is not defined, can raise an undefined variable error.
+This might also be possible at compile time as it is known.
+
+When writing to a variable, if it is not in the list of defined live variables,
+then generate an initialisation and add it to the list.
+
 
 auto generate 1d array constructor call Array()
-- need scope tracking. First assignment in a scope needs to create it first
-
 auto generate 2d array constructor call Array2D()
-- need scope tracking. First assignment in a scope needs to create it first
-
 auto generate array init constructor call Array()
+
 
 (allow array copy??)
 
