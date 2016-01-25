@@ -29,6 +29,28 @@ Array copy, yes
   but the semantics are simpler to explain as they are consistent
   with scalar variables.
 
+Decided that array copy is too hard. Because variables don't have type
+until runtime, there is no way to track the type at compile time and
+insert deep copy code, without making the python look very non pythonic.
+Although, there is no way to detect this with generic assignment, so:
+
+a = [1,2,3]
+b = a
+
+Will mean b is a copy of a.
+
+a = 1
+b = a
+
+Will mean that b is a value independent of a.
+
+So, we should just document that array assignment is a shallow copy,
+and let people work within those semantics. It does mean it is then
+possible to create an array inside a proc and let it leak outside
+by assigning it to an already defined global variable. That might
+be handy.
+
+
 
 DESIGN
 
@@ -76,11 +98,6 @@ When ending a fnproc defn:
   empty the local_varnames
 
 
-
-array deep copy - this is tricky, need to know at runtime that it is an
-array and not somethign else, and then do the deep copy.
-Is there a pythonic way with a meta method to detect a copy and make it
-deep rather than a reference??
 
 
 --------------------------------------------------------------------------------
