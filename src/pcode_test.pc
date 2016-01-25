@@ -455,4 +455,45 @@ test_fncall_2params()
 test_proccall_1param()
 test_proccall_2params()
 
+# Array 1D at global scope
+x[1] <- 1
+
+# Array 2D at global scope
+y[2] <- 2
+
+# Array 1D init at global scope
+z <- [1,2,3]
+
+# fnproc uses global array
+
+FUNCTION test_fn_global_array()
+    OUTPUT x[1]
+    OUTPUT y[2]
+    OUTPUT z[3]
+ENDFUNCTION
+
+PROCEDURE test_proc_global_array()
+    OUTPUT x[1]
+    OUTPUT y[2]
+    OUTPUT z[3]
+ENDPROCEDURE
+
+# Array defined inside fnproc does not bubble out to global scope
+
+FUNCTION test_fn_bubble_array()
+    g[1] <- 1
+    h[1][2] <- 12
+ENDFUNCTION
+
+g[1] <- 2
+h[1][2] <- 1212
+
+FUNCTION test_fn_bubble_array()
+    i[1] <- 1
+    j[1][2] <- 12
+ENDFUNCTION
+
+i[1] <- 2
+j[1][2] <- 1212
+
 

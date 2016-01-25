@@ -7,7 +7,7 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Added code to check for read past end of file.
+Array constructors added and tested
 
 --------------------------------------------------------------------------------
 TODO - ARRAYS
@@ -54,18 +54,18 @@ be handy.
 
 DESIGN
 
-A list of variables in the global scope. Lifetime for the runtime of the program.
+(Y) A list of variables in the global scope. Lifetime for the runtime of the program.
     global_varnames = []
 
-A list of variables in local scope of present fn/proc being parsed, lifetime for the
+(Y) A list of variables in local scope of present fn/proc being parsed, lifetime for the
 execution of that fn/proc.
     local_varnames = []
 
-When reading an array variable:
+(Y) When reading an array variable:
   if it is not defined in local or global
     raise an undefined variable error.
 
-When writing to an array variable:
+(Y) When writing to an array variable:
   if we are not in a fnproc,
     check global_varnames
     if not known,
@@ -79,7 +79,7 @@ When writing to an array variable:
       if this is a 2D array, generate Array2D()
       add to local_varnames
 
-When initialising an array variable:
+(Y) When initialising an array variable:
   if not in fnproc
    check global_varnames
    if not known,
@@ -91,13 +91,19 @@ When initialising an array variable:
       crate Array()
       add to local_varnames
 
-When starting a new fnproc defn:
+(Y) When starting a new fnproc defn:
   empty the local_varnames
 
-When ending a fnproc defn:
+(Y) When ending a fnproc defn:
   empty the local_varnames
 
+All test cases pass.
 
+--------------------------------------------------------------------------------
+TODO running real code
+
+Need to run the real python code and make sure it generates correct answers.
+Including array accesses, and readline/writeline, input and output.
 
 
 --------------------------------------------------------------------------------
