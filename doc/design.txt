@@ -11,6 +11,18 @@ added to grammar, read expression a[expr]
 addded to grammar, read expression a[expr][expr]
 
 
+TODO
+* create a runtime folder
+* put io.py in runtime
+* put array.py in runtime
+* work out path to user script
+* on parser run, auto copy io.py and array.py to user script dir
+  (use file read/write rather than copy, so it works from within zip?
+  need to verify we can find a way to read resources from a zip, might
+  have to embed the code as a docstring so that we can read it out
+  as a resource, in case the .zip is execute only.)
+* auto import io.py and array.py at top of every program
+
 ----- I/O
 
 ANALYSIS
