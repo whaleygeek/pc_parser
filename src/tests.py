@@ -5,7 +5,7 @@ import pcode
 
 #----- TEST SYNTAX ------------------------------------------------------------
 
-class TestSyntax(unittest.TestCase):
+class x:#TestSyntax(unittest.TestCase):
     IMPORTS = "from io import *\nfrom array import *"
 
     #--------------------------------------------------------------------------
@@ -1241,27 +1241,56 @@ test_array_param(z)
 
 
 #----- TEST ARRAYS ------------------------------------------------------------
-#class TestArrays(unittest.TestCase)
-#    pass
 
-# test 1d array creation
-# test 1d array write to new location extend by one
-# test 1d array write to existing location
-# test 1d array write expand by many into sparse array
-# test 1d array read non existing location
-# test 1d array read existing location
-# test 1d array initialisation
+class TestArrays(unittest.TestCase)
+    def test_1d_create(self):
+        pass
 
-# test 2d array creation
-# test 2d array write to new location extend by one in x
-# test 2d array write to new location extend by one in y
-# test 2d array write to existing location in x
-# test 2d array write to existing location in y
-# test 2d array write expand by many into sparse array in x
-# test 2d array write expand by many into sparse array in y
-# test 2d array read non existing location in x
-# test 2d array read non existing location in y
-# test 2d array read existing location
+    def test_1d_write_extend1(self):
+        pass
+
+    def test_1d_write_existing(self):
+        pass
+
+    def test_1d_write_extendmany(self):
+        pass
+
+    def test_1d_read_missing(self):
+        pass
+
+    def test_1d_read_existing(self):
+        pass
+
+    def test_1d_init(self):
+        pass
+
+
+    def test_2d_create(self):
+        pass
+
+    def test_2d_write_extendx1(self):
+        pass
+
+    def test_2d_write_extendy1(self):
+        pass
+
+    def test_2d_write_existingxy(self):
+        pass
+
+    def test_2d_write_expandmanyx(self):
+        pass
+
+    def test_2d_write_expandmanyy(self):
+        pass
+
+    def test_2d_read_missingx(self):
+        pass
+
+    def test_2d_read_missingy(self):
+        pass
+
+    def test_2d_read_existing(self):
+        pass
 
 
 #----- TEST IO ----------------------------------------------------------------
