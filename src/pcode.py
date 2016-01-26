@@ -40,12 +40,9 @@ lex.lex()
 # call code in pcode_parser that sets it's emit instance.
 
 import pygen
-generator = pygen.Generator(emit=emit)
-
 
 # Build the parser
 from pcode_parser import * # this is the generated parser
-set_backend(generator)
 
 import ply.yacc as yacc
 y = yacc.yacc()
@@ -62,6 +59,7 @@ def test(src):
     def bufemit(msg):
         global buffer
         buffer += msg
+        buffer += '\n'
 
     global emit
     emit = bufemit
@@ -72,6 +70,9 @@ def test(src):
     return b
 
 def translate(src):
+    generator = pygen.Generator(emit=emit)
+    set_backend(generator)
+
     y.parse(src)
     y.restart()
 

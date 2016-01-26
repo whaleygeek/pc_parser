@@ -19,6 +19,8 @@ class Generator():
         self.local_vars  = None
         self.emit        = emit
 
+        #TODO move this to a start() and call it in the grammar
+        #otherwise if emitter is reconfigured, it won't go to the right destination.
         self.out("from io import *")
         self.out("from array import *")
 

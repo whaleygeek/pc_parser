@@ -11,8 +11,8 @@ cp ../../src/pcode_test.pc .
 cp ../../src/runtime/*.py .
 cp ../../src/tests.py .
 
-python pcode.py < pcode_test.pc > pcode_test_out.py
+#python pcode.py < pcode_test.pc > pcode_test_out.py
 
-#python tests.py
+python tests.py
 
 cd ..

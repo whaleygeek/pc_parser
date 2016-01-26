@@ -7,19 +7,7 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Refactored pcode.py so it is reconfigurable for UnitTest
-
-yacc.yacc generates the LRParser() instance,
-it also writes to yacc module parse method = parser.parse
-
-So, the other way to use it is via the instance, like this:
-
-  p = yacc.yacc()
-  p.parse(src)
-  p.restart()
-
-Just tested this (once) and it works.
-Tested it (twice in succession) and it works with restart() in the middle.
+Got the emitter working so it captures to an output string
 
 
 --------------------------------------------------------------------------------
