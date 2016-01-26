@@ -1220,6 +1220,31 @@ h[1][2] = 1212
         self.assertEquals(EXPECTED, OUT)
 
 
+    #--------------------------------------------------------------------------
+    def test_array_param(self):
+        SRC = \
+"""
+FUNCTION test_array_param(a)
+    OUTPUT a[0]
+    OUTPUT a[1]
+ENDFUNCTION
+
+z <- [1,2,3,4]
+test_array_param(z)
+"""
+        EXPECTED = self.IMPORTS + \
+"""
+def test_array_param(a):
+    print(a[0])
+    print(a[1])
+z = Array()
+z = [1, 2, 3, 4]
+test_array_param(z)
+"""
+        OUT = pcode.test(SRC)
+        self.assertEquals(EXPECTED, OUT)
+
+
 #----- TEST ARRAYS ------------------------------------------------------------
 #class TestArrays(unittest.TestCase)
 #    pass

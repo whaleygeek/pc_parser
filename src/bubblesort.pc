@@ -1,0 +1,18 @@
+FUNCTION bubblesort(a)
+    REPEAT
+        swaps <- 0
+        FOR i <- 0 TO LEN(a)-1
+            IF a[i+1] < a[i] THEN
+                t <- a[i]
+                a[i] <- a[i+1]
+                a[i+1] <- t
+                swaps <- swaps + 1
+            ENDIF
+        ENDFOR
+    UNTIL swaps = 0
+    RETURN a
+ENDFUNCTION
+
+a <- [9,8,7,6,5,4,3,2,1]
+b <- bubblesort(a)
+OUTPUT a

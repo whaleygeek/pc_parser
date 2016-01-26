@@ -292,9 +292,8 @@ class Generator():
 
         id = p[i_id]
         params = p[i_params] # should be a list
-        #TODO need to create_var() on each parameter
-        #for v in params:
-        #   self.create_var(v)
+        for v in params:
+           self.create_var(v)
 
         csvparams = self.lcsv(params)
         self.out("def %s(%s):" % (id, csvparams))
@@ -321,9 +320,8 @@ class Generator():
 
         id = p[i_id]
         params = p[i_params] # should be a list
-        #TODO need to create_var() on each parameter
-        #for v in params:
-        #   self.create_var(v)
+        for v in params:
+           self.create_var(v)
 
         csvparams = self.lcsv(params)
         self.out("def %s(%s):" % (id, csvparams))

@@ -9,6 +9,7 @@ cp ../../src/pcode_lexer.py .
 cp ../../src/pygen.py .
 cp ../../src/runtime/*.py .
 cp ../../src/tests.py .
+cp ../../src/*.pc .
 
 #python pcode.py < pcode_test.pc > pcode_test_out.py
 
