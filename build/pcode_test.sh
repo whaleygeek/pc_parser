@@ -7,7 +7,6 @@ cd sandbox
 cp ../../src/pcode.py .
 cp ../../src/pcode_lexer.py .
 cp ../../src/pygen.py .
-cp ../../src/pcode_test.pc .
 cp ../../src/runtime/*.py .
 cp ../../src/tests.py .
 

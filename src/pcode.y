@@ -75,11 +75,11 @@ array2d_assignment_statement:
 
 initialiser_expr:
     /* empty */
-    {backend.empty(p)}
+    {backend.lempty(p)}
     | expr
-    {backend.copy(p, 1)}
+    {backend.litem(p, 1)}
     | initialiser_expr COMMA expr
-    {backend.comma(p, 1, 3)}
+    {backend.lappend(p, 1, 3)}
     ;
 
 array_initialiser_statement:
@@ -155,11 +155,11 @@ case_statement:
 
 fnproc_def_params:
     /* empty */
-    {backend.empty(p)}
+    {backend.lempty(p)}
     | ID
-    {backend.copy(p, 1)}
+    {backend.litem(p, 1)}
     | fnproc_def_params COMMA ID
-    {backend.comma(p, 1, 3)}
+    {backend.lappend(p, 1, 3)}
     ;
 
 function_def_statement:
@@ -180,11 +180,11 @@ proc_def_statement:
 
 fnproc_call_params:
     /* empty */
-    {backend.empty(p)}
+    {backend.lempty(p)}
     | expr
-    {backend.copy(p, 1)}
+    {backend.litem(p, 1)}
     | fnproc_call_params COMMA expr
-    {backend.comma(p, 1, 3)}
+    {backend.lappend(p, 1, 3)}
     ;
 
 proc_call_statement:

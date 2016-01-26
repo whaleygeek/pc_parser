@@ -7,8 +7,13 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-* All syntax tests now passing unit test harness
-* listed tests for TestArrays, TestIO, TestRuntime
+All list like things now managed as lists
+e.g. function parameters
+this makes it easy to now create_var on every passed parameter.
+
+TODO
+Look at passing an array as a parameter
+i.e. if it is already a variable assume it does not need to be created.
 
 --------------------------------------------------------------------------------
 TODO: running real code
@@ -30,6 +35,33 @@ TODO: running real code
 * Design the tests for TestRuntime()
 
 
+--------------------------------------------------------------------------------
+TODO array handling when passed as a parameter
+
+Arrays passed as parameters are not known in the array lifetime handler,
+so we have to create an array variable first then shallow copy it,
+like below. This could probably be tidied up.
+
+FUNCTION bubblesort(numbers)
+    a <- []
+    a <- numbers
+    REPEAT
+        swaps <- 0
+        FOR i <- 0 TO LEN(a)-1
+            IF a[i+1] < a[i] THEN
+                t <- a[i]
+                a[i] <- a[i+1]
+                a[i+1] <- t
+                swaps <- swaps + 1
+            ENDIF
+        ENDFOR
+    UNTIL swaps = 0
+    RETURN a
+ENDFUNCTION
+
+a <- [9,8,7,6,5,4,3,2,1]
+b <- bubblesort(a)
+OUTPUT a
 
 --------------------------------------------------------------------------------
 PACKAGING AND DISTRIBUTION

@@ -19,8 +19,11 @@ class Generator():
         self.local_vars  = None
         self.emit        = emit
 
-        #TODO move this to a start() and call it in the grammar
-        #otherwise if emitter is reconfigured, it won't go to the right destination.
+        #TODO: get the grammar to call this when it starts parsing
+        # otherwise if emitter is reconfigured later, we loose it.
+        self.start()
+
+    def start(self):
         self.out("from io import *")
         self.out("from array import *")
 
@@ -67,14 +70,13 @@ class Generator():
         else:
             self.global_vars.append(name)
 
+    def empty(self, p):
+        p[0] = ""
 
     def copy(self, p, i_item):
         item = p[i_item]
         r = item
         p[0] = r
-
-    def empty(self, p):
-        p[0] = ""
 
     def comma(self, p, i_left, i_right):
         left = p[i_left]
@@ -93,6 +95,33 @@ class Generator():
         except TypeError:
             both = str(one) + str(two)
         p[0] = both
+
+    def lempty(self, p):
+        """Create an empty list"""
+        p[0] = []
+
+    def litem(self, p, i_item):
+        """Create a new list with one item in it"""
+        item = p[i_item]
+        l = [item]
+        p[0] = l
+
+    def lappend(self, p, i_items, i_item):
+        """Append an item to an existing list"""
+        items = p[i_items]
+        item = p[i_item]
+        items.append(item)
+        p[0] = items
+
+    def lcsv(self, l):
+        """Convert a list into a CSV"""
+        s = ""
+        for i in range(len(l)):
+            if i != 0:
+                s += ', '
+            s += l[i]
+        return s
+
 
     def statement(self, p):
         if len(self.nest_stack) != 0:
@@ -141,26 +170,25 @@ class Generator():
         """Initialise a 1D array"""
         id = p[i_id]
         initialiser = p[i_initialiser]
+        csvinit = self.lcsv(initialiser)
 
         if not self.var_exists(id):
             # construct a 1D array object before we write to it
             self.create_var(id)
             self.out("%s = Array()" % id)
 
-        self.out("%s = [%s]" % (id, initialiser))
+        self.out("%s = [%s]" % (id, csvinit))
 
     def READLINE(self, p, i_file, i_expr):
         file = p[i_file]
         expr = p[i_expr]
         p[0] = "readline(%s, %s)" % (file, expr)
-        #TODO runtime support required
 
     def WRITELINE(self, p, i_file, i_expr1, i_expr2):
         file = p[i_file]
         expr1 = p[i_expr1]
         expr2 = p[i_expr2]
         self.out("writeline(%s, %s, %s)" % (file, expr1, expr2))
-        #TODO runtime support required
 
     def IF(self, p, i_expr):
         expr = p[i_expr]
@@ -263,8 +291,13 @@ class Generator():
             raise RuntimeError("Nested procedure/function not allowed")
 
         id = p[i_id]
-        params = p[i_params]
-        self.out("def %s(%s):" % (id, params))
+        params = p[i_params] # should be a list
+        #TODO need to create_var() on each parameter
+        #for v in params:
+        #   self.create_var(v)
+
+        csvparams = self.lcsv(params)
+        self.out("def %s(%s):" % (id, csvparams))
         self.indent()
         self.nest_stack.append(0) # count of statements in function
         self.procfn += 1
@@ -287,8 +320,13 @@ class Generator():
             raise RuntimeError("Nested procedure/function not allowed")
 
         id = p[i_id]
-        params = p[i_params]
-        self.out("def %s(%s):" % (id, params))
+        params = p[i_params] # should be a list
+        #TODO need to create_var() on each parameter
+        #for v in params:
+        #   self.create_var(v)
+
+        csvparams = self.lcsv(params)
+        self.out("def %s(%s):" % (id, csvparams))
         self.indent()
         self.procfn += 1
         self.nest_stack.append(0) # count of statements in function
@@ -302,21 +340,17 @@ class Generator():
         self.procfn -= 1
         self.now_global()
 
-    def callparams(self, p, i_params, i_expr):
-        params = p[i_params]
-        expr = p[i_expr]
-        r = params + ", " + expr
-        p[0] = r
-
     def proccall(self, p, i_id, i_params):
         id = p[i_id]
-        params = p[i_params]
-        self.out("%s(%s)" % (id, params))
+        params = p[i_params] # should be a list
+        csvparams = self.lcsv(params)
+        self.out("%s(%s)" % (id, csvparams))
 
     def fncall(self, p, i_id, i_params):
         id = p[i_id]
-        params = p[i_params]
-        r = "%s(%s)" % (id, params)
+        params = p[i_params] # should be a list
+        csvparams = self.lcsv(params)
+        r = "%s(%s)" % (id, csvparams)
         p[0] = r
 
     def bracket(self, p, i_expr):
@@ -468,17 +502,5 @@ class Generator():
             raise ParserException("Read from an array that does not exist")
         r = "%s[%s][%s]" % (id, expr1, expr2)
         p[0] = r
-
-
-
-
-#----- TEST -------------------------------------------------------------------
-
-def test():
-    generator = Generator()
-    # TODO call various methods with p parameters, to test output
-
-if __name__ == "__main__":
-    test()
 
 # END
