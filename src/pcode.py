@@ -48,13 +48,32 @@ from pcode_parser import * # this is the generated parser
 set_backend(generator)
 
 import ply.yacc as yacc
-yacc.yacc()
+y = yacc.yacc()
 
 
 #----- RUN --------------------------------------------------------------------
 
+buffer = ""
+
+def test(src):
+    """Run the src through the parser, capture the generated output and return it"""
+    global buffer
+
+    def bufemit(msg):
+        global buffer
+        buffer += msg
+
+    global emit
+    emit = bufemit
+
+    translate(src)
+    b = buffer
+    buffer = ""
+    return b
+
 def translate(src):
-    yacc.parse(src)
+    y.parse(src)
+    y.restart()
 
 def interactive():
     """interactive mode from terminal"""

@@ -9,14 +9,41 @@ convert this into Python to further develop it.
 JUST DONE
 Refactored pcode.py so it is reconfigurable for UnitTest
 
+yacc.yacc generates the LRParser() instance,
+it also writes to yacc module parse method = parser.parse
+
+So, the other way to use it is via the instance, like this:
+
+  p = yacc.yacc()
+  p.parse(src)
+  p.restart()
+
+Just tested this (once) and it works.
+Tested it (twice in succession) and it works with restart() in the middle.
 
 
 --------------------------------------------------------------------------------
 TODO running real code
 
-* Reconfigure tests into syntax tests and runtime tests
-* Encapsulate all tests in a UnitTest suite
+* build a single test in tests.py and prove we can capture output
 
+* build two tests (first with an error) and prove that one works independently
+  of the other.
+
+* move all pcode_test.pc tests over to separate tests.py tests
+  this will be the TestSyntax()
+
+* Design the tests for TestArrays()
+
+* Design the tests for TestIO()
+
+* Design the tests for TestRuntime()
+
+  i.e. generate a bit of code into python, and then run it.
+  need to find a reasonably sandboxed way to call the generated python
+  in an external file or perhaps eval'ed from a string (note it needs to
+  import array and io) and probably module.reload it - could just generate
+  different test numbered files and import them and run them.
 
 --------------------------------------------------------------------------------
 TODO - runtime embedding
