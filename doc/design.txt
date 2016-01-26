@@ -7,12 +7,21 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-* Added test cases for all syntax tests (input src only)
+* All syntax tests now passing unit test harness
+* listed tests for TestArrays, TestIO, TestRuntime
 
 --------------------------------------------------------------------------------
-TODO running real code
+TODO: running real code
 
-* add expected results for all syntax tests
+* work out how to call a python program, are we going to import and run it
+  with module.load? Need to capture it's output.
+  Would be nice to be able to read variable state etc from the module at the
+  end too.
+
+* write a simple test that generates a named python program with the test
+  number, then runs it and captures it's output.
+
+* work out how we are going to test keyboard input (stdin??)
 
 * Design the tests for TestArrays()
 
@@ -20,13 +29,11 @@ TODO running real code
 
 * Design the tests for TestRuntime()
 
-  i.e. generate a bit of code into python, and then run it.
-  need to find a reasonably sandboxed way to call the generated python
-  in an external file or perhaps eval'ed from a string (note it needs to
-  import array and io) and probably module.reload it - could just generate
-  different test numbered files and import them and run them.
+
 
 --------------------------------------------------------------------------------
+PACKAGING AND DISTRIBUTION
+
 TODO - runtime embedding
 
 The point of this is to be able to package the whole toolsuite up as a python
@@ -88,6 +95,10 @@ run python pcode.zip myprog.aqa on any platform and it will work?
 The aqa_io.py and aqa_array.py modules will be embedded inside a folder in the zip
 and bytestream'ed out into the user script directory every time they run the tool.
 That way if they damage the file, it will be replaced on each build.
+
+Need to write some documentation on the grammar with examples
+
+Need to write some documentation on how to run the tool
 
 --------------------------------------------------------------------------------
 

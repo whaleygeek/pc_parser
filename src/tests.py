@@ -1218,47 +1218,116 @@ h[1][2] = 1212
 """
         OUT = pcode.test(SRC)
         self.assertEquals(EXPECTED, OUT)
-    
-    #--------------------------------------------------------------------------
-    def test_fn_bubble_arrayIJ(self):
-        SRC = \
-"""
-FUNCTION test_fn_bubble_arrayIJ()
-    i[1] <- 1
-    j[1][2] <- 12
-ENDFUNCTION
-
-i[1] <- 2
-j[1][2] <- 1212
-"""
-        EXPECTED = self.IMPORTS + \
-"""
-def test_fn_bubble_arrayIJ():
-    i = Array()
-    i[1] = 1
-    j = Array2D()
-    j[1][2] = 12
-i = Array()
-i[1] = 2
-j = Array2D()
-j[1][2] = 1212
-"""
-        OUT = pcode.test(SRC)
-        self.assertEquals(EXPECTED, OUT)
-    
 
 
 #----- TEST ARRAYS ------------------------------------------------------------
 #class TestArrays(unittest.TestCase)
 #    pass
 
+# test 1d array creation
+# test 1d array write to new location extend by one
+# test 1d array write to existing location
+# test 1d array write expand by many into sparse array
+# test 1d array read non existing location
+# test 1d array read existing location
+# test 1d array initialisation
+
+# test 2d array creation
+# test 2d array write to new location extend by one in x
+# test 2d array write to new location extend by one in y
+# test 2d array write to existing location in x
+# test 2d array write to existing location in y
+# test 2d array write expand by many into sparse array in x
+# test 2d array write expand by many into sparse array in y
+# test 2d array read non existing location in x
+# test 2d array read non existing location in y
+# test 2d array read existing location
+
+
 #----- TEST IO ----------------------------------------------------------------
 #class TestIO(unittest.TestCase):
 #    pass
 
+# write to a file that does not exist, to create it
+# write to a file that does exist, to modify it
+# write to a file that is locked, get an error
+# write to a file that does not exist, no dir permissions, get error
+# write to a file that adds a new line at the end
+# write to a file that adds a new line way past the end (padding)
+# write to a file that modifies a line to make it longer
+# write to a file that modifies a line to make it shorter
+
+# read from a file that does not exist
+# read from a file in a dir with no permissions, get error
+# read from a file without read permissions, get error
+# read from a file that exists
+# read a line that does not exist
+# read a line that does exist
+
+
 #----- TEST RUNTIME -----------------------------------------------------------
 #class TestRuntime(unittest.TestCase):
 #    pass
+
+# test we can run a hello world program
+# i.e.
+#   translate into python
+#   store this in a file
+#   necessary imports are there
+#   can run it as a python task
+#   can capture output
+#   compare runtime output to expected
+#   do we need to detect non terminating progs and timeout??
+
+# output
+# assignment
+# array1d assign
+# array2d assign
+# array init
+# array read
+# array 2d read
+# if
+# if else
+# nested if else
+# while
+# repeat
+# for
+# func noparams
+# func 1param
+# func 2params
+# case
+# nested case
+# true false
+# number
+# id
+# string
+# brackets
+# len
+# plus
+# minus
+# times
+# divide
+# mod
+# uminus
+# uplus
+# equal
+# notequal
+# less
+# greater
+# lessequal
+# greaterequal
+# and
+# or
+# xor
+# readline
+# writeline
+# fncall_noparams
+# fncall_1param
+# fncall_2params
+# proccall_1param
+# proccall_2params
+# fnproc global array
+# fn bubble array
 
 
 if __name__ == "__main__":

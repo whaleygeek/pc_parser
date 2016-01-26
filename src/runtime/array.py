@@ -44,18 +44,4 @@ class Array2D():
         return str(self.rows)
 
 
-def test_arrays():
-    a = Array()
-    a[20] = "Fred"
-    print(a[20])
-    print(a)
-
-    b = Array2D()
-    b[4][5]='45'
-    print(b[4][5])
-    print(b)
-
-if __name__ == "__main__":
-    test_arrays()
-
 # END
