@@ -1354,24 +1354,43 @@ class TestArrays(unittest.TestCase):
 
 
 #----- TEST IO ----------------------------------------------------------------
-#class TestIO(unittest.TestCase):
-#    pass
 
-# write to a file that does not exist, to create it
-# write to a file that does exist, to modify it
-# write to a file that is locked, get an error
-# write to a file that does not exist, no dir permissions, get error
-# write to a file that adds a new line at the end
-# write to a file that adds a new line way past the end (padding)
-# write to a file that modifies a line to make it longer
-# write to a file that modifies a line to make it shorter
+class TestIO(unittest.TestCase):
+    def test_write_missing(self):
+        pass
 
-# read from a file that does not exist
-# read from a file in a dir with no permissions, get error
-# read from a file without read permissions, get error
-# read from a file that exists
-# read a line that does not exist
-# read a line that does exist
+    def test_write_present(self):
+        pass
+
+    def test_write_locked(self):
+        pass
+
+    def test_write_add1(self):
+        pass
+
+    def test_write_expandmany(self):
+        pass
+
+    def test_write_expandline(self):
+        pass
+
+    def test_write_shrinkline(self):
+        pass
+
+
+    def test_read_missing(self):
+        pass
+
+    def test_read_present(self):
+        pass
+
+    def test_read_missing_line(self):
+        pass
+
+    def test_read_present_line(self):
+        pass
+
+
 
 
 #----- TEST RUNTIME -----------------------------------------------------------
