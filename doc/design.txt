@@ -7,16 +7,15 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Got the emitter working so it captures to an output string
+* build a single test in tests.py and prove we can capture output
+
+* build two tests (first with an error) and prove that one works independently
+  of the other.
 
 
 --------------------------------------------------------------------------------
 TODO running real code
 
-* build a single test in tests.py and prove we can capture output
-
-* build two tests (first with an error) and prove that one works independently
-  of the other.
 
 * move all pcode_test.pc tests over to separate tests.py tests
   this will be the TestSyntax()
