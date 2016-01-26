@@ -1295,31 +1295,62 @@ class TestArrays(unittest.TestCase):
 
 
     def test_2d_create(self):
-        pass
+        a = array.Array2D()
+        # expect no exception
+
+    def test_2d_write_extendxy1(self):
+        a = array.Array2D()
+        a[0][0] = 99
+        self.assertEquals("[[99]]", str(a))
 
     def test_2d_write_extendx1(self):
-        pass
+        a = array.Array2D()
+        a[0][0] = 99
+        a[1][0] = 10
+        self.assertEquals("[[99], [10]]", str(a))
 
     def test_2d_write_extendy1(self):
-        pass
+        a = array.Array2D()
+        a[0][0] = 99
+        a[0][1] = 10
+        self.assertEquals("[[99, 10]]", str(a))
 
     def test_2d_write_existingxy(self):
-        pass
+        a = array.Array2D()
+        a[0][0] = 99
+        a[0][1] = 10
+
+        a[0][0] = 1010
+        a[0][1] = 2020
+        self.assertEquals("[[1010, 2020]]", str(a))
 
     def test_2d_write_expandmanyx(self):
-        pass
+        a = array.Array2D()
+        a[3][0] = 33
+        self.assertEquals("[[], [], [], [33]]", str(a))
 
     def test_2d_write_expandmanyy(self):
-        pass
+        a = array.Array2D()
+        a[0][3] = 33
+        self.assertEquals("[[0, 0, 0, 33]]", str(a))
 
     def test_2d_read_missingx(self):
-        pass
+        a = array.Array2D()
+        a[0][0] = 10
+        r = a[3][0]
+        self.assertEquals(0, r)
 
     def test_2d_read_missingy(self):
-        pass
+        a = array.Array2D()
+        a[0][0] = 10
+        r = a[0][3]
+        self.assertEquals(0, r)
 
     def test_2d_read_existing(self):
-        pass
+        a = array.Array2D()
+        a[3][3] = 33
+        r = a[3][3]
+        self.assertEquals(33, r)
 
 
 #----- TEST IO ----------------------------------------------------------------
