@@ -1242,27 +1242,56 @@ test_array_param(z)
 
 #----- TEST ARRAYS ------------------------------------------------------------
 
-class TestArrays(unittest.TestCase)
+import array
+
+class TestArrays(unittest.TestCase):
+
     def test_1d_create(self):
-        pass
+        a = array.Array()
+        #expect no exception
 
     def test_1d_write_extend1(self):
-        pass
+        a = array.Array()
+        a[0] = 99
+        EXPECTED = "[99]"
+        actual = str(a)
+        self.assertEquals(EXPECTED, actual)
 
     def test_1d_write_existing(self):
-        pass
+        a = array.Array()
+        a[0] = 99
+        a[0] = 22
+        EXPECTED = "[22]"
+        actual = str(a)
+        self.assertEquals(EXPECTED, actual)
 
     def test_1d_write_extendmany(self):
-        pass
+        a = array.Array()
+        a[0] = 99
+        a[5] = 22
+        EXPECTED = "[99, 0, 0, 0, 0, 22]"
+        actual = str(a)
+        self.assertEquals(EXPECTED, actual)
 
     def test_1d_read_missing(self):
-        pass
+        a = array.Array()
+        a[0]=99
+        r = a[10]
+        self.assertEquals(0, r)
+        actual = str(a)
+        self.assertEquals("[99]", actual)
 
     def test_1d_read_existing(self):
-        pass
+        a = array.Array()
+        a[0]=99
+        a[10]=1010
+        actual = a[10]
+        self.assertEquals(1010, actual)
 
     def test_1d_init(self):
-        pass
+        a = array.Array(10,9,8,7,6)
+        EXPECTED = "[10, 9, 8, 7, 6]"
+        self.assertEquals(EXPECTED, str(a))
 
 
     def test_2d_create(self):
