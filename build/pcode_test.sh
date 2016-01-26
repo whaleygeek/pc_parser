@@ -10,5 +10,5 @@ cp ../../src/pygen.py .
 cp ../../src/pcode_test.pc .
 cp ../../src/runtime/*.py .
 
-python pcode.py < pcode_test.pc
+python pcode.py < pcode_test.pc > pcode_test_out.py
 cd ..

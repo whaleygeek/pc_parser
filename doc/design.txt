@@ -7,60 +7,15 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Array constructors added and tested - code generated looks fine.
+Refactored pcode.py so it is reconfigurable for UnitTest
 
 
 
 --------------------------------------------------------------------------------
 TODO running real code
 
-Need to run the real python code and make sure it generates correct answers.
-Including array accesses, and readline/writeline, input and output.
-
-Might be worth forking the test script into two scripts, one for syntax tests,
-one for runtime tests. The current test generates valid python, but it's a
-garbage program semantically because it doesn't do anything useful and
-testable. e.g.
-
-Traceback (most recent call last):
-  File "out.py", line 264, in <module>
-    test_array2d_read()
-  File "out.py", line 54, in test_array2d_read
-    print(a[x*2+1][y-2*3])
-  File "/Users/davidw/git_work/pc_parser/build/sandbox/array.py", line 23, in __getitem__
-    return self.data[index]
-IndexError: list index out of range
-
-Might tighten up the runtime checking in the Array() and Array2D()
-classes, although the above error is actually quite meaningful.
-
-Also the script is really big now, and there is no way apart from 'didn't see
-a syntax error' and capture/compare testing the whole script, to check it is
-actually correct. Perhaps introduction of a UnitTest would help here.
-
-This would require a way to poke in a script portion from a string into the
-parser, rather than getting the parser to always read it from a file stream.
-i.e. the input reader would need to be modified. It is possible to pass
-a whole string to the parser.
-
-Actually looking at how it is coded, it loads the whole file into a string
-until EOF then sends it to yacc.parse (not overly efficient), but this
-same scheme could easily be used in a UnitTest suite.
-
-    # file mode
-    s = ""
-    while True:
-        line = sys.stdin.read()
-        if line != "":
-            s += line
-        else:
-            break
-
-    yacc.parse(s)
-
-Might be worth looking into how we can send a stream of tokens to the lexer
-rather than a string to the parser, as that will be a more memory efficient
-solution for larger scripts.
+* Reconfigure tests into syntax tests and runtime tests
+* Encapsulate all tests in a UnitTest suite
 
 
 --------------------------------------------------------------------------------

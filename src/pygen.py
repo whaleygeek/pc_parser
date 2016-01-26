@@ -9,7 +9,7 @@ class ParserException(Exception):
 
 
 class Generator():
-    def __init__(self):
+    def __init__(self, emit=None):
         self.indentlev   = 0
         self.nest_stack  = []
         self.case_stack  = []
@@ -17,6 +17,7 @@ class Generator():
 
         self.global_vars = []
         self.local_vars  = None
+        self.emit        = emit
 
         self.out("from io import *")
         self.out("from array import *")
@@ -30,8 +31,14 @@ class Generator():
         self.indentlev -= 4
 
     def out(self, msg):
-        print((" " * self.indentlev) + msg)
-
+        """Output a line to the output stream"""
+        # Note that the emitter can be provided by the caller at contruction time
+        # but the default if none provided is to send to stdout.
+        msg = (" " * self.indentlev) + msg
+        if self.emit != None:
+            self.emit(msg)
+        else:
+            print(msg)
 
     #----- HELPERS ------------------------------------------------------------
 

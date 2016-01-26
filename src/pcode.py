@@ -1,5 +1,8 @@
 # pcode.py  17/01/2016  D.J.Whale
 
+import sys
+
+
 #----- ERROR HANDLERS ---------------------------------------------------------
 
 def t_error(t):
@@ -15,49 +18,60 @@ def p_error(p):
         print("Syntax error at EOF")
 
 
-#----- RUN --------------------------------------------------------------------
+#----- CONFIGURABLE EMITTER ---------------------------------------------------
+
+def emit(msg):
+    """Configurable emit handler"""
+    # Change this to send output to anywhere else
+    print(msg)
+
+
+#----- BUILD PARSER -----------------------------------------------------------
 
 # Build the lexer
-#print("building lexer")
 from pcode_lexer import *
-
 import ply.lex as lex
 lex.lex()
 
 
-# Build the parser
-#print("building parser")
-from pcode_parser import * # this is the generated parser
-
+# Build the back-end generator
 #TODO: parse command line args to get name of backend generator
 # import the module by name
 # call code in pcode_parser that sets it's emit instance.
 
 import pygen
-generator = pygen.Generator()
+generator = pygen.Generator(emit=emit)
+
+
+# Build the parser
+from pcode_parser import * # this is the generated parser
 set_backend(generator)
 
 import ply.yacc as yacc
 yacc.yacc()
 
-#print("running")
 
-import sys
+#----- RUN --------------------------------------------------------------------
 
-if sys.stdin.isatty():
-    # interactive mode
+def translate(src):
+    yacc.parse(src)
+
+def interactive():
+    """interactive mode from terminal"""
+
     PROMPT = "pcode> "
     while True:
-        #TODO should just read STDIN and pass whole lines to yacc.parse()
-        #For now, let's use it interactively, to aid testing
         try:
             s = raw_input(PROMPT)
         except EOFError:
             break
         if not s: continue
-        yacc.parse(s)
-else:
-    # file mode
+        translate(s)
+
+def batch():
+    """Batch mode from stdin"""
+
+    # Read whole of stdin into a string
     s = ""
     while True:
         line = sys.stdin.read()
@@ -66,7 +80,16 @@ else:
         else:
             break
 
-    yacc.parse(s)
+    # Now parse and generate
+    translate(s)
 
+
+#----- MAIN -------------------------------------------------------------------
+
+if __name__ == "__main__":
+    if sys.stdin.isatty():
+        interactive()
+    else:
+        batch()
 
 # END

@@ -480,7 +480,7 @@ ENDPROCEDURE
 
 # Array defined inside fnproc does not bubble out to global scope
 
-FUNCTION test_fn_bubble_array()
+FUNCTION test_fn_bubble_arrayGH()
     g[1] <- 1
     h[1][2] <- 12
 ENDFUNCTION
@@ -488,7 +488,7 @@ ENDFUNCTION
 g[1] <- 2
 h[1][2] <- 1212
 
-FUNCTION test_fn_bubble_array()
+FUNCTION test_fn_bubble_arrayIJ()
     i[1] <- 1
     j[1][2] <- 12
 ENDFUNCTION
