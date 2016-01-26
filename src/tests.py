@@ -1242,7 +1242,7 @@ test_array_param(z)
 
 #----- TEST ARRAYS ------------------------------------------------------------
 
-import array
+import array #TODO: better name that does not clash with python.array
 
 class TestArrays(unittest.TestCase):
 
@@ -1292,7 +1292,6 @@ class TestArrays(unittest.TestCase):
         a = array.Array(10,9,8,7,6)
         EXPECTED = "[10, 9, 8, 7, 6]"
         self.assertEquals(EXPECTED, str(a))
-
 
     def test_2d_create(self):
         a = array.Array2D()
@@ -1355,42 +1354,79 @@ class TestArrays(unittest.TestCase):
 
 #----- TEST IO ----------------------------------------------------------------
 
+import io #TODO: Better name that does not clash with python.io
+
 class TestIO(unittest.TestCase):
     def test_write_missing(self):
         pass
+        #remove file with os
+        #io.writeline(file, 1, "data")
+        #CHECKRESULT
 
     def test_write_present(self):
         pass
+        #create file with os
+        #io.writeline(file, 1, "data")
+        #CHECKRESULT
 
     def test_write_locked(self):
         pass
+        #create file with os
+        #open the file for exclusive write
+        #io.writeline(file, 1, "data")
+        #CHECKRESULT
 
     def test_write_add1(self):
         pass
+        #create file with os with no lines in it
+        #io.writeline(file, 1, "data")
+        #CHECKRESULT
 
     def test_write_expandmany(self):
         pass
+        #create file with os with no lines in it
+        #io.writeline(file, 10, "data")
+        #CHECKRESULT
 
     def test_write_expandline(self):
         pass
+        #create file with os with no lines in it
+        #io.writeline(file, 1, "data")
+        #io.writeline(file, 2, "more data")
+        #io.writeline(file, 1, "longer data expanded")
+        #CHECKRESULT
 
     def test_write_shrinkline(self):
         pass
-
+        #create file with os with no lines in it
+        #io.writeline(file, 1, "data")
+        #io.writeline(file, 2, "more data")
+        #io.writeline(file, 1, "a")
+        #CHECKRESULT
 
     def test_read_missing(self):
         pass
+        # use os to delete file
+        # io.readline(file, 1)
+        #CHECKRESULT
 
     def test_read_present(self):
         pass
+        # use os to create file with 1 line in it
+        # io.readline(file, 1)
+        #CHECKRESULT
 
     def test_read_missing_line(self):
         pass
+        # use os to create file with 1 line in it
+        # io.readline(file, 2)
+        #CHECKRESULT
 
     def test_read_present_line(self):
         pass
-
-
+        # use os to create file with 4 lines in it
+        # io.readline(file, 3)
+        #CHECKRESULT
 
 
 #----- TEST RUNTIME -----------------------------------------------------------
