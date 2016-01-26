@@ -7,18 +7,12 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-* build a single test in tests.py and prove we can capture output
-
-* build two tests (first with an error) and prove that one works independently
-  of the other.
-
+* Added test cases for all syntax tests (input src only)
 
 --------------------------------------------------------------------------------
 TODO running real code
 
-
-* move all pcode_test.pc tests over to separate tests.py tests
-  this will be the TestSyntax()
+* add expected results for all syntax tests
 
 * Design the tests for TestArrays()
 
