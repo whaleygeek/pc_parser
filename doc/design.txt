@@ -9,6 +9,21 @@ convert this into Python to further develop it.
 JUST DONE
 Array handling when as a parameter now works
 
+a <- [1,2,3,4]
+
+generates
+
+a = Array()
+a = [1,2,3,4]
+
+So a is now a list, and does not have auto expand semantics.
+
+Also uses the args initialiser so that it is always an array,
+and never a list. If it ever becomes a list, the self expanding
+array semantics are lost.
+
+a = Array(1,2,3,4)
+
 --------------------------------------------------------------------------------
 TODO: running real code
 

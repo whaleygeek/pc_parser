@@ -152,12 +152,10 @@ ENDPROCEDURE
         EXPECTED = self.IMPORTS + \
 """
 def test_array_init():
-    a = Array()
-    a = [1, 2, 3, 4]
+    a = Array(1, 2, 3, 4)
     b = 10
     c = 20
-    d = Array()
-    d = [b, c, b, c, b+1, c+10]
+    d = Array(b, c, b, c, b+1, c+10)
 """
         OUT = pcode.test(SRC)
         self.assertEquals(EXPECTED, OUT)
@@ -174,8 +172,7 @@ ENDPROCEDURE
         EXPECTED = self.IMPORTS + \
 """
 def test_array_read():
-    a = Array()
-    a = [1, 2, 3, 4]
+    a = Array(1, 2, 3, 4)
     print(a[0])
 """
         OUT = pcode.test(SRC)
@@ -1178,8 +1175,7 @@ x = Array()
 x[1] = 1
 y = Array()
 y[2] = 2
-z = Array()
-z = [1, 2, 3]
+z = Array(1, 2, 3)
 def test_fn_global_array():
     print(x[1])
     print(y[2])
@@ -1237,8 +1233,7 @@ test_array_param(z)
 def test_array_param(a):
     print(a[0])
     print(a[1])
-z = Array()
-z = [1, 2, 3, 4]
+z = Array(1, 2, 3, 4)
 test_array_param(z)
 """
         OUT = pcode.test(SRC)

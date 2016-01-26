@@ -175,9 +175,8 @@ class Generator():
         if not self.var_exists(id):
             # construct a 1D array object before we write to it
             self.create_var(id)
-            self.out("%s = Array()" % id)
 
-        self.out("%s = [%s]" % (id, csvinit))
+        self.out("%s = Array(%s)" % (id, csvinit))
 
     def READLINE(self, p, i_file, i_expr):
         file = p[i_file]
@@ -289,6 +288,7 @@ class Generator():
     def FUNCTION(self, p, i_id, i_params):
         if self.procfn != 0:
             raise RuntimeError("Nested procedure/function not allowed")
+        self.now_local()
 
         id = p[i_id]
         params = p[i_params] # should be a list
@@ -300,7 +300,6 @@ class Generator():
         self.indent()
         self.nest_stack.append(0) # count of statements in function
         self.procfn += 1
-        self.now_local()
 
     def RETURN(self, p, i_expr):
         expr = p[i_expr]
@@ -317,6 +316,7 @@ class Generator():
     def PROCEDURE(self, p, i_id, i_params):
         if self.procfn != 0:
             raise RuntimeError("Nested procedure/function not allowed")
+        self.now_local()
 
         id = p[i_id]
         params = p[i_params] # should be a list
@@ -328,7 +328,6 @@ class Generator():
         self.indent()
         self.procfn += 1
         self.nest_stack.append(0) # count of statements in function
-        self.now_local()
 
     def ENDPROCEDURE(self, p):
         c = self.nest_stack.pop()
