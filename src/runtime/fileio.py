@@ -9,6 +9,8 @@ class FileIOException(Exception):
     pass
 
 def readline(filename, lineno):
+    """Open the file and read a specific line, lines numbered from 1 upwards"""
+
     if type(lineno) != int:
         raise FileIOException("Line number must be an integer")
 
@@ -17,19 +19,29 @@ def readline(filename, lineno):
 
     lineno -= 1 # file offsets lines from zero
 
-    f = open(filename) #TODO: What if file does not exist?
+    if not os.path.exists(filename):
+        raise FileIOException("Tried to read from a non existent file:%s" % filename)
+
+    f = open(filename)
     lines = f.readlines()
     f.close()
     if lineno >= len(lines):
         raise FileIOException("Attempt to read a line that does not exist in file: wanted:%d max:%d" % (lineno, len(lines)-1))
 
-    return lines[lineno-1]
+    return lines[lineno].strip()
 
 def writeline(filename, lineno, data):
+    """Open the file and write a specific line, lines numbered from 1 upwards"""
+
     # read all lines in
-    f = open(filename, "w+")
-    lines = f.readlines()
-    f.close()
+    if not os.path.exists(filename):
+        lines = []
+    else:
+        f = open(filename, "rw+")
+        lines = f.readlines()
+        f.close()
+
+    #print("READ:%s" % lines)
 
     # modify in-memory copy first, so that the line exists
     lineno -= 1
@@ -40,10 +52,13 @@ def writeline(filename, lineno, data):
     lines[lineno] = data + '\n'
 
     # now create a brand new file and write all the lines out
-    os.remove(filename)
+    if os.path.exists(filename):
+        os.remove(filename)
     f = open(filename, "w")
     f.writelines(lines)
     f.close()
+
+    #print("WRITE:%s" % lines)
 
 
 # END

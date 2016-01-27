@@ -1368,12 +1368,14 @@ class TestIO(unittest.TestCase):
             pass # ignore missing files
 
     def create_file_blank(self, name):
-        os.remove(name)
+        if os.path.exists(name):
+            os.remove(name)
         f = open(name, "w")
         f.close()
 
     def create_file_with(self, name, contents):
-        os.remove(name)
+        if os.path.exists(name):
+            os.remove(name)
         f = open(name, "w")
         f.write(contents)
         f.close()
@@ -1400,71 +1402,96 @@ class TestIO(unittest.TestCase):
 
 
     def test_write_missing(self):
+        """Should be possible to write to a file that does not exist"""
         self.remove_file(self.FILENAME)
         fileio.writeline(self.FILENAME, 1, "data")
 
         self.assertTrue(self.file_exists(self.FILENAME))
         self.assertEquals("data\n", self.get_file_contents(self.FILENAME))
 
-    def Xtest_write_present(self):
+    def test_write_present(self):
+        """Should be possible to write to a file that does exist"""
         self.create_file_blank(self.FILENAME)
         fileio.writeline(self.FILENAME, 1, "data")
-        #TODO: CHECKRESULT
 
-    def Xtest_write_locked(self):
-        self.create_file(self.FILENAME)
+        self.assertEquals("data\n", self.get_file_contents(self.FILENAME))
+
+    def test_write_locked(self):
+        """Should not be possible to write to a locked file"""
+        self.create_file_blank(self.FILENAME)
         self.lock_file(self.FILENAME)
         try:
-            fileio.writeline(file, 1, "data")
+            fileio.writeline(self.FILENAME, 1, "data")
             self.fail("Did not get expected exception")
         except:
-            print("expected exception")
+            pass # print("expected exception")
         finally:
             self.unlock_file(self.FILENAME)
 
-    def Xtest_write_add1(self):
+    def test_write_add1(self):
+        """Should be possible to add a line to an existing file"""
         self.create_file_blank(self.FILENAME)
-        fileio.writeline(file, 1, "data")
-        #TODO: CHECKRESULT
+        fileio.writeline(self.FILENAME, 1, "data")
 
-    def Xtest_write_expand_many(self):
+        self.assertEquals("data\n", self.get_file_contents(self.FILENAME))
+
+    def test_write_expand_many(self):
+        """Should be possible to write a line anywhere in an existing file"""
         self.create_file_blank(self.FILENAME)
-        fileio.writeline(file, 10, "data")
-        #TODO: CHECKRESULT
+        fileio.writeline(self.FILENAME, 10, "data")
 
-    def Xtest_write_expand_line(self):
+        self.assertEquals("\n\n\n\n\n\n\n\n\ndata\n", self.get_file_contents(self.FILENAME))
+
+    def test_write_expand_line(self):
+        """Should be possible to expand an existing line in a file without damaging others"""
         self.create_file_blank(self.FILENAME)
-        fileio.writeline(file, 1, "data")
-        fileio.writeline(file, 2, "more data")
-        fileio.writeline(file, 1, "longer data expanded")
-        #TODO: CHECKRESULT
+        fileio.writeline(self.FILENAME, 1, "data")
+        fileio.writeline(self.FILENAME, 2, "more data")
+        fileio.writeline(self.FILENAME, 1, "longer data expanded")
 
-    def Xtest_write_shrink_line(self):
+        self.assertEquals("longer data expanded\nmore data\n", self.get_file_contents(self.FILENAME))
+
+    def test_write_shrink_line(self):
+        """Should be possible to shrink an existing line in a file without damaging others"""
         self.create_file_blank(self.FILENAME)
-        fileio.writeline(file, 1, "data")
-        fileio.writeline(file, 2, "more data")
-        fileio.writeline(file, 1, "a")
-        #TODO: CHECKRESULT
+        fileio.writeline(self.FILENAME, 1, "data")
+        fileio.writeline(self.FILENAME, 2, "more data")
+        fileio.writeline(self.FILENAME, 1, "a")
 
-    def Xtest_read_missing(self):
+        self.assertEquals("a\nmore data\n", self.get_file_contents(self.FILENAME))
+
+    def test_read_missing(self):
+        """If you read from a missing file, should get an exception"""
         self.remove_file(self.FILENAME)
-        fileio.readline(file, 1)
-        #TODO: CHECKRESULT
+        try:
+            r = fileio.readline(self.FILENAME, 1)
+            self.fail("Did not get expected exception")
+        except fileio.FileIOException:
+            pass # expected
 
-    def Xtest_read_present(self):
+    def test_read_present(self):
+        """If you read a line from a present file, that is missing, should get an exception"""
         self.create_file_blank(self.FILENAME)
-        fileio.readline(file, 1)
-        #TODO: CHECKRESULT
+        try:
+            r = fileio.readline(self.FILENAME, 1)
+            self.fail("Did not get expected exception")
+        except fileio.FileIOException:
+            pass # expected
 
-    def Xtest_read_missing_line(self):
+    def test_read_missing_line(self):
+        """If you read a line from a file beyond it's end, should get an exception"""
         self.create_file_with(self.FILENAME, "one\n")
-        fileio.readline(file, 2)
-        #TODO: CHECKRESULT
+        try:
+            r = fileio.readline(self.FILENAME, 2)
+            self.fail("Did not get expected exception")
+        except fileio.FileIOException:
+            pass # expected
 
-    def Xtest_read_present_line(self):
+    def test_read_present_line(self):
+        """If you read a line from a file where the file exists, should get correct data back"""
         self.create_file_with(self.FILENAME, "one\ntwo\nthree\nfour\n")
-        fileio.readline(file, 3)
-        #TODO: CHECKRESULT
+        r = fileio.readline(self.FILENAME, 3)
+        self.assertEquals("three", r)
 
 
 #----- TEST RUNTIME -----------------------------------------------------------

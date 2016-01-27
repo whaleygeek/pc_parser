@@ -7,15 +7,11 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Coded up tests for io
+All IO tests written and working.
 
 --------------------------------------------------------------------------------
 TODO: running real code
 
-* code up test result checking for io
-
-
---------------------------------------------------------------------------------
 
 * work out how we are going to test keyboard input (stdin??)
 
