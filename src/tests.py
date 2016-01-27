@@ -1242,23 +1242,23 @@ test_array_param(z)
 
 #----- TEST ARRAYS ------------------------------------------------------------
 
-import array #TODO: better name that does not clash with python.array
+import arrays
 
 class TestArrays(unittest.TestCase):
 
     def test_1d_create(self):
-        a = array.Array()
+        a = arrays.Array()
         #expect no exception
 
     def test_1d_write_extend1(self):
-        a = array.Array()
+        a = arrays.Array()
         a[0] = 99
         EXPECTED = "[99]"
         actual = str(a)
         self.assertEquals(EXPECTED, actual)
 
     def test_1d_write_existing(self):
-        a = array.Array()
+        a = arrays.Array()
         a[0] = 99
         a[0] = 22
         EXPECTED = "[22]"
@@ -1266,7 +1266,7 @@ class TestArrays(unittest.TestCase):
         self.assertEquals(EXPECTED, actual)
 
     def test_1d_write_extendmany(self):
-        a = array.Array()
+        a = arrays.Array()
         a[0] = 99
         a[5] = 22
         EXPECTED = "[99, 0, 0, 0, 0, 22]"
@@ -1274,7 +1274,7 @@ class TestArrays(unittest.TestCase):
         self.assertEquals(EXPECTED, actual)
 
     def test_1d_read_missing(self):
-        a = array.Array()
+        a = arrays.Array()
         a[0]=99
         r = a[10]
         self.assertEquals(0, r)
@@ -1282,40 +1282,40 @@ class TestArrays(unittest.TestCase):
         self.assertEquals("[99]", actual)
 
     def test_1d_read_existing(self):
-        a = array.Array()
+        a = arrays.Array()
         a[0]=99
         a[10]=1010
         actual = a[10]
         self.assertEquals(1010, actual)
 
     def test_1d_init(self):
-        a = array.Array(10,9,8,7,6)
+        a = arrays.Array(10,9,8,7,6)
         EXPECTED = "[10, 9, 8, 7, 6]"
         self.assertEquals(EXPECTED, str(a))
 
     def test_2d_create(self):
-        a = array.Array2D()
+        a = arrays.Array2D()
         # expect no exception
 
     def test_2d_write_extendxy1(self):
-        a = array.Array2D()
+        a = arrays.Array2D()
         a[0][0] = 99
         self.assertEquals("[[99]]", str(a))
 
     def test_2d_write_extendx1(self):
-        a = array.Array2D()
+        a = arrays.Array2D()
         a[0][0] = 99
         a[1][0] = 10
         self.assertEquals("[[99], [10]]", str(a))
 
     def test_2d_write_extendy1(self):
-        a = array.Array2D()
+        a = arrays.Array2D()
         a[0][0] = 99
         a[0][1] = 10
         self.assertEquals("[[99, 10]]", str(a))
 
     def test_2d_write_existingxy(self):
-        a = array.Array2D()
+        a = arrays.Array2D()
         a[0][0] = 99
         a[0][1] = 10
 
@@ -1324,29 +1324,29 @@ class TestArrays(unittest.TestCase):
         self.assertEquals("[[1010, 2020]]", str(a))
 
     def test_2d_write_expandmanyx(self):
-        a = array.Array2D()
+        a = arrays.Array2D()
         a[3][0] = 33
         self.assertEquals("[[], [], [], [33]]", str(a))
 
     def test_2d_write_expandmanyy(self):
-        a = array.Array2D()
+        a = arrays.Array2D()
         a[0][3] = 33
         self.assertEquals("[[0, 0, 0, 33]]", str(a))
 
     def test_2d_read_missingx(self):
-        a = array.Array2D()
+        a = arrays.Array2D()
         a[0][0] = 10
         r = a[3][0]
         self.assertEquals(0, r)
 
     def test_2d_read_missingy(self):
-        a = array.Array2D()
+        a = arrays.Array2D()
         a[0][0] = 10
         r = a[0][3]
         self.assertEquals(0, r)
 
     def test_2d_read_existing(self):
-        a = array.Array2D()
+        a = arrays.Array2D()
         a[3][3] = 33
         r = a[3][3]
         self.assertEquals(33, r)
@@ -1354,90 +1354,116 @@ class TestArrays(unittest.TestCase):
 
 #----- TEST IO ----------------------------------------------------------------
 
-import io #TODO: Better name that does not clash with python.io
+import fileio
+import os
 
 class TestIO(unittest.TestCase):
     FILENAME = "testio.txt"
+    locks = {}
 
     def remove_file(self, name):
-        pass #TODO
+        try:
+            os.remove(name)
+        except OSError:
+            pass # ignore missing files
 
     def create_file_blank(self, name):
-        pass #TODO
+        os.remove(name)
+        f = open(name, "w")
+        f.close()
 
-    def create_file_with(self, name):
-        pass #TODO
+    def create_file_with(self, name, contents):
+        os.remove(name)
+        f = open(name, "w")
+        f.write(contents)
+        f.close()
 
     def lock_file(self, name):
-        pass #TODO
+        f = open(name, "w")
+        self.locks[name] = f
 
     def unlock_file(self, name):
-        pass #TODO
+        f = self.locks[name]
+        f.close()
+        del self.locks[name]
+
+    def file_exists(self, name):
+        if os.path.exists(name) and os.path.isfile(name):
+            return True
+        return False
+
+    def get_file_contents(self, name):
+        f = open(name)
+        l = f.read()
+        f.close()
+        return l
 
 
     def test_write_missing(self):
         self.remove_file(self.FILENAME)
-        io.writeline(self.FILENAME, 1, "data")
-        #TODO: CHECKRESULT
+        fileio.writeline(self.FILENAME, 1, "data")
 
-    def test_write_present(self):
+        self.assertTrue(self.file_exists(self.FILENAME))
+        self.assertEquals("data\n", self.get_file_contents(self.FILENAME))
+
+    def Xtest_write_present(self):
         self.create_file_blank(self.FILENAME)
-        io.writeline(self.FILENAME, 1, "data")
+        fileio.writeline(self.FILENAME, 1, "data")
         #TODO: CHECKRESULT
 
-    def test_write_locked(self):
+    def Xtest_write_locked(self):
         self.create_file(self.FILENAME)
         self.lock_file(self.FILENAME)
         try:
-            io.writeline(file, 1, "data")
+            fileio.writeline(file, 1, "data")
             self.fail("Did not get expected exception")
         except:
             print("expected exception")
         finally:
             self.unlock_file(self.FILENAME)
 
-    def test_write_add1(self):
+    def Xtest_write_add1(self):
         self.create_file_blank(self.FILENAME)
-        io.writeline(file, 1, "data")
+        fileio.writeline(file, 1, "data")
         #TODO: CHECKRESULT
 
-    def test_write_expand_many(self):
+    def Xtest_write_expand_many(self):
         self.create_file_blank(self.FILENAME)
-        io.writeline(file, 10, "data")
+        fileio.writeline(file, 10, "data")
         #TODO: CHECKRESULT
 
-    def test_write_expand_line(self):
+    def Xtest_write_expand_line(self):
         self.create_file_blank(self.FILENAME)
-        io.writeline(file, 1, "data")
-        io.writeline(file, 2, "more data")
-        io.writeline(file, 1, "longer data expanded")
+        fileio.writeline(file, 1, "data")
+        fileio.writeline(file, 2, "more data")
+        fileio.writeline(file, 1, "longer data expanded")
         #TODO: CHECKRESULT
 
-    def test_write_shrink_line(self):
+    def Xtest_write_shrink_line(self):
         self.create_file_blank(self.FILENAME)
-        io.writeline(file, 1, "data")
-        io.writeline(file, 2, "more data")
-        io.writeline(file, 1, "a")
+        fileio.writeline(file, 1, "data")
+        fileio.writeline(file, 2, "more data")
+        fileio.writeline(file, 1, "a")
         #TODO: CHECKRESULT
 
-    def test_read_missing(self):
+    def Xtest_read_missing(self):
         self.remove_file(self.FILENAME)
-        io.readline(file, 1)
+        fileio.readline(file, 1)
         #TODO: CHECKRESULT
 
-    def test_read_present(self):
+    def Xtest_read_present(self):
         self.create_file_blank(self.FILENAME)
-        io.readline(file, 1)
+        fileio.readline(file, 1)
         #TODO: CHECKRESULT
 
-    def test_read_missing_line(self):
+    def Xtest_read_missing_line(self):
         self.create_file_with(self.FILENAME, "one\n")
-        io.readline(file, 2)
+        fileio.readline(file, 2)
         #TODO: CHECKRESULT
 
-    def test_read_present_line(self):
+    def Xtest_read_present_line(self):
         self.create_file_with(self.FILENAME, "one\ntwo\nthree\nfour\n")
-        io.readline(file, 3)
+        fileio.readline(file, 3)
         #TODO: CHECKRESULT
 
 
@@ -1462,11 +1488,11 @@ class TestIO(unittest.TestCase):
 
 # output
 # assignment
-# array1d assign
-# array2d assign
-# array init
-# array read
-# array 2d read
+# arrays1d assign
+# arrays2d assign
+# arrays init
+# arrays read
+# arrays 2d read
 # if
 # if else
 # nested if else
@@ -1507,8 +1533,8 @@ class TestIO(unittest.TestCase):
 # fncall_2params
 # proccall_1param
 # proccall_2params
-# fnproc global array
-# fn bubble array
+# fnproc global arrays
+# fn bubble arrays
 
 
 if __name__ == "__main__":

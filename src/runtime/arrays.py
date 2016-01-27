@@ -1,7 +1,4 @@
-# pcode_array.py  19/01/2016  D.J.Whale
-#
-# Destined to be a runtime support library for code that has been converted
-# from AQA pseudocode into python.
+# arrays.py  19/01/2016  D.J.Whale
 
 class Array():
     def __init__(self, *args):
