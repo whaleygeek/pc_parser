@@ -1500,8 +1500,46 @@ class TestIO(unittest.TestCase):
 # runs and generates the correct output
 # and the variables have the correct final state.
 
-#class TestRuntime(unittest.TestCase):
-#    pass
+class TestRuntime(unittest.TestCase):
+
+    def pc2py(self, contents):
+        """Turn pcode into python"""
+        return pcode.test(contents)
+
+    def runpy(self, name, contents):
+        """Create and run a python file"""
+        NAME = "t_run"
+        f = open("%s.py" % name, "w")
+        f.write(contents)
+        f.close()
+
+        import importlib
+        m = importlib.import_module(name)
+        return m # the module instance
+
+    def runpc(self, name, contents):
+        """Compile pcode into py and create and run it as a py file"""
+        py = self.pc2py(contents)
+        m = self.runpy(name, py)
+        return m # the module instance
+
+    def XXXXtest_hello_py(self):
+        """It should be possible to run a python from source"""
+        PYNAME = "t_hello"
+        SRC = """print("## hello from python ##")\n"""
+        self.runpy(PYNAME, SRC)
+
+    def XXXXtest_hello_pc(self):
+        """It should be possible to run pcode from source"""
+        SRC = """OUTPUT "## hello from pcode ##"\n"""
+        self.runpc("hello_pc", SRC)
+
+    def test_varstate(self):
+        """It should be possible to inspect final variable state"""
+        SRC = "a <- 1\n"
+        m = self.runpc("varstate_pc", SRC)
+        self.assertEquals(1, m.a)
+
 
 # test we can run a hello world program
 # i.e.

@@ -7,23 +7,21 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-All IO tests written and working.
+Added a generic feature to turn pcode into py, run it, and get
+access to final module state for post mortem inspection.
+
+This is a good building block for writing pcode runtime tests.
 
 --------------------------------------------------------------------------------
 TODO: running real code
 
+* how are we going to capture output from a running program?
 
-* work out how we are going to test keyboard input (stdin??)
+* how are we going to inject keyboard input into a running program?
 
 * Design the tests for TestRuntime()
 
-* work out how to call a python program, are we going to import and run it
-  with module.load? Need to capture it's output.
-  Would be nice to be able to read variable state etc from the module at the
-  end too.
 
-* write a simple test that generates a named python program with the test
-  number, then runs it and captures it's output.
 
 
 --------------------------------------------------------------------------------
