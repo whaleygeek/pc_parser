@@ -5,7 +5,7 @@ import pcode
 
 #----- TEST SYNTAX ------------------------------------------------------------
 
-class x:#TestSyntax(unittest.TestCase):
+class TestSyntax(unittest.TestCase):
     IMPORTS = "from io import *\nfrom array import *"
 
     #--------------------------------------------------------------------------
@@ -1357,79 +1357,96 @@ class TestArrays(unittest.TestCase):
 import io #TODO: Better name that does not clash with python.io
 
 class TestIO(unittest.TestCase):
+    FILENAME = "testio.txt"
+
+    def remove_file(self, name):
+        pass #TODO
+
+    def create_file_blank(self, name):
+        pass #TODO
+
+    def create_file_with(self, name):
+        pass #TODO
+
+    def lock_file(self, name):
+        pass #TODO
+
+    def unlock_file(self, name):
+        pass #TODO
+
+
     def test_write_missing(self):
-        pass
-        #remove file with os
-        #io.writeline(file, 1, "data")
-        #CHECKRESULT
+        self.remove_file(self.FILENAME)
+        io.writeline(self.FILENAME, 1, "data")
+        #TODO: CHECKRESULT
 
     def test_write_present(self):
-        pass
-        #create file with os
-        #io.writeline(file, 1, "data")
-        #CHECKRESULT
+        self.create_file_blank(self.FILENAME)
+        io.writeline(self.FILENAME, 1, "data")
+        #TODO: CHECKRESULT
 
     def test_write_locked(self):
-        pass
-        #create file with os
-        #open the file for exclusive write
-        #io.writeline(file, 1, "data")
-        #CHECKRESULT
+        self.create_file(self.FILENAME)
+        self.lock_file(self.FILENAME)
+        try:
+            io.writeline(file, 1, "data")
+            self.fail("Did not get expected exception")
+        except:
+            print("expected exception")
+        finally:
+            self.unlock_file(self.FILENAME)
 
     def test_write_add1(self):
-        pass
-        #create file with os with no lines in it
-        #io.writeline(file, 1, "data")
-        #CHECKRESULT
+        self.create_file_blank(self.FILENAME)
+        io.writeline(file, 1, "data")
+        #TODO: CHECKRESULT
 
-    def test_write_expandmany(self):
-        pass
-        #create file with os with no lines in it
-        #io.writeline(file, 10, "data")
-        #CHECKRESULT
+    def test_write_expand_many(self):
+        self.create_file_blank(self.FILENAME)
+        io.writeline(file, 10, "data")
+        #TODO: CHECKRESULT
 
-    def test_write_expandline(self):
-        pass
-        #create file with os with no lines in it
-        #io.writeline(file, 1, "data")
-        #io.writeline(file, 2, "more data")
-        #io.writeline(file, 1, "longer data expanded")
-        #CHECKRESULT
+    def test_write_expand_line(self):
+        self.create_file_blank(self.FILENAME)
+        io.writeline(file, 1, "data")
+        io.writeline(file, 2, "more data")
+        io.writeline(file, 1, "longer data expanded")
+        #TODO: CHECKRESULT
 
-    def test_write_shrinkline(self):
-        pass
-        #create file with os with no lines in it
-        #io.writeline(file, 1, "data")
-        #io.writeline(file, 2, "more data")
-        #io.writeline(file, 1, "a")
-        #CHECKRESULT
+    def test_write_shrink_line(self):
+        self.create_file_blank(self.FILENAME)
+        io.writeline(file, 1, "data")
+        io.writeline(file, 2, "more data")
+        io.writeline(file, 1, "a")
+        #TODO: CHECKRESULT
 
     def test_read_missing(self):
-        pass
-        # use os to delete file
-        # io.readline(file, 1)
-        #CHECKRESULT
+        self.remove_file(self.FILENAME)
+        io.readline(file, 1)
+        #TODO: CHECKRESULT
 
     def test_read_present(self):
-        pass
-        # use os to create file with 1 line in it
-        # io.readline(file, 1)
-        #CHECKRESULT
+        self.create_file_blank(self.FILENAME)
+        io.readline(file, 1)
+        #TODO: CHECKRESULT
 
     def test_read_missing_line(self):
-        pass
-        # use os to create file with 1 line in it
-        # io.readline(file, 2)
-        #CHECKRESULT
+        self.create_file_with(self.FILENAME, "one\n")
+        io.readline(file, 2)
+        #TODO: CHECKRESULT
 
     def test_read_present_line(self):
-        pass
-        # use os to create file with 4 lines in it
-        # io.readline(file, 3)
-        #CHECKRESULT
+        self.create_file_with(self.FILENAME, "one\ntwo\nthree\nfour\n")
+        io.readline(file, 3)
+        #TODO: CHECKRESULT
 
 
 #----- TEST RUNTIME -----------------------------------------------------------
+#
+# This is all about testing that the generated program for each aspect
+# runs and generates the correct output
+# and the variables have the correct final state.
+
 #class TestRuntime(unittest.TestCase):
 #    pass
 

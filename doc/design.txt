@@ -7,14 +7,17 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Array tests done and finished
+Coded up tests for io
 
 --------------------------------------------------------------------------------
 TODO: running real code
 
-* Design the tests for TestIO()
-* work out how we are going to test keyboard input (stdin??)
+* code up test result checking for io
 
+
+--------------------------------------------------------------------------------
+
+* work out how we are going to test keyboard input (stdin??)
 
 * Design the tests for TestRuntime()
 
@@ -99,6 +102,7 @@ Need to write some documentation on how to run the tool
 --------------------------------------------------------------------------------
 
 TIDY UP
+
 Need to add blank lines around fn/proc definitions to space the thing out a bit.
 perhaps put a comment tag with the date and time stamp of the conversion,
 and perhaps some traceability to the release date and time stamp of the conversion tool.
