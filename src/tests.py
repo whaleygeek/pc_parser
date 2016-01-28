@@ -1376,7 +1376,7 @@ import fileio
 import os
 
 class TestFileIO(unittest.TestCase):
-    FILENAME = "testio.txt"
+    FILENAME = "t_testio.txt"
     locks = {}
 
     def remove_file(self, name):
@@ -1559,20 +1559,20 @@ class TestRuntime(unittest.TestCase):
     def test_varstate(self):
         """It should be possible to inspect final variable state"""
         SRC = "a <- 1\n"
-        m = self.runpc("varstate_pc", SRC)
+        m = self.runpc("t_varstate_pc", SRC)
         self.assertEquals(1, m.a)
 
     def test_mockprint(self):
         """It should be possible to OUTPUT something and capture the result"""
         SRC = """OUTPUT "Hello"\n"""
-        m = self.runpc("mockprint_pc", SRC, mockio=True)
+        m = self.runpc("t_mockprint_pc", SRC, mockio=True)
         self.assertEquals(["Hello"], m.mockio.outbuf)
 
     def test_mockinput(self):
         """It should be possible to inject input data for USERINPUT"""
         SRC = """a<-USERINPUT\nOUTPUT a\n"""
         mockio.inbuf=["some data"]
-        m = self.runpc("mockinput_pc", SRC, mockio=True)
+        m = self.runpc("t_mockinput_pc", SRC, mockio=True)
         self.assertEquals(["some data"], m.mockio.outbuf)
 
     def XXXtest_assignment(self):
@@ -1872,7 +1872,7 @@ a <- [9,8,7,6,5,4,3,2,1]
 b <- bubblesort(a)
 OUTPUT a
 """
-        m = self.runpc("bubblesort_pc", SRC, mockio=True)
+        m = self.runpc("t_bubblesort_pc", SRC, mockio=True)
         self.assertEquals(["[1, 2, 3, 4, 5, 6, 7, 8, 9]"], m.mockio.outbuf)
 
 
