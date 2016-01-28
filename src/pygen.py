@@ -25,8 +25,8 @@ class Generator():
 
     def start(self):
         self.out(
-"""from io import *
-from array import *
+"""from fileio import *
+from arrays import *
 """)
 
     #----- EMITTER FUNCTIONS --------------------------------------------------
@@ -518,8 +518,8 @@ class MockGenerator(Generator):
 
     def start(self):
         self.out(
-"""from io import *
-from array import *
+"""from fileio import *
+from arrays import *
 import mockio
 """)
 

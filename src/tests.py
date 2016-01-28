@@ -6,7 +6,7 @@ import pcode
 #----- TEST SYNTAX ------------------------------------------------------------
 
 class TestSyntax(unittest.TestCase):
-    IMPORTS = "from io import *\nfrom array import *\n"
+    IMPORTS = "from fileio import *\nfrom arrays import *\n"
 
     #--------------------------------------------------------------------------
     def test_emptyproc(self):
