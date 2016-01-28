@@ -5,8 +5,8 @@ import pcode
 
 #----- TEST SYNTAX ------------------------------------------------------------
 
-class x:#TestSyntax(unittest.TestCase):
-    IMPORTS = "from io import *\nfrom array import *"
+class TestSyntax(unittest.TestCase):
+    IMPORTS = "from io import *\nfrom array import *\n"
 
     #--------------------------------------------------------------------------
     def test_emptyproc(self):
@@ -65,7 +65,25 @@ def test_output():
 """
         OUT = pcode.test(SRC)
         self.assertEquals(EXPECTED, OUT)
-    
+
+    #--------------------------------------------------------------------------
+    def test_userinput(self):
+        SRC = \
+"""
+PROCEDURE test_userinput()
+    a <- USERINPUT
+    OUTPUT a
+ENDPROCEDURE
+"""
+        EXPECTED = self.IMPORTS + \
+"""
+def test_userinput():
+    a = raw_input()
+    print(a)
+"""
+        OUT = pcode.test(SRC)
+        self.assertEquals(EXPECTED, OUT)
+
     #--------------------------------------------------------------------------
     def test_assign(self):
         SRC = \
@@ -1244,7 +1262,7 @@ test_array_param(z)
 
 import arrays
 
-class xx:#TestArrays(unittest.TestCase):
+class TestArrays(unittest.TestCase):
 
     def test_1d_create(self):
         a = arrays.Array()
@@ -1357,7 +1375,7 @@ class xx:#TestArrays(unittest.TestCase):
 import fileio
 import os
 
-class xxx:#TestIO(unittest.TestCase):
+class TestFileIO(unittest.TestCase):
     FILENAME = "testio.txt"
     locks = {}
 
@@ -1399,7 +1417,6 @@ class xxx:#TestIO(unittest.TestCase):
         l = f.read()
         f.close()
         return l
-
 
     def test_write_missing(self):
         """Should be possible to write to a file that does not exist"""
@@ -1500,11 +1517,16 @@ class xxx:#TestIO(unittest.TestCase):
 # runs and generates the correct output
 # and the variables have the correct final state.
 
-class TestRuntime(unittest.TestCase):
+import mockio
 
-    def pc2py(self, contents):
+class TestRuntime(unittest.TestCase):
+    """Test that the generated python runtime versions do the right thing"""
+    def setUp(self):
+        mockio.reset()
+
+    def pc2py(self, contents, mockio=False):
         """Turn pcode into python"""
-        return pcode.test(contents)
+        return pcode.test(contents, mockio)
 
     def runpy(self, name, contents):
         """Create and run a python file"""
@@ -1517,9 +1539,9 @@ class TestRuntime(unittest.TestCase):
         m = importlib.import_module(name)
         return m # the module instance
 
-    def runpc(self, name, contents):
+    def runpc(self, name, contents, mockio=False):
         """Compile pcode into py and create and run it as a py file"""
-        py = self.pc2py(contents)
+        py = self.pc2py(contents, mockio)
         m = self.runpy(name, py)
         return m # the module instance
 
@@ -1529,7 +1551,7 @@ class TestRuntime(unittest.TestCase):
         SRC = """print("## hello from python ##")\n"""
         self.runpy(PYNAME, SRC)
 
-    def test_hello_pc(self):
+    def XXXtest_hello_pc(self):
         """It should be possible to run pcode from source"""
         SRC = """OUTPUT "## hello from pcode ##"\n"""
         self.runpc("hello_pc", SRC)
@@ -1543,85 +1565,65 @@ class TestRuntime(unittest.TestCase):
     def test_mockprint(self):
         """It should be possible to OUTPUT something and capture the result"""
         SRC = """OUTPUT "Hello"\n"""
-        import mockio
-        mockio.reset()
-        m = self.runpc("mockprint_pc", SRC)
+        m = self.runpc("mockprint_pc", SRC, mockio=True)
         self.assertEquals(["Hello"], m.mockio.outbuf)
 
     def test_mockinput(self):
         """It should be possible to inject input data for USERINPUT"""
         SRC = """a<-USERINPUT\nOUTPUT a\n"""
-        import mockio
-        mockio.reset()
         mockio.inbuf=["some data"]
-        m = self.runpc("mockinput_pc", SRC)
+        m = self.runpc("mockinput_pc", SRC, mockio=True)
         self.assertEquals(["some data"], m.mockio.outbuf)
 
-        # This is harder because we have to inject input before module is imported
-        # might have to import a mockio module and store state in that,
-        # then inspect or inject.
-
-
-
-# test we can run a hello world program
-# i.e.
-#   translate into python
-#   store this in a file
-#   necessary imports are there
-#   can run it as a python task
-#   can capture output
-#   compare runtime output to expected
-#   do we need to detect non terminating progs and timeout??
-
-# output
-# assignment
-# arrays1d assign
-# arrays2d assign
-# arrays init
-# arrays read
-# arrays 2d read
-# if
-# if else
-# nested if else
-# while
-# repeat
-# for
-# func noparams
-# func 1param
-# func 2params
-# case
-# nested case
-# true false
-# number
-# id
-# string
-# brackets
-# len
-# plus
-# minus
-# times
-# divide
-# mod
-# uminus
-# uplus
-# equal
-# notequal
-# less
-# greater
-# lessequal
-# greaterequal
-# and
-# or
-# xor
-# readline
-# writeline
-# fncall_noparams
-# fncall_1param
-# fncall_2params
-# proccall_1param
-# proccall_2params
-# fnproc global arrays
-# fn bubble arrays
+    #### RUNTIME TESTS TODO
+    # assignment
+    # arrays1d assign
+    # arrays2d assign
+    # arrays init
+    # arrays read
+    # arrays 2d read
+    # if
+    # if else
+    # nested if else
+    # while
+    # repeat
+    # for
+    # func noparams
+    # func 1param
+    # func 2params
+    # case
+    # nested case
+    # true false
+    # number
+    # id
+    # string
+    # brackets
+    # len
+    # plus
+    # minus
+    # times
+    # divide
+    # mod
+    # uminus
+    # uplus
+    # equal
+    # notequal
+    # less
+    # greater
+    # lessequal
+    # greaterequal
+    # and
+    # or
+    # xor
+    # readline
+    # writeline
+    # fncall_noparams
+    # fncall_1param
+    # fncall_2params
+    # proccall_1param
+    # proccall_2params
+    # fnproc global arrays
+    # fn bubble arrays
 
 
 if __name__ == "__main__":

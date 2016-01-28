@@ -52,7 +52,7 @@ y = yacc.yacc()
 
 buffer = ""
 
-def test(src):
+def test(src, mockio=False):
     """Run the src through the parser, capture the generated output and return it"""
     global buffer
 
@@ -64,7 +64,10 @@ def test(src):
     global emit
     emit = bufemit
 
-    mock_translate(src)
+    if mockio:
+        mock_translate(src)
+    else:
+        translate(src)
     b = buffer
     buffer = ""
     return b
