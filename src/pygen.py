@@ -24,8 +24,10 @@ class Generator():
         self.start()
 
     def start(self):
-        self.out("from io import *")
-        self.out("from array import *")
+        self.out(
+"""from io import *
+from array import *
+""")
 
     #----- EMITTER FUNCTIONS --------------------------------------------------
 
@@ -515,32 +517,18 @@ class MockGenerator(Generator):
         Generator.__init__(self, emit=emit)
 
     def start(self):
-        self.out("""
-from io import *
+        self.out(
+"""from io import *
 from array import *
-
-outbuf = ""
-inbuf  = ""
-
-def mock_output(msg):
-    global outbuf
-    outbuf += str(msg)
-
-def mock_input(msg):
-    global inbuf
-    if len(self.inbuf) == 0:
-        raise RuntimeError("Nothing in fileio.inbuf to mock with")
-    r = self.inbuf
-    self.inbuf = ""
-    return r
+import mockio
 """)
 
     def OUTPUT(self, p, i_expr):
         expr = p[i_expr]
-        self.out("mock_output(%s)" % str(expr))
+        self.out("mockio.output(%s)" % str(expr))
 
     def USERINPUT(self, p):
-        p[0]="mock_input()"
+        p[0]="mockio.input()"
 
 
 # END

@@ -7,20 +7,12 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-mockoutput working in test harness
+New mockio module added to runtime and working for OUTPUT
 
 --------------------------------------------------------------------------------
 TODO: running real code
 
-To mock the input, need to be able to put lines in the buffer before
-the program runs, and then peel them off one by one in USERINPUT.
-
-Probably better to have a mockio module that we import only when testing,
-and generate OUTPUT and INPUT to call those. Can then independently
-inject and inspect via that module within the test interface.
-
-
-
+* get mock input working in tests
 
 * implement tests for all runtime versions of functions
 

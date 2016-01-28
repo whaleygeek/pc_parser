@@ -1544,7 +1544,7 @@ class TestRuntime(unittest.TestCase):
         """It should be possible to OUTPUT something and capture the result"""
         SRC = """OUTPUT "Hello"\n"""
         m = self.runpc("mockprint_pc", SRC)
-        self.assertEquals("Hello", m.outbuf)
+        self.assertEquals(["Hello"], m.mockio.outbuf)
 
     def XXXtest_mockinput(self):
         """It should be possible to inject input data for USERINPUT"""
