@@ -133,6 +133,8 @@ class Generator():
 
     def OUTPUT(self, p, i_expr):
         expr = p[i_expr]
+        #TODO:This is real python, might want a flag for mocking that uses fileio.output
+        #so that it can be overriden
         self.out("print(%s)" % str(expr))
 
     def assign(self, p, i_id, i_expr):
@@ -375,6 +377,8 @@ class Generator():
         p[0]=string
 
     def USERINPUT(self, p):
+        #TODO: this is real python, might want a mockable fileio.input
+        #that can be override for the test interface
         p[0]="raw_input()"
 
     def LEN(self, p, i_id):
@@ -499,5 +503,44 @@ class Generator():
             raise ParserException("Read from an array that does not exist")
         r = "%s[%s][%s]" % (id, expr1, expr2)
         p[0] = r
+
+
+#----- MOCK GENERATOR ---------------------------------------------------------
+#
+# Inputs and outputs are mocked from/to buffers, so that the test interface
+# can inject and capture the data.
+
+class MockGenerator(Generator):
+    def __init__(self, emit=None):
+        Generator.__init__(self, emit=emit)
+
+    def start(self):
+        self.out("""
+from io import *
+from array import *
+
+outbuf = ""
+inbuf  = ""
+
+def mock_output(msg):
+    global outbuf
+    outbuf += str(msg)
+
+def mock_input(msg):
+    global inbuf
+    if len(self.inbuf) == 0:
+        raise RuntimeError("Nothing in fileio.inbuf to mock with")
+    r = self.inbuf
+    self.inbuf = ""
+    return r
+""")
+
+    def OUTPUT(self, p, i_expr):
+        expr = p[i_expr]
+        self.out("mock_output(%s)" % str(expr))
+
+    def USERINPUT(self, p):
+        p[0]="mock_input()"
+
 
 # END

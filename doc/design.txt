@@ -7,19 +7,22 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Added a generic feature to turn pcode into py, run it, and get
-access to final module state for post mortem inspection.
-
-This is a good building block for writing pcode runtime tests.
+mockoutput working in test harness
 
 --------------------------------------------------------------------------------
 TODO: running real code
 
-* how are we going to capture output from a running program?
+To mock the input, need to be able to put lines in the buffer before
+the program runs, and then peel them off one by one in USERINPUT.
 
-* how are we going to inject keyboard input into a running program?
+Probably better to have a mockio module that we import only when testing,
+and generate OUTPUT and INPUT to call those. Can then independently
+inject and inspect via that module within the test interface.
 
-* Design the tests for TestRuntime()
+
+
+
+* implement tests for all runtime versions of functions
 
 
 

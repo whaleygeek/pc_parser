@@ -64,10 +64,18 @@ def test(src):
     global emit
     emit = bufemit
 
-    translate(src)
+    mock_translate(src)
     b = buffer
     buffer = ""
     return b
+
+def mock_translate(src):
+    """A version of translate that mocks a few things, like IO"""
+    generator = pygen.MockGenerator(emit=emit)
+    set_backend(generator)
+
+    y.parse(src)
+    y.restart()
 
 def translate(src):
     generator = pygen.Generator(emit=emit)

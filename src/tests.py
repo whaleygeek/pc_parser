@@ -5,7 +5,7 @@ import pcode
 
 #----- TEST SYNTAX ------------------------------------------------------------
 
-class TestSyntax(unittest.TestCase):
+class x:#TestSyntax(unittest.TestCase):
     IMPORTS = "from io import *\nfrom array import *"
 
     #--------------------------------------------------------------------------
@@ -1244,7 +1244,7 @@ test_array_param(z)
 
 import arrays
 
-class TestArrays(unittest.TestCase):
+class xx:#TestArrays(unittest.TestCase):
 
     def test_1d_create(self):
         a = arrays.Array()
@@ -1357,7 +1357,7 @@ class TestArrays(unittest.TestCase):
 import fileio
 import os
 
-class TestIO(unittest.TestCase):
+class xxx:#TestIO(unittest.TestCase):
     FILENAME = "testio.txt"
     locks = {}
 
@@ -1534,11 +1534,25 @@ class TestRuntime(unittest.TestCase):
         SRC = """OUTPUT "## hello from pcode ##"\n"""
         self.runpc("hello_pc", SRC)
 
-    def test_varstate(self):
+    def XXXtest_varstate(self):
         """It should be possible to inspect final variable state"""
         SRC = "a <- 1\n"
         m = self.runpc("varstate_pc", SRC)
         self.assertEquals(1, m.a)
+
+    def test_mockprint(self):
+        """It should be possible to OUTPUT something and capture the result"""
+        SRC = """OUTPUT "Hello"\n"""
+        m = self.runpc("mockprint_pc", SRC)
+        self.assertEquals("Hello", m.outbuf)
+
+    def XXXtest_mockinput(self):
+        """It should be possible to inject input data for USERINPUT"""
+        SRC = """USERINPUT\n"""
+        # This is harder because we have to inject input before module is imported
+        # might have to import a mockio module and store state in that,
+        # then inspect or inject.
+
 
 
 # test we can run a hello world program
