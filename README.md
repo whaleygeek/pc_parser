@@ -1,5 +1,5 @@
 # pc_parser
-A simple pseudo-code parser
+A simple pseudo-code parser, that generates runnable python code.
 
 Inspired by this:
 
@@ -18,26 +18,34 @@ to build something that would turn Pseudo Code into real code.
 (It's a component of a bigger project, but pretty much a stand-alone
 implementation)
 
-Target testdata is informed from here by gbaman:
-http://pastebin.com/FvcuPGW4
 
-Note: This test file is not valid AQA syntax, for the following reasons:
 
-* should be no colon at end of FUNCTION
 
-* colons at end of IF should be THEN
+RELEASE NOTE
+----
 
-* the use of ELSEIF is not allowed
+SMOKE TEST
+---
 
-* there is no ENDFUNCTION
+    python pcode.zip < test.pc > test.py
+    python test.py
 
-* the FUNCTION should be a PROCEDURE, because it does not return a result
+KNOWN ISSUES
+---
+1. fileio.py and arrays.py have to be in your directory
+2. ambiguities on global variables in functions depending on where declared
+3. can't write to global variables in functions 
+4. python 2 support only
+5. It strips out all your comments
+6. No documentation at all (but read the AQA spec)
+http://filestore.aqa.org.uk/subjects/AQA-GCSE-COMPSCI-W-TRB-PSEU.PDF
 
-* The function/proc is not called
 
-Suggested changes to the AQA grammer
 
-* The CASE statement is ambiguous, it generates a lot of
+Suggested changes to the AQA grammar
+---
+
+The CASE statement is ambiguous, it generates a lot of
 shift/reduce parse warnings. I have added WHEN prior to the case option expressions
 to resolve this ambiguity in the grammar. This is because something like this:
 
@@ -49,7 +57,7 @@ to resolve this ambiguity in the grammar. This is because something like this:
 i.e. there are two possible outcomes, either b<-1 + 2 or b<-1 + 2 - 3
 and hence the grammar is ambiguous.
 
-* readline and writeline take non quoted names for files as the filename parameter.
+readline and writeline take non quoted names for files as the filename parameter.
 This is generally bad, because a filename could have spaces or other lexical symbols
 in it, including a comma, like this
 

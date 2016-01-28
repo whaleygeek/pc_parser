@@ -12,79 +12,10 @@ Experimented with zip
 Wrote a manual release process
 
 TODO
-Write the release process as a release.sh script
-Test that it works
+Just wrote release.sh, and it works fine.
+This is good enough now to distribute this as a tool to try on other projects
+and get others trying it out.
 
-
---------------------------------------------------------------------------------
-MANUAL RELEASE PROCESS (TEMPORARY)
-
-TO RELEASE IT:
-(probably want to take the pertinent commands out of pcode_gen.sh and pcode_run.sh)
-(probably want a mode of running it that does the lex and yacc parser table build,
-but does no actual parse. This will build the parsetab.py for us.
-
-
-cd build
-rm -rf sandbox
-./pcode_gen.sh
-rm sandbox/ply
-cp -r yply/ply sandbox/
-./pcode_run.sh
-cp ../src/__main__.py sandbox
-cd sandbox
-zip up the sandbox from within here, into pcode.zip
-bring into run directory pcode.zip, src/runtime/arrays.py src/runtime/fileio.py
-
-TO RUN IT:
-python pcode.zip < test.pc > test.py
-
-----------------------------------------------------------------------
-
-EXPERIMENTS WITH ZIP
-
-Looks like we'll have to dig into yacc to see how it is opening these two files,
-rather than opening as a path, it might need to use a different method to get
-access to the embedded resources in the zip.
-
-Davids-MacBook-Air-2:sandbox davidw$ python Archive.zip
-WARNING: Couldn't open 'parser.out'. [Errno 20] Not a directory: 'Archive.zip/parser.out'
-WARNING: Token 'UNARY' defined, but not used
-WARNING: There is 1 unused token
-Generating LALR tables
-WARNING: Couldn't create 'parsetab'. [Errno 20] Not a directory: 'Archive.zip/parsetab.py'
-pcode>
-
-Although it does work, despite these warnings.
-
-The fileio.py and arrays.py have to be in the folder for it to run.
-So really we need a way to auto extract those when the __main__.py runs
-(presumably there is a way we can read a resource from our zip file
-and then just fwrite it out?
-
-Davids-MacBook-Air-2:~ davidw$ python test.py
-Traceback (most recent call last):
-  File "test.py", line 1, in <module>
-    from fileio import *
-ImportError: No module named fileio
-
-Would be nice if arrays is only imported if you use an array,
-and fileio only imported if you use files.
-And an option to embed them in the src.
-
-This is a pre-run packaging issue, so could just squash the imports totally
-in the generation process, and have a post-processing that creates a new
-file, prepends the imports or the copy of the actual code, then appends
-the user code. Closes the file, deletes the original, then renames the new
-one as the final code.
-
-This pre-run packager could extract the fileio.py and arrays.py also
-if they are needed.
-
-Could add a command line parser to __main__.py so that if you run it
-with no arguments, it asks you what the input file and output file name
-is (at the moment we just use redirection) - command line arguments
-would be better.
 
 
 
@@ -138,11 +69,6 @@ that can be distributed by the end user.
 
 * auto import io.py and array.py at top of every program
 
-
---------------------------------------------------------------------------------
-PACKAGING AND DISTRIBUTION
-
-
 Look into packaging the whole thing as a zip file with a __main__.py inside it,
 and check that this works with both python2 and python3 - i.e. can we just
 run python pcode.zip myprog.aqa on any platform and it will work?
@@ -154,8 +80,6 @@ That way if they damage the file, it will be replaced on each build.
 Need to write some documentation on the grammar with examples
 
 Need to write some documentation on how to run the tool
-
-
 
 
 --------------------------------------------------------------------------------
@@ -192,6 +116,7 @@ and some traceability to the release date and time stamp of the conversion tool.
 Review all the spacing around operators to make sure it is consistent and good.
 
 
+END.
 
 
 
