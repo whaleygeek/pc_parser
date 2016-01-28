@@ -242,7 +242,7 @@ from arrays import *
         id = p[i_id]
         f = p[i_from]
         t = p[i_to]
-        self.out("for %s in range(%s, %s):" % (id, f, t))
+        self.out("for %s in range(%s, (%s)+1):" % (id, f, t))
         self.nest_stack.append(0) # counter of statements in this FOR loop
         self.indent()
 

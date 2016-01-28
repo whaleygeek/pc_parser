@@ -357,7 +357,7 @@ ENDPROCEDURE
         EXPECTED = self.IMPORTS + \
 """
 def test_empty_everything():
-    for a in range(1, 10):
+    for a in range(1, (10)+1):
         if a>1:
             while a<10:
                 pass
@@ -453,7 +453,7 @@ ENDPROCEDURE
         EXPECTED = self.IMPORTS + \
 """
 def test_for():
-    for i in range(1, 10):
+    for i in range(1, (10)+1):
         print(i)
 """
         OUT = pcode.test(SRC)
@@ -476,10 +476,10 @@ ENDPROCEDURE
         EXPECTED = self.IMPORTS + \
 """
 def test_empty_for():
-    for a in range(1, 10):
+    for a in range(1, (10)+1):
         pass
-    for b in range(1, 10):
-        for c in range(1, 10):
+    for b in range(1, (10)+1):
+        for c in range(1, (10)+1):
             pass
 """
         OUT = pcode.test(SRC)
@@ -1031,7 +1031,7 @@ ENDPROCEDURE
         EXPECTED = self.IMPORTS + \
 """
 def test_readline():
-    for n in range(1, 10):
+    for n in range(1, (10)+1):
         a = readline("words.txt", n)
         print(a)
 """
@@ -1051,7 +1051,7 @@ ENDPROCEDURE
         EXPECTED = self.IMPORTS + \
 """
 def test_writeline():
-    for n in range(1, 10):
+    for n in range(1, (10)+1):
         writeline("test.txt", n, "some data")
 """
         OUT = pcode.test(SRC)
@@ -1545,6 +1545,7 @@ class TestRuntime(unittest.TestCase):
         m = self.runpy(name, py)
         return m # the module instance
 
+    #--------------------------------------------------------------------------
     def XXXtest_hello_py(self):
         """It should be possible to run a python from source"""
         PYNAME = "t_hello"
@@ -1554,6 +1555,7 @@ print("## hello from python ##")
 """
         self.runpy(PYNAME, SRC)
 
+    #--------------------------------------------------------------------------
     def XXXtest_hello_pc(self):
         """It should be possible to run pcode from source"""
         SRC = \
@@ -1562,6 +1564,7 @@ OUTPUT "## hello from pcode ##"
 """
         self.runpc("hello_pc", SRC)
 
+    #--------------------------------------------------------------------------
     def test_varstate(self):
         """It should be possible to inspect final variable state"""
         SRC = \
@@ -1571,6 +1574,7 @@ a <- 1
         m = self.runpc("t_varstate_pc", SRC)
         self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def test_mockprint(self):
         """It should be possible to OUTPUT something and capture the result"""
         SRC = \
@@ -1580,6 +1584,7 @@ OUTPUT "Hello"
         m = self.runpc("t_mockprint_pc", SRC, mockio=True)
         self.assertEquals(["Hello"], m.mockio.outbuf)
 
+    #--------------------------------------------------------------------------
     def test_mockinput(self):
         """It should be possible to inject input data for USERINPUT"""
         SRC = \
@@ -1591,83 +1596,87 @@ OUTPUT a
         m = self.runpc("t_mockinput_pc", SRC, mockio=True)
         self.assertEquals(["some data"], m.mockio.outbuf)
 
-    def XXXtest_assignment(self): #### HERE ####
-        pass #TODO
+    #--------------------------------------------------------------------------
+    def test_assignment(self): #### HERE add expected results checks ####
         SRC = \
 """
 a<-1
 """
         m = self.runpc("t_assignment_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.a)
 
-    def XXXtest_array1dassign(self):
-        pass #TODO
+    #--------------------------------------------------------------------------
+    def test_array1dassign(self):
         SRC = \
 """
 a[1]<-1
 """
         m = self.runpc("t_array1dassign_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.a[1])
 
-    def XXXtest_array2dassign(self):
-        pass #TODO
+    #--------------------------------------------------------------------------
+    def test_array2dassign(self):
         SRC = \
 """
 a[1][2]<-1
 """
         m = self.runpc("t_array2dassign_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.a[1][2])
 
-    def XXXtest_array_init(self):
-        pass #TODO
+    #--------------------------------------------------------------------------
+    def test_array_init(self):
         SRC = \
 """
 a<-[1,2,3,4]
 """
         m = self.runpc("t_array_init_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.a[0])
+        self.assertEquals(2, m.a[1])
+        self.assertEquals(3, m.a[2])
+        self.assertEquals(4, m.a[3])
 
-    def XXXtest_array_read(self):
-        pass #TODO
+    #--------------------------------------------------------------------------
+    def test_array_read(self):
         SRC = \
 """
-a[1]=22
-b=r[1]
+a[1]<-22
+r<-a[1]
 """
         m = self.runpc("t_array_read_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(22, m.r)
 
-    def XXXtest_array2d_read(self):
-        pass #TODO
+    #--------------------------------------------------------------------------
+    def test_array2d_read(self):
         SRC = \
 """
-a[1][2]=12
-r=a[1][2]
+a[1][2]<-12
+r<-a[1][2]
 """
-        #m = self.runpc("xxx_pc", SRC)
-        #self.assertEquals(1, m.a)
+        m = self.runpc("xxx_pc", SRC)
+        self.assertEquals(12, m.r)
 
-    def XXXtest_if(self):
-        pass #TODO
+    #--------------------------------------------------------------------------
+    def test_if(self):
         SRC = \
 """
 r<-0
 a<-1
-IF a==1 THEN
+IF a=1 THEN
   r<-1
 ENDIF
 """
         m = self.runpc("t_if_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.r)
 
-    def XXXtest_if_else(self):
+    #--------------------------------------------------------------------------
+    def test_if_else(self):
         pass #TODO
-        SRC1 = \
+        SRC = \
 """
 r1<-0
 r2<-0
 a<-1
-IF a==1 THEN
+IF a=1 THEN
   r1<-1
 ELSE
   r2<-1
@@ -1676,23 +1685,27 @@ ENDIF
 r3<-0
 r4<-0
 a<-0
-IF a==1 THEN
+IF a=1 THEN
   r3<-1
 ELSE
   r4<-1
 ENDIF
 """
         m = self.runpc("t_if_else_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.r1)
+        self.assertEquals(0, m.r2)
+        self.assertEquals(0, m.r3)
+        self.assertEquals(1, m.r4)
 
-    def XXXtest_nested_if_else(self):
+    #--------------------------------------------------------------------------
+    def test_nested_if_else(self):
         pass #TODO
         SRC = \
 """
 a<-1
 b<-2
-IF a == 1 THEN
-  IF b == 1 THEN
+IF a = 1 THEN
+  IF b = 1 THEN
     r<-1
   ELSE
     r<-2
@@ -1700,9 +1713,10 @@ IF a == 1 THEN
 ENDIF
 """
         m = self.runpc("t_nested_if_else_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(2, m.r)
 
-    def XXXtest_while(self):
+    #--------------------------------------------------------------------------
+    def test_while(self):
         pass #TODO
         SRC = \
 """
@@ -1712,10 +1726,12 @@ WHILE a < 5
   a<-a+1
 ENDWHILE
 """
-        m = self.runpc("t_while_pc", SRC)
-        #self.assertEquals(1, m.a)
+        m = self.runpc("t_while_pc", SRC, mockio=True)
+        self.assertEquals(5, m.a)
+        self.assertEquals(['1', '2', '3', '4'], mockio.outbuf)
 
-    def XXXtest_repeat(self):
+    #--------------------------------------------------------------------------
+    def test_repeat(self):
         pass #TODO
         SRC = \
 """
@@ -1725,10 +1741,12 @@ REPEAT
   a<-a+1
 UNTIL a > 5
 """
-        m = self.runpc("t_repeat_pc", SRC)
-        #self.assertEquals(1, m.a)
+        m = self.runpc("t_repeat_pc", SRC, mockio=True)
+        self.assertEquals(6, m.a)
+        self.assertEquals(['1', '2', '3', '4', '5'], mockio.outbuf)
 
-    def XXXtest_for(self):
+    #--------------------------------------------------------------------------
+    def test_for(self):
         pass #TODO
         SRC = \
 """
@@ -1736,9 +1754,11 @@ FOR a<-1 TO 10
   OUTPUT a
 ENDFOR
 """
-        m = self.runpc("t_for_pc", SRC)
-        #self.assertEquals(1, m.a)
+        m = self.runpc("t_for_pc", SRC, mockio=True)
+        self.assertEquals(10, m.a)
+        self.assertEquals(['1','2','3','4','5','6','7','8','9','10'], mockio.outbuf)
 
+    #--------------------------------------------------------------------------
     def XXXtest_case(self):
         pass #TODO
         SRC = \
@@ -1753,6 +1773,7 @@ ENDCASE
         m = self.runpc("t_case_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_nested_case(self):
         pass #TODO
         SRC = \
@@ -1774,6 +1795,7 @@ ENDCASE
         m = self.runpc("t_nested_case_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_true_false(self):
         pass #TODO
         SRC = \
@@ -1784,6 +1806,7 @@ b<-FALSE
         m = self.runpc("t_true_false_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_number(self):
         pass #TODO
         SRC = \
@@ -1795,6 +1818,7 @@ c<-1234567890
         m = self.runpc("t_number_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_id(self):
         pass #TODO
         SRC = \
@@ -1805,6 +1829,7 @@ the_long_name_identifier<-2
         m = self.runpc("t_id_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_string(self):
         pass #TODO
         SRC = \
@@ -1815,6 +1840,7 @@ OUTPUT a
         m = self.runpc("t_string_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_brackets(self):
         pass #TODO
         SRC = \
@@ -1824,6 +1850,7 @@ a <- (1+2)*3
         m = self.runpc("t_brackets_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_len(self):
         pass #TODO
         SRC = \
@@ -1834,6 +1861,7 @@ b <- len(a)
         m = self.runpc("t_len_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_plus(self):
         pass #TODO
         SRC = \
@@ -1843,6 +1871,7 @@ a <- 10 + 20
         m = self.runpc("t_plus_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_minus(self):
         pass #TODO
         SRC = \
@@ -1852,6 +1881,7 @@ a <- 10 - 20
         m = self.runpc("t_minus_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_times(self):
         pass #TODO
         SRC = \
@@ -1861,6 +1891,7 @@ a <- 10 * 20
         m = self.runpc("t_times_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_divide(self):
         pass #TODO
         SRC = \
@@ -1870,6 +1901,7 @@ a <- 10 / 20
         m = self.runpc("t_divide_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_mod(self):
         pass #TODO
         SRC = \
@@ -1879,6 +1911,7 @@ a <- 10 MOD 20
         m = self.runpc("t_mod_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_uminus(self):
         pass #TODO
         SRC = \
@@ -1888,6 +1921,7 @@ a <- -10
         m = self.runpc("t_uminus_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_uplus(self):
         pass #TODO
         SRC = \
@@ -1897,6 +1931,7 @@ a <- +10
         m = self.runpc("t_uplus_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_equal(self):
         pass #TODO
         SRC = \
@@ -1912,6 +1947,7 @@ ENDIF
         m = self.runpc("t_equal_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_notequal(self):
         pass #TODO
         SRC = \
@@ -1927,6 +1963,7 @@ ENDIF
         m = self.runpc("t_notequal_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_less(self):
         pass #TODO
         SRC = \
@@ -1942,6 +1979,7 @@ ENDIF
         m = self.runpc("t_less_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_greater(self):
         pass #TODO
         SRC = \
@@ -1957,6 +1995,7 @@ ENDIF
         m = self.runpc("t_greater_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_lessequal(self):
         pass #TODO
         SRC = \
@@ -1972,6 +2011,7 @@ ENDIF
         m = self.runpc("t_lessequal_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_greaterequal(self):
         pass #TODO
         SRC = \
@@ -1987,6 +2027,7 @@ ENDIF
         m = self.runpc("t_greaterequal_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_and(self):
         pass #TODO
         SRC = \
@@ -1998,6 +2039,7 @@ r<-a AND b
         m = self.runpc("t_and_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_or(self):
         pass #TODO
         SRC = \
@@ -2009,6 +2051,7 @@ c<-a OR b
         m = self.runpc("t_or_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_xor(self):
         pass #TODO
         SRC = \
@@ -2020,6 +2063,7 @@ c<-a XOR b
         m = self.runpc("t_xor_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_writeline(self):
         pass #TODO
         SRC = \
@@ -2032,6 +2076,7 @@ WRITELINE("test.txt", 4, "four")
         m = self.runpc("t_writeline_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_readline(self):
         pass #TODO
         SRC = \
@@ -2045,6 +2090,7 @@ d=READLINE("test.txt", 4)
         #self.assertEquals(1, m.a)
 
 
+    #--------------------------------------------------------------------------
     def XXXtest_fncall_noparams(self):
         pass #TODO
         SRC = \
@@ -2057,6 +2103,7 @@ r<-fn()
         m = self.runpc("t_fncall_noparams_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_fncall_1param(self):
         pass #TODO
         SRC = \
@@ -2069,6 +2116,7 @@ r<-fn(5)
         m = self.runpc("t_fncall_1param_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_fncall_2params(self):
         pass #TODO
         SRC = \
@@ -2081,6 +2129,7 @@ r<-fn(4, 5)
         m = self.runpc("t_fncall_2params_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_proccall_noparams(self):
         pass #TODO
         SRC = \
@@ -2093,6 +2142,7 @@ proc()
         m = self.runpc("t_proccall_noparams_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_proccall_1param(self):
         pass #TODO
         SRC = \
@@ -2105,6 +2155,7 @@ proc("hello")
         m = self.runpc("t_proccall_1param_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_proccall_2params(self):
         pass #TODO
         SRC = \
@@ -2119,6 +2170,7 @@ proc("hello", 4)
         m = self.runpc("t_proccall_2params_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_fnproc_global_arrays(self):
         pass #TODO
         SRC = \
@@ -2144,6 +2196,7 @@ test_proc_global_array()
         m = self.runpc("t_fnproc_global_arrays_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def XXXtest_fn_bubble_arrays(self):
         pass #TODO
         SRC = \
@@ -2160,13 +2213,14 @@ test_fn_bubble_arrayGH()
         m = self.runpc("t_fn_bubble_arrays_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    #--------------------------------------------------------------------------
     def test_bubblesort(self):
         SRC = \
 """
 FUNCTION bubblesort(a)
     REPEAT
         swaps <- 0
-        FOR i <- 0 TO LEN(a)-1
+        FOR i <- 0 TO LEN(a)-2
             IF a[i+1] < a[i] THEN
                 t <- a[i]
                 a[i] <- a[i+1]
@@ -2184,6 +2238,7 @@ OUTPUT a
 """
         m = self.runpc("t_bubblesort_pc", SRC, mockio=True)
         self.assertEquals(["[1, 2, 3, 4, 5, 6, 7, 8, 9]"], m.mockio.outbuf)
+    #--------------------------------------------------------------------------
 
 
 if __name__ == "__main__":
