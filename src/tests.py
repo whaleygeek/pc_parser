@@ -1577,141 +1577,279 @@ class TestRuntime(unittest.TestCase):
 
     def XXXtest_assignment(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_array1dassign(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_array2dassign(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_array_init(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_array_read(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_array2d_read(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_if(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_if_else(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_nested_if_else(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_while(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_repeat(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_for(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_case(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_nested_case(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_true_false(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_number(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_id(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_string(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_brackets(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_len(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_plus(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_minus(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_times(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_divide(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_mod(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_uminus(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_uplus(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_equal(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_notequal(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_less(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_greater(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_lessequal(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_greaterequal(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_and(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_or(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_xor(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_readline(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_writeline(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_fncall_noparams(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_fncall_1param(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_fncall_2params(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_proccall_noparams(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_proccall_1param(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_proccall_2params(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_fnproc_global_arrays(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
     def XXXtest_fn_bubble_arrays(self):
         pass #TODO
+        #SRC = "a<-1\n"
+        #m = self.runpc("xxx_pc", SRC)
+        #self.assertEquals(1, m.a)
 
 
 if __name__ == "__main__":
