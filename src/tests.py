@@ -1575,55 +1575,143 @@ class TestRuntime(unittest.TestCase):
         m = self.runpc("mockinput_pc", SRC, mockio=True)
         self.assertEquals(["some data"], m.mockio.outbuf)
 
-    #### RUNTIME TESTS TODO
-    # assignment
-    # arrays1d assign
-    # arrays2d assign
-    # arrays init
-    # arrays read
-    # arrays 2d read
-    # if
-    # if else
-    # nested if else
-    # while
-    # repeat
-    # for
-    # func noparams
-    # func 1param
-    # func 2params
-    # case
-    # nested case
-    # true false
-    # number
-    # id
-    # string
-    # brackets
-    # len
-    # plus
-    # minus
-    # times
-    # divide
-    # mod
-    # uminus
-    # uplus
-    # equal
-    # notequal
-    # less
-    # greater
-    # lessequal
-    # greaterequal
-    # and
-    # or
-    # xor
-    # readline
-    # writeline
-    # fncall_noparams
-    # fncall_1param
-    # fncall_2params
-    # proccall_1param
-    # proccall_2params
-    # fnproc global arrays
-    # fn bubble arrays
+    def XXXtest_assignment(self):
+        pass #TODO
+
+    def XXXtest_array1dassign(self):
+        pass #TODO
+
+    def XXXtest_array2dassign(self):
+        pass #TODO
+
+    def XXXtest_array_init(self):
+        pass #TODO
+
+    def XXXtest_array_read(self):
+        pass #TODO
+
+    def XXXtest_array2d_read(self):
+        pass #TODO
+
+    def XXXtest_if(self):
+        pass #TODO
+
+    def XXXtest_if_else(self):
+        pass #TODO
+
+    def XXXtest_nested_if_else(self):
+        pass #TODO
+
+    def XXXtest_while(self):
+        pass #TODO
+
+    def XXXtest_repeat(self):
+        pass #TODO
+
+    def XXXtest_for(self):
+        pass #TODO
+
+    def XXXtest_case(self):
+        pass #TODO
+
+    def XXXtest_nested_case(self):
+        pass #TODO
+
+    def XXXtest_true_false(self):
+        pass #TODO
+
+    def XXXtest_number(self):
+        pass #TODO
+
+    def XXXtest_id(self):
+        pass #TODO
+
+    def XXXtest_string(self):
+        pass #TODO
+
+    def XXXtest_brackets(self):
+        pass #TODO
+
+    def XXXtest_len(self):
+        pass #TODO
+
+    def XXXtest_plus(self):
+        pass #TODO
+
+    def XXXtest_minus(self):
+        pass #TODO
+
+    def XXXtest_times(self):
+        pass #TODO
+
+    def XXXtest_divide(self):
+        pass #TODO
+
+    def XXXtest_mod(self):
+        pass #TODO
+
+    def XXXtest_uminus(self):
+        pass #TODO
+
+    def XXXtest_uplus(self):
+        pass #TODO
+
+    def XXXtest_equal(self):
+        pass #TODO
+
+    def XXXtest_notequal(self):
+        pass #TODO
+
+    def XXXtest_less(self):
+        pass #TODO
+
+    def XXXtest_greater(self):
+        pass #TODO
+
+    def XXXtest_lessequal(self):
+        pass #TODO
+
+    def XXXtest_greaterequal(self):
+        pass #TODO
+
+    def XXXtest_and(self):
+        pass #TODO
+
+    def XXXtest_or(self):
+        pass #TODO
+
+    def XXXtest_xor(self):
+        pass #TODO
+
+    def XXXtest_readline(self):
+        pass #TODO
+
+    def XXXtest_writeline(self):
+        pass #TODO
+
+    def XXXtest_fncall_noparams(self):
+        pass #TODO
+
+    def XXXtest_fncall_1param(self):
+        pass #TODO
+
+    def XXXtest_fncall_2params(self):
+        pass #TODO
+
+    def XXXtest_proccall_noparams(self):
+        pass #TODO
+
+    def XXXtest_proccall_1param(self):
+        pass #TODO
+
+    def XXXtest_proccall_2params(self):
+        pass #TODO
+
+    def XXXtest_fnproc_global_arrays(self):
+        pass #TODO
+
+    def XXXtest_fn_bubble_arrays(self):
+        pass #TODO
 
 
 if __name__ == "__main__":
