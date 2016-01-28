@@ -5,6 +5,11 @@
 outbuf = []
 inbuf  = []
 
+def reset():
+    global outbuf, inbuf
+    outbuf = []
+    inbuf = []
+
 def output(msg):
     """Write a line of data to the mock output buffer"""
     global outbuf

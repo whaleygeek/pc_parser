@@ -1523,26 +1523,28 @@ class TestRuntime(unittest.TestCase):
         m = self.runpy(name, py)
         return m # the module instance
 
-    def XXXXtest_hello_py(self):
+    def XXXtest_hello_py(self):
         """It should be possible to run a python from source"""
         PYNAME = "t_hello"
         SRC = """print("## hello from python ##")\n"""
         self.runpy(PYNAME, SRC)
 
-    def XXXXtest_hello_pc(self):
+    def test_hello_pc(self):
         """It should be possible to run pcode from source"""
         SRC = """OUTPUT "## hello from pcode ##"\n"""
         self.runpc("hello_pc", SRC)
 
-    def XXXtest_varstate(self):
+    def test_varstate(self):
         """It should be possible to inspect final variable state"""
         SRC = "a <- 1\n"
         m = self.runpc("varstate_pc", SRC)
         self.assertEquals(1, m.a)
 
-    def XXXtest_mockprint(self):
+    def test_mockprint(self):
         """It should be possible to OUTPUT something and capture the result"""
         SRC = """OUTPUT "Hello"\n"""
+        import mockio
+        mockio.reset()
         m = self.runpc("mockprint_pc", SRC)
         self.assertEquals(["Hello"], m.mockio.outbuf)
 
@@ -1550,6 +1552,7 @@ class TestRuntime(unittest.TestCase):
         """It should be possible to inject input data for USERINPUT"""
         SRC = """a<-USERINPUT\nOUTPUT a\n"""
         import mockio
+        mockio.reset()
         mockio.inbuf=["some data"]
         m = self.runpc("mockinput_pc", SRC)
         self.assertEquals(["some data"], m.mockio.outbuf)
