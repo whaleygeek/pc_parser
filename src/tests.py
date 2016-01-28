@@ -1540,15 +1540,20 @@ class TestRuntime(unittest.TestCase):
         m = self.runpc("varstate_pc", SRC)
         self.assertEquals(1, m.a)
 
-    def test_mockprint(self):
+    def XXXtest_mockprint(self):
         """It should be possible to OUTPUT something and capture the result"""
         SRC = """OUTPUT "Hello"\n"""
         m = self.runpc("mockprint_pc", SRC)
         self.assertEquals(["Hello"], m.mockio.outbuf)
 
-    def XXXtest_mockinput(self):
+    def test_mockinput(self):
         """It should be possible to inject input data for USERINPUT"""
-        SRC = """USERINPUT\n"""
+        SRC = """a<-USERINPUT\nOUTPUT a\n"""
+        import mockio
+        mockio.inbuf=["some data"]
+        m = self.runpc("mockinput_pc", SRC)
+        self.assertEquals(["some data"], m.mockio.outbuf)
+
         # This is harder because we have to inject input before module is imported
         # might have to import a mockio module and store state in that,
         # then inspect or inject.

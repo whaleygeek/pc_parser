@@ -10,13 +10,14 @@ def output(msg):
     global outbuf
     outbuf.append(str(msg))
 
-def input(msg):
+def input(msg=None):
     """Read a line of data from the mock input buffer"""
     global inbuf
 
     if len(inbuf) == 0:
         raise RuntimeError("Nothing in fileio.inbuf to mock with")
-    output(msg)
+    if msg != None:
+        output(msg)
     return inbuf.pop()
 
 # END

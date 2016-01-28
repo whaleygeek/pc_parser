@@ -528,7 +528,7 @@ import mockio
         self.out("mockio.output(%s)" % str(expr))
 
     def USERINPUT(self, p):
-        p[0]="mockio.input()"
+        p[0] = "mockio.input()"
 
 
 # END

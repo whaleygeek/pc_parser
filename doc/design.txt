@@ -7,12 +7,11 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-New mockio module added to runtime and working for OUTPUT
+mock input working
 
 --------------------------------------------------------------------------------
 TODO: running real code
 
-* get mock input working in tests
 
 * implement tests for all runtime versions of functions
 
