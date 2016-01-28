@@ -1851,6 +1851,30 @@ class TestRuntime(unittest.TestCase):
         #m = self.runpc("xxx_pc", SRC)
         #self.assertEquals(1, m.a)
 
+    def test_bubblesort(self):
+        SRC = \
+"""FUNCTION bubblesort(a)
+    REPEAT
+        swaps <- 0
+        FOR i <- 0 TO LEN(a)-1
+            IF a[i+1] < a[i] THEN
+                t <- a[i]
+                a[i] <- a[i+1]
+                a[i+1] <- t
+                swaps <- swaps + 1
+            ENDIF
+        ENDFOR
+    UNTIL swaps = 0
+    RETURN a
+ENDFUNCTION
+
+a <- [9,8,7,6,5,4,3,2,1]
+b <- bubblesort(a)
+OUTPUT a
+"""
+        m = self.runpc("bubblesort_pc", SRC, mockio=True)
+        self.assertEquals(["[1, 2, 3, 4, 5, 6, 7, 8, 9]"], m.mockio.outbuf)
+
 
 if __name__ == "__main__":
     unittest.main()
