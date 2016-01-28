@@ -7,15 +7,34 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-All existing tests working together
-Can now turn on and off the mockio testing if we need it, on a case by case
-basis
+Most runtime tests working
+Exposed a few problems, that have been fixed.
+Remaining issues documented below...
 
 --------------------------------------------------------------------------------
 TODO: running real code
 
-* implement tests for all runtime versions of functions
-  (There is a big list at the end of tests.py that need implementing)
+Issue with AND OR XOR
+- are these bitwise or logical?
+When using in IF statements, they are mostly logical.
+The AQA spec doesn't say anything about bitwise operations? CHECK,
+but we might have to make our own decision here.
+
+
+
+Need to decide semantics of globals/locals in functions.
+This shows that it works a particular way, the issue may be the same
+with normal scalar variables also. Need to decide which way this
+*should* work - it's not really specified in the AQA spec, so
+we need to make a decision as to what is most sensible and then
+implement and test to that.
+
+def XXXXtest_fn_bubble_arrays(self):
+    """Test that writes to arrays in a function bubble out to globals??"""
+    ###TODO need to decide what the local/global semantics need to be.
+    ###currently outputs 2   1212 which means that writes to vars
+    ###in a function never bubble out into globals. But the proc
+    ###shows that reads will read a global.
 
 
 --------------------------------------------------------------------------------

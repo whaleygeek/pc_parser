@@ -1865,84 +1865,76 @@ a <- 10 + 20
         self.assertEquals(30, m.a)
 
     #--------------------------------------------------------------------------
-    def XXXtest_minus(self):
-        pass #TODO
+    def test_minus(self):
         SRC = \
 """
 a <- 10 - 20
 """
         m = self.runpc("t_minus_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(-10, m.a)
 
     #--------------------------------------------------------------------------
-    def XXXtest_times(self):
-        pass #TODO
+    def test_times(self):
         SRC = \
 """
 a <- 10 * 20
 """
         m = self.runpc("t_times_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(200, m.a)
 
     #--------------------------------------------------------------------------
-    def XXXtest_divide(self):
-        pass #TODO
+    def test_divide(self):
         SRC = \
 """
-a <- 10 / 20
+a <- 20 / 10
 """
         m = self.runpc("t_divide_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(2, m.a)
 
     #--------------------------------------------------------------------------
-    def XXXtest_mod(self):
-        pass #TODO
+    def test_mod(self):
         SRC = \
 """
-a <- 10 MOD 20
+a <- 10 MOD 3
 """
         m = self.runpc("t_mod_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.a)
 
     #--------------------------------------------------------------------------
-    def XXXtest_uminus(self):
-        pass #TODO
+    def test_uminus(self):
         SRC = \
 """
 a <- -10
 """
         m = self.runpc("t_uminus_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(-10, m.a)
 
     #--------------------------------------------------------------------------
-    def XXXtest_uplus(self):
-        pass #TODO
+    def test_uplus(self):
         SRC = \
 """
 a <- +10
 """
         m = self.runpc("t_uplus_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(10, m.a)
 
     #--------------------------------------------------------------------------
-    def XXXtest_equal(self):
-        pass #TODO
+    def test_equal(self):
         SRC = \
 """
 a<-1
 b<-1
-IF a==b THEN
+IF a=b THEN
   r<-1
 ELSE
   r<-0
 ENDIF
 """
         m = self.runpc("t_equal_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXtest_notequal(self):
-        pass #TODO
+    def test_notequal(self):
         SRC = \
 """
 a<-1
@@ -1954,11 +1946,10 @@ ELSE
 ENDIF
 """
         m = self.runpc("t_notequal_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(0, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXtest_less(self):
-        pass #TODO
+    def test_less(self):
         SRC = \
 """
 a<-1
@@ -1970,11 +1961,10 @@ ELSE
 ENDIF
 """
         m = self.runpc("t_less_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(0, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXtest_greater(self):
-        pass #TODO
+    def test_greater(self):
         SRC = \
 """
 a<-1
@@ -1986,11 +1976,10 @@ ELSE
 ENDIF
 """
         m = self.runpc("t_greater_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(0, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXtest_lessequal(self):
-        pass #TODO
+    def test_lessequal(self):
         SRC = \
 """
 a<-1
@@ -2002,11 +1991,10 @@ ELSE
 ENDIF
 """
         m = self.runpc("t_lessequal_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXtest_greaterequal(self):
-        pass #TODO
+    def test_greaterequal(self):
         SRC = \
 """
 a<-1
@@ -2018,11 +2006,10 @@ ELSE
 ENDIF
 """
         m = self.runpc("t_greaterequal_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXtest_and(self):
-        pass #TODO
+    def XXXXXtest_and(self): ###TODO: Review AQA Spec
         SRC = \
 """
 a<-255
@@ -2030,35 +2017,34 @@ b<-128
 r<-a AND b
 """
         m = self.runpc("t_and_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(128, m.r)  ## why is this bitwise and OR is not??
 
     #--------------------------------------------------------------------------
-    def XXXtest_or(self):
+    def XXXXXXtest_or(self):  ###TODO: Review AQA Spec
         pass #TODO
         SRC = \
 """
 a<-1
 b<-128
-c<-a OR b
+r<-a OR b
 """
         m = self.runpc("t_or_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(133, m.r) #### Broken should be BITWISE
 
     #--------------------------------------------------------------------------
-    def XXXtest_xor(self):
+    def XXXtest_xor(self):  ###TODO: Review AQA Spec
         pass #TODO
         SRC = \
 """
 a<-255
 b<-128
-c<-a XOR b
+r<-a XOR b
 """
         m = self.runpc("t_xor_pc", SRC)
-        #self.assertEquals(1, m.a)
+        #self.assertEquals(1, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXtest_writeline(self):
-        pass #TODO
+    def test_writeline(self):
         SRC = \
 """
 WRITELINE("test.txt", 1, "one")
@@ -2067,25 +2053,29 @@ WRITELINE("test.txt", 3, "three")
 WRITELINE("test.txt", 4, "four")
 """
         m = self.runpc("t_writeline_pc", SRC)
-        #self.assertEquals(1, m.a)
+        f = open("test.txt")
+        lines = f.readlines()
+        f.close()
+        self.assertEquals(['one\n', 'two\n','three\n','four\n'], lines)
 
     #--------------------------------------------------------------------------
-    def XXXtest_readline(self):
-        pass #TODO
+    def test_readline(self):
         SRC = \
 """
-a=READLINE("test.txt", 1)
-b=READLINE("test.txt", 2)
-c=READLINE("test.txt", 3)
-d=READLINE("test.txt", 4)
+a<-READLINE("test.txt", 1)
+b<-READLINE("test.txt", 2)
+c<-READLINE("test.txt", 3)
+d<-READLINE("test.txt", 4)
 """
         m = self.runpc("t_readline_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals('one', m.a)
+        self.assertEquals('two', m.b)
+        self.assertEquals('three', m.c)
+        self.assertEquals('four', m.d)
 
 
     #--------------------------------------------------------------------------
-    def XXXtest_fncall_noparams(self):
-        pass #TODO
+    def test_fncall_noparams(self):
         SRC = \
 """
 FUNCTION fn()
@@ -2094,11 +2084,10 @@ ENDFUNCTION
 r<-fn()
 """
         m = self.runpc("t_fncall_noparams_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXtest_fncall_1param(self):
-        pass #TODO
+    def test_fncall_1param(self):
         SRC = \
 """
 FUNCTION fn(val)
@@ -2107,11 +2096,10 @@ ENDFUNCTION
 r<-fn(5)
 """
         m = self.runpc("t_fncall_1param_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(5, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXtest_fncall_2params(self):
-        pass #TODO
+    def test_fncall_2params(self):
         SRC = \
 """
 FUNCTION fn(val, times)
@@ -2120,11 +2108,10 @@ ENDFUNCTION
 r<-fn(4, 5)
 """
         m = self.runpc("t_fncall_2params_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(20, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXtest_proccall_noparams(self):
-        pass #TODO
+    def test_proccall_noparams(self):
         SRC = \
 """
 FUNCTION proc()
@@ -2132,12 +2119,11 @@ FUNCTION proc()
 ENDFUNCTION
 proc()
 """
-        m = self.runpc("t_proccall_noparams_pc", SRC)
-        #self.assertEquals(1, m.a)
+        m = self.runpc("t_proccall_noparams_pc", SRC, mockio=True)
+        self.assertEquals(['hello'], mockio.outbuf)
 
     #--------------------------------------------------------------------------
-    def XXXtest_proccall_1param(self):
-        pass #TODO
+    def test_proccall_1param(self):
         SRC = \
 """
 FUNCTION proc(msg)
@@ -2145,32 +2131,30 @@ FUNCTION proc(msg)
 ENDFUNCTION
 proc("hello")
 """
-        m = self.runpc("t_proccall_1param_pc", SRC)
-        #self.assertEquals(1, m.a)
+        m = self.runpc("t_proccall_1param_pc", SRC, mockio=True)
+        self.assertEquals(['hello'], mockio.outbuf)
 
     #--------------------------------------------------------------------------
-    def XXXtest_proccall_2params(self):
-        pass #TODO
+    def test_proccall_2params(self):
         SRC = \
 """
 FUNCTION proc(msg, times)
-  FOR a<-1 TO times DO
+  FOR a<-1 TO times
     OUTPUT msg
   ENDFOR
 ENDFUNCTION
 proc("hello", 4)
 """
-        m = self.runpc("t_proccall_2params_pc", SRC)
-        #self.assertEquals(1, m.a)
+        m = self.runpc("t_proccall_2params_pc", SRC,  mockio=True)
+        self.assertEquals(['hello','hello','hello','hello'], mockio.outbuf)
 
     #--------------------------------------------------------------------------
-    def XXXtest_fnproc_global_arrays(self):
-        pass #TODO
+    def test_fnproc_global_arrays(self):
         SRC = \
 """
 x[1] <- 1
 y[2] <- 2
-z <- [1,2,3]
+z <- [1,2,3,4]
 
 FUNCTION test_fn_global_array()
     OUTPUT x[1]
@@ -2186,12 +2170,16 @@ ENDPROCEDURE
 test_fn_global_array()
 test_proc_global_array()
 """
-        m = self.runpc("t_fnproc_global_arrays_pc", SRC)
-        #self.assertEquals(1, m.a)
+        m = self.runpc("t_fnproc_global_arrays_pc", SRC, mockio=True)
+        self.assertEquals(['1','2','4','1','2','4'], mockio.outbuf)
 
     #--------------------------------------------------------------------------
-    def XXXtest_fn_bubble_arrays(self):
-        pass #TODO
+    def XXXXtest_fn_bubble_arrays(self):
+        """Test that writes to arrays in a function bubble out to globals??"""
+        ###TODO need to decide what the local/global semantics need to be.
+        ###currently outputs 2   1212 which means that writes to vars
+        ###in a function never bubble out into globals. But the proc
+        ###shows that reads will read a global.
         SRC = \
 """
 FUNCTION test_fn_bubble_arrayGH()
@@ -2202,9 +2190,11 @@ ENDFUNCTION
 g[1] <- 2
 h[1][2] <- 1212
 test_fn_bubble_arrayGH()
+OUTPUT g[1]
+OUTPUT h[1][2]
 """
         m = self.runpc("t_fn_bubble_arrays_pc", SRC)
-        #self.assertEquals(1, m.a)
+        #   self.assertEquals(1, m.a)
 
     #--------------------------------------------------------------------------
     def test_bubblesort(self):
