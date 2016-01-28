@@ -7,36 +7,20 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-AND OR XOR now binary operators
+Parked the local/global issue for now until we have more mileage on language
+and alternative backend implementations.
 
---------------------------------------------------------------------------------
-TODO: running real code
-
-
-Need to decide semantics of globals/locals in functions.
-This shows that it works a particular way, the issue may be the same
-with normal scalar variables also. Need to decide which way this
-*should* work - it's not really specified in the AQA spec, so
-we need to make a decision as to what is most sensible and then
-implement and test to that.
-
-def XXXXtest_fn_bubble_arrays(self):
-    """Test that writes to arrays in a function bubble out to globals??"""
-    ###TODO need to decide what the local/global semantics need to be.
-    ###currently outputs 2   1212 which means that writes to vars
-    ###in a function never bubble out into globals. But the proc
-    ###shows that reads will read a global.
-
-
-ELSE is mandatory on CASE - is this correct? What does Spec say?
-Spec seems to indicate it is mandatory, which is a good thing.
 
 --------------------------------------------------------------------------------
 TIDY UP
 
 Need to add blank lines around fn/proc definitions to space the thing out a bit.
-perhaps put a comment tag with the date and time stamp of the conversion,
-and perhaps some traceability to the release date and time stamp of the conversion tool.
+
+Put a comment tag with the date and time stamp of the conversion,
+and some traceability to the release date and time stamp of the conversion tool.
+
+Review all the spacing around operators to make sure it is consistent and good.
+
 
 --------------------------------------------------------------------------------
 PACKAGING AND DISTRIBUTION

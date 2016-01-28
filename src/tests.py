@@ -2176,28 +2176,6 @@ test_proc_global_array()
         m = self.runpc("t_fnproc_global_arrays_pc", SRC, mockio=True)
         self.assertEquals(['1','2','4','1','2','4'], mockio.outbuf)
 
-    #--------------------------------------------------------------------------
-    def XXXXtest_fn_bubble_arrays(self):
-        """Test that writes to arrays in a function bubble out to globals??"""
-        ###TODO need to decide what the local/global semantics need to be.
-        ###currently outputs 2   1212 which means that writes to vars
-        ###in a function never bubble out into globals. But the proc
-        ###shows that reads will read a global.
-        SRC = \
-"""
-FUNCTION test_fn_bubble_arrayGH()
-    g[1] <- 1
-    h[1][2] <- 12
-ENDFUNCTION
-
-g[1] <- 2
-h[1][2] <- 1212
-test_fn_bubble_arrayGH()
-OUTPUT g[1]
-OUTPUT h[1][2]
-"""
-        m = self.runpc("t_fn_bubble_arrays_pc", SRC)
-        #   self.assertEquals(1, m.a)
 
     #--------------------------------------------------------------------------
     def test_bubblesort(self):

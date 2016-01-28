@@ -1,0 +1,128 @@
+Parked for now...
+
+
+There is nothing in the spec about global access in fn/proc.
+
+It is usually desirable to be able to read and write globals in fns/procs
+especially as in a non object oriented language, it's the only way you
+can sensibly manage state without passing loads of stuff around.
+
+But the AQA spec has no way of marking something as local or global.
+Different languages have their own semantics on scope and lifetime.
+
+SPEC
+
+1.
+not defined as a global
+not passed as a parameter
+used in the fn/proc
+=> an automatic local variable, read write
+
+2.
+not defined as a global,
+passed as a parameter
+=> parameter scope and lifetime are local, read write to local
+
+3.
+defined as a global
+not passed as a parameter
+used in fn/proc
+=> access the global with read write
+
+4.
+defined as a global
+passed as a parameter
+=> local obscures the global, read write to local
+
+In this context, we only know it is defined as a global if
+it 'exists' in the outer scope before the function is
+defined.
+
+Note it is impossible to create a global inside a function,
+it must always be created in the global scope. This is ok.
+
+Thus, this code could be confusing, and might have different semantics
+in different target languages.
+
+This could be left as platform dependent, and solved with coding
+conventions such as 'always define your globals at the start
+of the program'.
+
+Could explicitly generate a name prefix for globals where they are used?
+But then the generated code won't look the same as the input code,
+and you might get some aliasing if original program uses that convention.
+
+Should we add a keyword to the spec to clarify this, so that the
+best possible implementation could be done on multiple platforms?
+
+I favour local by default, ask for the global if you want it.
+Python read-only default access to globals is a bit of a pain.
+
+Could generate a global statement at the point of first reading a variable
+that is not already in that function scope (could do it on the go that way)
+
+
+PROCEDURE e1()
+  p = z # read, z is undefined local or global, error
+  z = 1 # this is a local write
+ENDPROCEDURE
+
+
+PROCEDURE a1()
+  z = 1 # this is a local
+ENDPROCEDURE
+
+def a1():
+  z = 1
+
+
+PROCEDURE a2(z)
+  p = z # reading a parameter local
+  z = 2 # writing a local
+ENDPROCEDURE
+
+def a2(z):
+  p = z
+  z = 2
+
+z = 2 # now global is defined
+
+PROCEDURE a3()
+  p = z # z is defined as a global
+  z = 9 # now this is a global write
+ENDPROCEDURE
+
+def a3():
+    p = z # read of global
+    global z # point of first write
+    z = 9 # write of global
+
+PROCEDURE a4(z)
+  z = 9 # local parameter write
+  p = z # local parameter read
+ENDPROCEDURE
+
+def a4(z):
+  z = 9
+  p = z
+
+Looks like we need a big analysis to do this properly.
+What is the simplest assumption we could make for now?
+
+
+
+Thinking about other target languages:
+BASIC      - everything is global, no parameters
+BBC BASIC  - explicit local?
+Java       - declarations, so members exist everywhere regardless of where added
+C          - declarations, so globals exist everywhere regardless of where added?
+lua        - not sure
+php        -
+python     -
+ruby       -
+bash       -
+csh        -
+
+
+DESIGN in fn/proc
+
