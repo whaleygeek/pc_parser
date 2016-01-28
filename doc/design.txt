@@ -11,11 +11,19 @@ JUST DONE
 Experimented with zip
 Wrote a manual release process
 
+--------------------------------------------------------------------------------
 TODO
-Just wrote release.sh, and it works fine.
-This is good enough now to distribute this as a tool to try on other projects
-and get others trying it out.
 
+feedback from real use projects:
+1. need a way to use hex constants
+
+2. can we concatenate strings and numbers for printing?
+
+3. is there a way to import a python module which provides extension functions
+   (e.g. each python function in a refered module just appears as a function or
+   procedure that can be called from the pcode. This then makes it possible
+   to easily extend the runtime with python helper modules, and it will
+   be a great way to write spec's for things that are executable.
 
 
 
