@@ -124,7 +124,6 @@ from arrays import *
             s += l[i]
         return s
 
-
     def statement(self, p):
         if len(self.nest_stack) != 0:
             # Increment counter of statements at this nest level
@@ -328,6 +327,7 @@ from arrays import *
            self.create_var(v)
 
         csvparams = self.lcsv(params)
+
         self.out("def %s(%s):" % (id, csvparams))
         self.indent()
         self.procfn += 1

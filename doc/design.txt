@@ -15,11 +15,25 @@ and alternative backend implementations.
 TIDY UP
 
 Need to add blank lines around fn/proc definitions to space the thing out a bit.
+- every def needs a newline before it
+- every end of def region needs a newline after it
+- need to suppress double newlines, so if already output a blank line
+  when starting a new def, don't do it.
+
+This spacing could be a bit subjective.
+Really it is probably a PrettyPrinter state machine that needs hooks
+into PROC/ENDPROC/FN/ENDFN/STATEMENT, so that we could define different
+PrettyPrinter rules or change them independently or share them between
+different languages.
 
 Put a comment tag with the date and time stamp of the conversion,
 and some traceability to the release date and time stamp of the conversion tool.
 
 Review all the spacing around operators to make sure it is consistent and good.
+
+comments should pass through unmodified to the output code!!!
+(be a real pain do, but anoying for users to loose all their comments
+on translation!)
 
 
 --------------------------------------------------------------------------------
