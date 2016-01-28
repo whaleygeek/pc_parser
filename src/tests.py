@@ -1670,7 +1670,6 @@ ENDIF
 
     #--------------------------------------------------------------------------
     def test_if_else(self):
-        pass #TODO
         SRC = \
 """
 r1<-0
@@ -1699,7 +1698,6 @@ ENDIF
 
     #--------------------------------------------------------------------------
     def test_nested_if_else(self):
-        pass #TODO
         SRC = \
 """
 a<-1
@@ -1717,7 +1715,6 @@ ENDIF
 
     #--------------------------------------------------------------------------
     def test_while(self):
-        pass #TODO
         SRC = \
 """
 a<-1
@@ -1732,7 +1729,6 @@ ENDWHILE
 
     #--------------------------------------------------------------------------
     def test_repeat(self):
-        pass #TODO
         SRC = \
 """
 a<-1
@@ -1747,7 +1743,6 @@ UNTIL a > 5
 
     #--------------------------------------------------------------------------
     def test_for(self):
-        pass #TODO
         SRC = \
 """
 FOR a<-1 TO 10
@@ -1759,8 +1754,7 @@ ENDFOR
         self.assertEquals(['1','2','3','4','5','6','7','8','9','10'], mockio.outbuf)
 
     #--------------------------------------------------------------------------
-    def XXXtest_case(self):
-        pass #TODO
+    def test_case(self):
         SRC = \
 """
 a<-1
@@ -1770,12 +1764,11 @@ CASE a OF
   ELSE    OUTPUT "something"
 ENDCASE
 """
-        m = self.runpc("t_case_pc", SRC)
-        #self.assertEquals(1, m.a)
+        m = self.runpc("t_case_pc", SRC, mockio=True)
+        self.assertEquals(['one'], mockio.outbuf)
 
     #--------------------------------------------------------------------------
-    def XXXtest_nested_case(self):
-        pass #TODO
+    def test_nested_case(self):
         SRC = \
 """
 a<-1
@@ -1789,26 +1782,25 @@ CASE a OF
     ENDCASE
   WHEN 2:
     OUTPUT "stuff"
-  ELSE OUTUT "rest"
+  ELSE OUTPUT "rest"
 ENDCASE
 """
-        m = self.runpc("t_nested_case_pc", SRC)
-        #self.assertEquals(1, m.a)
+        m = self.runpc("t_nested_case_pc", SRC, mockio=True)
+        self.assertEquals(['two'], mockio.outbuf)
 
     #--------------------------------------------------------------------------
-    def XXXtest_true_false(self):
-        pass #TODO
+    def test_true_false(self):
         SRC = \
 """
 a<-TRUE
 b<-FALSE
 """
         m = self.runpc("t_true_false_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(True, m.a)
+        self.assertEquals(False, m.b)
 
     #--------------------------------------------------------------------------
-    def XXXtest_number(self):
-        pass #TODO
+    def test_number(self):
         SRC = \
 """
 a<-1
@@ -1816,60 +1808,61 @@ b<-100
 c<-1234567890
 """
         m = self.runpc("t_number_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.a)
+        self.assertEquals(100, m.b)
+        self.assertEquals(1234567890, m.c)
 
     #--------------------------------------------------------------------------
-    def XXXtest_id(self):
-        pass #TODO
+    def test_id(self):
         SRC = \
 """
 fred<-1
 the_long_name_identifier<-2
 """
         m = self.runpc("t_id_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(1, m.fred)
+        self.assertEquals(2, m.the_long_name_identifier)
 
     #--------------------------------------------------------------------------
-    def XXXtest_string(self):
-        pass #TODO
+    def test_string(self):
         SRC = \
 """
 a<-"this is a string"
 OUTPUT a
 """
-        m = self.runpc("t_string_pc", SRC)
-        #self.assertEquals(1, m.a)
+        m = self.runpc("t_string_pc", SRC, mockio=True)
+        self.assertEquals('this is a string', m.a)
+        self.assertEquals(['this is a string'], mockio.outbuf)
+
 
     #--------------------------------------------------------------------------
-    def XXXtest_brackets(self):
-        pass #TODO
+    def test_brackets(self):
         SRC = \
 """
 a <- (1+2)*3
 """
         m = self.runpc("t_brackets_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(9, m.a)
 
     #--------------------------------------------------------------------------
-    def XXXtest_len(self):
-        pass #TODO
+    def test_len(self):
         SRC = \
 """
 a <- "this is a string"
 b <- len(a)
 """
         m = self.runpc("t_len_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals("this is a string", m.a)
+        self.assertEquals(16, m.b)
 
     #--------------------------------------------------------------------------
-    def XXXtest_plus(self):
-        pass #TODO
+    def test_plus(self):
         SRC = \
 """
 a <- 10 + 20
 """
         m = self.runpc("t_plus_pc", SRC)
-        #self.assertEquals(1, m.a)
+        self.assertEquals(30, m.a)
 
     #--------------------------------------------------------------------------
     def XXXtest_minus(self):
