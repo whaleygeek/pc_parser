@@ -533,7 +533,7 @@ PROCEDURE test_case()
     WHEN 3:
         OUTPUT "three"
         OUTPUT "lots"
-    ELSE #TODO: ELSE is mandatory in grammar at the moment
+    ELSE
         OUTPUT "something else"
         OUTPUT "dont know what"
     ENDCASE
@@ -953,65 +953,68 @@ def test_greaterequal():
 
     #--------------------------------------------------------------------------
     def test_and(self):
+        """Binary AND"""
         SRC = \
 """
 PROCEDURE test_and()
-    a <- 1
-    b <- 2
-    IF a = 1 AND b = 1 THEN
-        OUTPUT "both of them are one"
+    a <- TRUE
+    b <- TRUE
+    IF a AND b THEN
+        OUTPUT "both of them are set"
     ENDIF
 ENDPROCEDURE
 """
         EXPECTED = self.IMPORTS + \
 """
 def test_and():
-    a = 1
-    b = 2
-    if a==1 and b==1:
-        print("both of them are one")
+    a = True
+    b = True
+    if a and b:
+        print("both of them are set")
 """
         OUT = pcode.test(SRC)
         self.assertEquals(EXPECTED, OUT)
     
     #--------------------------------------------------------------------------
     def test_or(self):
+        """Binary OR"""
         SRC = \
 """
 PROCEDURE test_or()
-    a <- 1
-    b <- 2
-    IF a = 1 OR b = 1 THEN
-        OUTPUT "one of them is one"
+    a <- TRUE
+    b <- FALSE
+    IF a OR b THEN
+        OUTPUT "one of them is true"
     ENDIF
 ENDPROCEDURE
 """
         EXPECTED = self.IMPORTS + \
 """
 def test_or():
-    a = 1
-    b = 2
-    if a==1 or b==1:
-        print("one of them is one")
+    a = True
+    b = False
+    if a or b:
+        print("one of them is true")
 """
         OUT = pcode.test(SRC)
         self.assertEquals(EXPECTED, OUT)
     
     #--------------------------------------------------------------------------
     def test_xor(self):
+        """Binary XOR"""
         SRC = \
 """
 PROCEDURE test_xor()
-    a <- 1
-    b <- 2
+    a <- TRUE
+    b <- FALSE
     c <- a XOR b
 ENDPROCEDURE
 """
         EXPECTED = self.IMPORTS + \
 """
 def test_xor():
-    a = 1
-    b = 2
+    a = True
+    b = False
     c = a^b
 """
         OUT = pcode.test(SRC)
@@ -2009,39 +2012,39 @@ ENDIF
         self.assertEquals(1, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXXXtest_and(self): ###TODO: Review AQA Spec
+    def test_and(self):
+        """Binary AND"""
         SRC = \
 """
-a<-255
-b<-128
+a<-TRUE
+b<-TRUE
 r<-a AND b
 """
         m = self.runpc("t_and_pc", SRC)
-        self.assertEquals(128, m.r)  ## why is this bitwise and OR is not??
+        self.assertEquals(True, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXXXXtest_or(self):  ###TODO: Review AQA Spec
-        pass #TODO
+    def test_or(self):
+        """Binary OR"""
         SRC = \
 """
-a<-1
-b<-128
+a<-TRUE
+b<-FALSE
 r<-a OR b
 """
         m = self.runpc("t_or_pc", SRC)
-        self.assertEquals(133, m.r) #### Broken should be BITWISE
+        self.assertEquals(True, m.r)
 
     #--------------------------------------------------------------------------
-    def XXXtest_xor(self):  ###TODO: Review AQA Spec
-        pass #TODO
+    def test_xor(self):
         SRC = \
 """
-a<-255
-b<-128
+a<-TRUE
+b<-FALSE
 r<-a XOR b
 """
         m = self.runpc("t_xor_pc", SRC)
-        #self.assertEquals(1, m.r)
+        self.assertEquals(True, m.r)
 
     #--------------------------------------------------------------------------
     def test_writeline(self):

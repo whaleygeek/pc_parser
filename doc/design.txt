@@ -7,19 +7,10 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Most runtime tests working
-Exposed a few problems, that have been fixed.
-Remaining issues documented below...
+AND OR XOR now binary operators
 
 --------------------------------------------------------------------------------
 TODO: running real code
-
-Issue with AND OR XOR
-- are these bitwise or logical?
-When using in IF statements, they are mostly logical.
-The AQA spec doesn't say anything about bitwise operations? CHECK,
-but we might have to make our own decision here.
-
 
 
 Need to decide semantics of globals/locals in functions.
@@ -36,6 +27,9 @@ def XXXXtest_fn_bubble_arrays(self):
     ###in a function never bubble out into globals. But the proc
     ###shows that reads will read a global.
 
+
+ELSE is mandatory on CASE - is this correct? What does Spec say?
+Spec seems to indicate it is mandatory, which is a good thing.
 
 --------------------------------------------------------------------------------
 TIDY UP
