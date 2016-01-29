@@ -8,22 +8,53 @@ convert this into Python to further develop it.
 
 JUST DONE
 
-Experimented with zip
-Wrote a manual release process
+Spec'd out a base.py runtime module
+All .py files get copied to the final release folder
+
+TODO
+Implement the USE in grammar
+Write a test case for USE syntax
+Write a test case for USE runtime behaviour
 
 --------------------------------------------------------------------------------
 TODO
 
 feedback from real use projects:
-1. need a way to use hex constants
 
 2. can we concatenate strings and numbers for printing?
+
+There is nothing in the spec that disallows it.
+If the runtime gets a string and a non string, it should just concatenate??
+In python this will just work, as adding strings concatenates them.
+
+*** Design a test to prove this
 
 3. is there a way to import a python module which provides extension functions
    (e.g. each python function in a refered module just appears as a function or
    procedure that can be called from the pcode. This then makes it possible
    to easily extend the runtime with python helper modules, and it will
    be a great way to write spec's for things that are executable.
+
+USE "base" -> generates import base
+If it has a string parameter, it would follow all the string rules
+and allow dots and other stuff in it easily.
+
+*** Add to the grammar and update notes for 'language extensions'
+in README.md
+
+1. need a way to use hex constants
+
+Could do this by importing a python helper library that exposes a load of
+functions
+
+USE base
+
+buf = [base_hex("A3")]
+buf = base_hex_array("5756A302") # using array copy
+
+*** Write a base.py module and include it in the runtime folder.
+*** Update the release script to copy all py files from runtime
+into the release folder
 
 
 

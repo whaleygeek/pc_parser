@@ -37,8 +37,7 @@ rm -rf $REL
 mkdir $REL
 cd $REL
 cp ../$SANDBOX/pcode.zip .
-cp $SRC/runtime/arrays.py .
-cp $SRC/runtime/fileio.py .
+cp $SRC/runtime/*.py .
 
 # smoke test it
 cat <<ENDPROG > test.pc
