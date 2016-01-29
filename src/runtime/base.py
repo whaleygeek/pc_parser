@@ -5,6 +5,8 @@
 # OUTPUT to_hexstr(42)
 # OUTPUT to_hexstr(32767, 4)
 
+import arrays
+
 def base_to_hexstr(n, bytes=1):
     """convert n into a hex string, honoring the bytes as the max width.
     Note that varargs by default are supported, so this should work."""
@@ -51,6 +53,6 @@ def base_hex_bytearray(s):
         b = s[o:o+2]
         n = base_hex(b)
         l.append(n)
-    return l
+    return arrays.Array(l) # construct a new array
 
 # END

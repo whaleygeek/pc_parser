@@ -496,8 +496,8 @@ from arrays import *
         """Read a 1D array"""
         id   = p[i_id]
         expr = p[i_expr]
-        if not self.var_exists(id):
-            raise ParserException("Read from an array that does not exist")
+        #if not self.var_exists(id):
+        #    raise ParserException("Read from an array that does not exist")
         r = "%s[%s]" % (id, expr)
         p[0] = r
 
@@ -506,8 +506,8 @@ from arrays import *
         id   = p[i_id]
         expr1 = p[i_expr1]
         expr2 = p[i_expr2]
-        if not self.var_exists(id):
-            raise ParserException("Read from an array that does not exist")
+        #if not self.var_exists(id):
+        #    raise ParserException("Read from an array that does not exist")
         r = "%s[%s][%s]" % (id, expr1, expr2)
         p[0] = r
 

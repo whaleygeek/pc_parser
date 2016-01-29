@@ -8,37 +8,13 @@ convert this into Python to further develop it.
 
 JUST DONE
 Implemented lexer/parser/syntax test for USE statement.
+base_hex_bytearray now working
+
 
 TODO
-Get the array initialiser from base_hex_bytearray working.
-
-
-USE "base"
-a<-base_hex_bytearray("010203")
-OUTPUT a
-OUTPUT a[0]
-
-Get an error:
-  File "/Users/davidw/git_work/pc_parser/build/sandbox/pygen.py", line 500, in array1dexpr
-    raise ParserException("Read from an array that does not exist")
-pygen.ParserException: Read from an array that does not exist
-
-Think it's because we're actually returning a python list, and it is not
-recognising it as an array initialiser, because there is no Array() wrapper.
-i.e. it is seeing it as a normal function call that returns a scalar variable,
-rather than an array (how could it know it is an array??)
-
-from base import *
-a = base_hex_bytearray("010203")
-print(a)
-
-Might have to think about this one further.
-
-
-
-
 Write a test case for USE runtime behaviour
 
+--------------------------------------------------------------------------------
 
 
 Write a test case to prove that the runtime supports string concatenation
@@ -79,8 +55,8 @@ functions
 
 USE base
 
-buf = [base_hex("A3")]
-buf = base_hex_array("5756A302") # using array copy
+buf <- base_hex("A3")
+buf <- base_hex_array("5756A302") # using array constructor?
 
 *** Write a base.py module and include it in the runtime folder.
 *** Update the release script to copy all py files from runtime
