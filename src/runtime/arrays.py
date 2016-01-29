@@ -5,7 +5,11 @@ class Array():
         self.data = []
         if len(args) != 0:
             for a in args:
-                self.data.append(a)
+                if type(a)==list:
+                    for item in a:
+                        self.data.append(item)
+                else:
+                    self.data.append(a)
 
     def __setitem__(self, index, value):
         l = len(self.data)

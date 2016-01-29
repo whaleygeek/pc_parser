@@ -33,18 +33,26 @@ def to_hexstr(n, bytes=1):
 def hex(s):
     """Convert s as a hex string into a number.
     Supports 1,2,3,4 byte numbers."""
-    pass
+    pass # TODO
+    print("convert to decimal:%s" % s)
+    return 1
 
 
+# a = base_hex_bytearray("A01237EC12120D0A")
 
-# a = base_hex_array("A01237EC12120D0A")
-
-def hex_array(s):
+def hex_bytearray(s):
     """Convert s as a hex string into an array initialiser.
     This probably just needs to be a list of numbers, and make sure
     that the array initialiser will work with any expression which
     is a list."""
-    pass
-
+    if len(s) % 2 != 0:
+        s = '0' + s
+    l = []
+    for i in range(len(s)/2):
+        o = i*2
+        b = s[o:o+2]
+        n = hex(b)
+        l.append(n)
+    return l
 
 # END
