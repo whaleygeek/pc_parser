@@ -7,9 +7,7 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-
-Spec'd out a base.py runtime module
-All .py files get copied to the final release folder
+base.py runtime implemented and manually tested
 
 TODO
 Implement the USE in grammar

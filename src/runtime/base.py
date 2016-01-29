@@ -33,9 +33,7 @@ def to_hexstr(n, bytes=1):
 def hex(s):
     """Convert s as a hex string into a number.
     Supports 1,2,3,4 byte numbers."""
-    pass # TODO
-    print("convert to decimal:%s" % s)
-    return 1
+    return int(s, base=16)
 
 
 # a = base_hex_bytearray("A01237EC12120D0A")
