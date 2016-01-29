@@ -256,6 +256,11 @@ from arrays import *
         expr = p[i_expr]
         self.case_stack.append([0, expr])
 
+    def USE(self, p, i_string):
+        s = p[i_string]
+        s = s[1:-1] # remove quotes
+        self.out("from %s import *" % s)
+
     def WHEN(self, p, i_expr):
         expr = p[i_expr]
         info = self.case_stack[-1]

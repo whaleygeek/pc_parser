@@ -1,6 +1,6 @@
 /* pcode.y  17/01/2016  D.J.Whale */
 
-%token ASSIGN LPAREN RPAREN LSQUARE WHEN
+%token ASSIGN LPAREN RPAREN LSQUARE WHEN USE
 %token RSQUARE COMMA COLON
 
 %token IF THEN ELSE ENDIF WHILE
@@ -51,6 +51,7 @@ statement:
     | return_statement
     | writeline_statement
     | case_statement
+    | use_statement
     ;
 
 output_statement:
@@ -151,6 +152,10 @@ case_statement:
     ELSE                {backend.CASEELSE(p)}
     statements          {backend.ENDCASEELSE(p)}
     ENDCASE             {backend.ENDCASE(p)}
+    ;
+
+use_statement:
+    USE STRING          {backend.USE(p, 2)}
     ;
 
 fnproc_def_params:

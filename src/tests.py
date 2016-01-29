@@ -5,6 +5,24 @@ import pcode
 
 #----- TEST SYNTAX ------------------------------------------------------------
 
+class TestExtensionsSyntax(unittest.TestCase):
+    IMPORTS = "from fileio import *\nfrom arrays import *\n"
+
+    def test_use(self):
+        SRC = \
+"""
+USE "a"
+"""
+        EXPECTED = self.IMPORTS + \
+"""
+from a import *
+"""
+        OUT = pcode.test(SRC)
+        self.assertEquals(EXPECTED, OUT)
+
+
+#----- TEST SYNTAX ------------------------------------------------------------
+
 class TestSyntax(unittest.TestCase):
     IMPORTS = "from fileio import *\nfrom arrays import *\n"
 

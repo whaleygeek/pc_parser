@@ -6,7 +6,7 @@ mkdir sandbox
 
 # create a safe context to generate and run
 cd sandbox
-ln -s ../ply ply
+ln -s ../yply/ply ply
 
 # generate the parser code from the yacc spec
 # (note this will overwrite anything you added)
