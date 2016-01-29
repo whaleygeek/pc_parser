@@ -16,6 +16,20 @@ Implement the USE in grammar
 Write a test case for USE syntax
 Write a test case for USE runtime behaviour
 
+Write a test case to prove that the runtime supports string concatenation
+Write a test case to prove runtime supports string and number concatenation
+
+
+statement: USE expr {backend.use(p, 2)}
+
+def USE(self, p, i_expr):
+  expr = p[i_expr]
+  self.out("import %s" % expr)
+
+Note, must be known at translate time.
+i.e. if it is not a string by then, we may have to use importlib
+instead to do a
+
 --------------------------------------------------------------------------------
 TODO
 
