@@ -2,10 +2,15 @@
 #
 # Provide simple base independent literals and conversions
 
-# OUTPUT to_hexstr(42)
-# OUTPUT to_hexstr(32767, 4)
+#TODO: rename module 'hexascii'
+
+# OUTPUT base_to_hexstr(42)
+# OUTPUT base_to_hexstr(32767, 4)
 
 import arrays
+
+#TODO: rename as tohexstr()
+#TODO: if bytes=None, should make it 2,4,6,8 chars depending on value.
 
 def base_to_hexstr(n, bytes=1):
     """convert n into a hex string, honoring the bytes as the max width.
@@ -29,8 +34,10 @@ def base_to_hexstr(n, bytes=1):
         raise ValueError("Only bytes=[1..4] supported")
 
 
-# n = base_hex("A3")
-# n = base_hex("DEADBEEF")
+# n <- base_hex("A3")
+# n <- base_hex("DEADBEEF")
+
+#TODO: rename to fromhexstr()
 
 def base_hex(s):
     """Convert s as a hex string into a number.
@@ -38,7 +45,9 @@ def base_hex(s):
     return int(s, base=16)
 
 
-# a = base_hex_bytearray("A01237EC12120D0A")
+# a <- base_hex_bytearray("A01237EC12120D0A")
+
+#TODO: rename as arrayfromhexstr()
 
 def base_hex_bytearray(s):
     """Convert s as a hex string into an array initialiser.

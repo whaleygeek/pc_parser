@@ -12,6 +12,17 @@ base_hex_bytearray now working
 
 
 TODO
+Call 'base' runtime module something else (hexascii?)
+Rework API signatures in 'base' runtime module.
+
+Reconsider if we want to allow dots in id names.
+If so, it would then be possible to have a namespace prefix to all
+imported modules, so that the global namespace was not polluted by imports.
+
+USE "hexascii"
+
+a <- hexascii.tohexstr(42)
+
 Write a test case for USE runtime behaviour
 
 --------------------------------------------------------------------------------
@@ -19,6 +30,9 @@ Write a test case for USE runtime behaviour
 
 Write a test case to prove that the runtime supports string concatenation
 Write a test case to prove runtime supports string and number concatenation
+
+--------------------------------------------------------------------------------
+
 
 
 
@@ -55,7 +69,7 @@ functions
 
 USE base
 
-buf <- base_hex("A3")
+a <- base_hex("A3")
 buf <- base_hex_array("5756A302") # using array constructor?
 
 *** Write a base.py module and include it in the runtime folder.
