@@ -52,7 +52,7 @@ def hexascii_array(s):
     for i in range(len(s)/2):
         o = i*2
         b = s[o:o+2]
-        n = base_hex(b)
+        n = hexascii_fromstr(b)
         l.append(n)
     return arrays.Array(l) # construct a new array
 

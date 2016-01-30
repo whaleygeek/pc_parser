@@ -17,6 +17,17 @@ hexascii_tostr(n, bytes=1)->str     converts decimal to a string formatted as he
 hexascii_fromstr(hexascii)->number  convert s as a hex string into a number
 hexascii_array(hexascii)            convert s as hex string into an initialised array
 
+
+manual test case for hexascii
+
+USE "hexascii"
+OUTPUT hexascii_tostr(42)
+a<-hexascii_array("01020304FF")
+FOR i<-0 TO LEN(a)-1
+    OUTPUT a[i]
+ENDFOR
+OUTPUT hexascii_fromstr("FF")
+
 TODO
 Write a test case for USE runtime behaviour
 fix/write test cases for hexascii module
