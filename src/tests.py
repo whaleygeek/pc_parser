@@ -1532,6 +1532,48 @@ class TestFileIO(unittest.TestCase):
         self.assertEquals("three", r)
 
 
+#----- TEST HEXASCII ----------------------------------------------------------
+
+import hexascii
+
+class TestHexAscii(unittest.TestCase):
+    def test_fromstr(self):
+        """Convert s as a hex string into a number. Supports 1,2,3,4 byte numbers."""
+        r = hexascii.hexascii_fromstr("A5")
+        self.assertEquals(int("A5", base=16), r)
+
+        r = hexascii.hexascii_fromstr("A55A")
+        self.assertEquals(int("A55A", base=16), r)
+
+        r = hexascii.hexascii_fromstr("A55AFF")
+        self.assertEquals(int("A55AFF", base=16), r)
+
+        r = hexascii.hexascii_fromstr("A55AFFCC")
+        self.assertEquals(int("A55AFFCC", base=16), r)
+
+    def test_tostr(self):
+        """convert n into a hex string, honoring the bytes as the max width.
+        Note that varargs by default are supported, so this should work."""
+        r = hexascii.hexascii_tostr(255, bytes=1)
+        self.assertEquals("FF", r)
+
+        r = hexascii.hexascii_tostr(255<<8, bytes=2)
+        self.assertEquals("FF00", r)
+
+        r = hexascii.hexascii_tostr(255<<16, bytes=3)
+        self.assertEquals("FF0000", r)
+
+        r = hexascii.hexascii_tostr(255<<24, bytes=4)
+        self.assertEquals("FF000000", r)
+
+    def test_array(self):
+        """Convert s as a hex string into an initialised array"""
+        r = hexascii.hexascii_array("01022AFF")
+        # expand array for easy equality testing
+        l = [r[0], r[1], r[2], r[3]]
+        self.assertEquals([1,2,42,255], l)
+
+
 #----- TEST RUNTIME -----------------------------------------------------------
 
 import mockio
@@ -1579,7 +1621,25 @@ USE "test_use"
 a()
 """
         m = self.runpc("t_use", SRC, mockio=True)
-        self.assertEquals("in a", mockio.outbuf)
+        self.assertEquals(["in a"], mockio.outbuf)
+
+    def test_hexascii_tostr(self):
+        pass # TODO
+#USE "hexascii"
+#OUTPUT hexascii_tostr(42)
+
+    def test_hexascii_array(self):
+        pass # TODO
+#USE "hexascii"
+#a<-hexascii_array("01020304FF")
+#FOR i<-0 TO LEN(a)-1
+#    OUTPUT a[i]
+#ENDFOR
+
+    def test_hexascii_fromstr(self):
+        pass
+#USE "hexascii"
+#OUTPUT hexascii_fromstr("FF")
 
 
 #----- TEST RUNTIME -----------------------------------------------------------

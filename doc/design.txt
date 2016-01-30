@@ -11,44 +11,24 @@ Runtime behaviour of USE tested Ok
 
 TODO
 
-Write test cases for hexascii runtime module
+Write 3 test cases for hexascii
 
 hexascii_tostr(42)       -> str
 hexascii_tostr(42, 4)    -> str
 hexascii_fromstr("FFFF") -> int
 hexascii_array("0102")   -> Array(1,2)
 
-
-manual test case for hexascii
-
-USE "hexascii"
-
-OUTPUT hexascii_tostr(42)
-
-a<-hexascii_array("01020304FF")
-FOR i<-0 TO LEN(a)-1
-    OUTPUT a[i]
-ENDFOR
-
-OUTPUT hexascii_fromstr("FF")
+Write runtime test cases for USEing hexascii in pcode
 
 
-TODO
-fix/write test cases for hexascii module
 
 --------------------------------------------------------------------------------
-
 
 Write a test case to prove that the runtime supports string concatenation
 Write a test case to prove runtime supports string and number concatenation
 
---------------------------------------------------------------------------------
-
-
-
 
 --------------------------------------------------------------------------------
-TODO
 
 feedback from real use projects:
 

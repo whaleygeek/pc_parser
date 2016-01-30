@@ -2,11 +2,15 @@
 #
 # Provide simple hex literals and conversions
 
-
-# OUTPUT hexascii_tostr(42)
-# OUTPUT hexascii_tostr(32767, 4)
-
 import arrays
+
+# n <- hexascii_fromstr("A3")
+# n <- hexascii_fromstr("DEADBEEF")
+
+def hexascii_fromstr(s):
+    """Convert s as a hex string into a number.
+    Supports 1,2,3,4 byte numbers."""
+    return int(s, base=16)
 
 def hexascii_tostr(n, bytes=1):
     """convert n into a hex string, honoring the bytes as the max width.
@@ -29,23 +33,10 @@ def hexascii_tostr(n, bytes=1):
     else:
         raise ValueError("Only bytes=[1..4] supported")
 
-
-# n <- hexascii_fromstr("A3")
-# n <- hexascii_fromstr("DEADBEEF")
-
-def hexascii_fromstr(s):
-    """Convert s as a hex string into a number.
-    Supports 1,2,3,4 byte numbers."""
-    return int(s, base=16)
-
-
 # a <- hexascii_array("A01237EC12120D0A")
 
 def hexascii_array(s):
-    """Convert s as a hex string into an array initialiser.
-    This probably just needs to be a list of numbers, and make sure
-    that the array initialiser will work with any expression which
-    is a list."""
+    """Convert s as a hex string into an initialised array"""
     if len(s) % 2 != 0:
         s = '0' + s
     l = []
