@@ -7,23 +7,19 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Implemented lexer/parser/syntax test for USE statement.
-base_hex_bytearray now working
+Recoded base->hexascii signatures
 
-
-TODO
-Call 'base' runtime module something else (hexascii?)
-Rework API signatures in 'base' runtime module.
-
-Reconsider if we want to allow dots in id names.
-If so, it would then be possible to have a namespace prefix to all
-imported modules, so that the global namespace was not polluted by imports.
+new signatures:
 
 USE "hexascii"
 
-a <- hexascii.tohexstr(42)
+hexascii_tostr(n, bytes=1)->str     converts decimal to a string formatted as hexascii
+hexascii_fromstr(hexascii)->number  convert s as a hex string into a number
+hexascii_array(hexascii)            convert s as hex string into an initialised array
 
+TODO
 Write a test case for USE runtime behaviour
+fix/write test cases for hexascii module
 
 --------------------------------------------------------------------------------
 
