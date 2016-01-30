@@ -7,29 +7,33 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Recoded base->hexascii signatures
+Runtime behaviour of USE tested Ok
 
-new signatures:
+TODO
 
-USE "hexascii"
+Write test cases for hexascii runtime module
 
-hexascii_tostr(n, bytes=1)->str     converts decimal to a string formatted as hexascii
-hexascii_fromstr(hexascii)->number  convert s as a hex string into a number
-hexascii_array(hexascii)            convert s as hex string into an initialised array
+hexascii_tostr(42)       -> str
+hexascii_tostr(42, 4)    -> str
+hexascii_fromstr("FFFF") -> int
+hexascii_array("0102")   -> Array(1,2)
 
 
 manual test case for hexascii
 
 USE "hexascii"
+
 OUTPUT hexascii_tostr(42)
+
 a<-hexascii_array("01020304FF")
 FOR i<-0 TO LEN(a)-1
     OUTPUT a[i]
 ENDFOR
+
 OUTPUT hexascii_fromstr("FF")
 
+
 TODO
-Write a test case for USE runtime behaviour
 fix/write test cases for hexascii module
 
 --------------------------------------------------------------------------------

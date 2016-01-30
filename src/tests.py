@@ -1533,12 +1533,61 @@ class TestFileIO(unittest.TestCase):
 
 
 #----- TEST RUNTIME -----------------------------------------------------------
+
+import mockio
+
+#TODO duplicated helper code with next class - refactor into parent class and reuse
+
+class TestExtensionRuntime(unittest.TestCase):
+    def setUp(self):
+        mockio.reset()
+
+    def pc2py(self, contents, mockio=False):
+        """Turn pcode into python"""
+        return pcode.test(contents, mockio)
+
+    def runpy(self, name, contents):
+        """Create and run a python file"""
+        NAME = "t_run"
+        f = open("%s.py" % name, "w")
+        f.write(contents)
+        f.close()
+
+        import importlib
+        m = importlib.import_module(name)
+        return m # the module instance
+
+    def runpc(self, name, contents, mockio=False):
+        """Compile pcode into py and create and run it as a py file"""
+        py = self.pc2py(contents, mockio)
+        m = self.runpy(name, py)
+        return m # the module instance
+
+    def test_use(self):
+        f = open("test_use.py", "w")
+        f.write(
+"""
+import mockio
+def a():
+  mockio.output("in a")
+""")
+        f.close()
+
+        SRC = \
+"""
+USE "test_use"
+a()
+"""
+        m = self.runpc("t_use", SRC, mockio=True)
+        self.assertEquals("in a", mockio.outbuf)
+
+
+#----- TEST RUNTIME -----------------------------------------------------------
 #
 # This is all about testing that the generated program for each aspect
 # runs and generates the correct output
 # and the variables have the correct final state.
 
-import mockio
 
 class TestRuntime(unittest.TestCase):
     """Test that the generated python runtime versions do the right thing"""
