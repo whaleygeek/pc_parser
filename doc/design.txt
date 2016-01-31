@@ -7,65 +7,75 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-Runtime behaviour of USE tested Ok
-
-TODO
-
-Write 3 test cases for hexascii
-
-hexascii_tostr(42)       -> str
-hexascii_tostr(42, 4)    -> str
-hexascii_fromstr("FFFF") -> int
-hexascii_array("0102")   -> Array(1,2)
-
-Write runtime test cases for USEing hexascii in pcode
+tested hexascii ok
 
 
 
 --------------------------------------------------------------------------------
 
-Write a test case to prove that the runtime supports string concatenation
-Write a test case to prove runtime supports string and number concatenation
+Looks like string contact of numbers does not work, as it would need to
+str() it - although it doesn't know until runtime what the value is of any
+expression, so you couldn't generate code to do this. It would look odd
+as it would str() everything.
+
+String literals would be known though. So if it is OUTPUT STRING as a special
+case it could drop the str(), and any expression could put str() around each
+part. Althought the expression at that point is just a string of symbols,
+not a list of parts, so you wouldn't know how to process them.
+
+For this to work, everything in an expression would have to be a list
+so it could be processed in parts, but then you would effectively be parsing
+it again.
+
+It might be better to solve this where it is needed by a different, more powerful
+runtime formatter function.
+
+--------------------------------------------------------------------------------
+
+This is what we are leading to for the using project that needs to be able to
+send and receive buffers of data...
+
+USE "hexascii"
+#USE "serial"
+
+PROCEDURE serial_send(b)
+  FOR i<-1 TO len(b)
+    OUTPUT(b[i])
+  ENDFOR
+ENDPROCEDURE
+
+FUNCTION serial_receive(num)
+  a<-[]
+  FOR i<-1 TO num
+    a[i-1]<-i
+  ENDFOR
+  RETURN a
+ENDFUNCTION
+
+b<-hexascii_array("56570201ACED")
+serial_send(b)
+
+b<-serial_receive(16)
+OUTPUT b
 
 
 --------------------------------------------------------------------------------
 
 feedback from real use projects:
 
-2. can we concatenate strings and numbers for printing?
+can we concatenate strings and numbers for printing?
 
 There is nothing in the spec that disallows it.
 If the runtime gets a string and a non string, it should just concatenate??
 In python this will just work, as adding strings concatenates them.
 
-*** Design a test to prove this
 
-3. is there a way to import a python module which provides extension functions
-   (e.g. each python function in a refered module just appears as a function or
-   procedure that can be called from the pcode. This then makes it possible
-   to easily extend the runtime with python helper modules, and it will
-   be a great way to write spec's for things that are executable.
-
-USE "base" -> generates import base
-If it has a string parameter, it would follow all the string rules
-and allow dots and other stuff in it easily.
 
 *** Add to the grammar and update notes for 'language extensions'
 in README.md
 
-1. need a way to use hex constants
 
-Could do this by importing a python helper library that exposes a load of
-functions
 
-USE base
-
-a <- base_hex("A3")
-buf <- base_hex_array("5756A302") # using array constructor?
-
-*** Write a base.py module and include it in the runtime folder.
-*** Update the release script to copy all py files from runtime
-into the release folder
 
 
 
