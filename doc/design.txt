@@ -30,45 +30,142 @@ it again.
 It might be better to solve this where it is needed by a different, more powerful
 runtime formatter function.
 
---------------------------------------------------------------------------------
 
-This is what we are leading to for the using project that needs to be able to
-send and receive buffers of data...
-
-USE "hexascii"
-#USE "serial"
-
-PROCEDURE serial_send(b)
-  FOR i<-1 TO len(b)
-    OUTPUT(b[i])
-  ENDFOR
-ENDPROCEDURE
-
-FUNCTION serial_receive(num)
-  a<-[]
-  FOR i<-1 TO num
-    a[i-1]<-i
-  ENDFOR
-  RETURN a
-ENDFUNCTION
-
-b<-hexascii_array("56570201ACED")
-serial_send(b)
-
-b<-serial_receive(16)
-OUTPUT b
 
 
 --------------------------------------------------------------------------------
 
 feedback from real use projects:
 
-can we concatenate strings and numbers for printing?
+0. import needs to maintain encapsulation
 
-There is nothing in the spec that disallows it.
-If the runtime gets a string and a non string, it should just concatenate??
-In python this will just work, as adding strings concatenates them.
+Otherwise we get namespace pollution and variable clashes.
 
+i.e. USE "hexascii" needs to be import hexascii
+
+Then when we refer to hexascii_ in a function name, it needs to translate
+it to hexascii. (although we want to allow underscores in names, so perhaps
+some other symbol to mean a library qualifier)
+
+This will enforce better module encapsulation and stop module local variables
+becoming global and clashing with other names.
+
+how about single colon to mean a library binding?
+Make sure it doesn't clash with colon of CASE, we need to change the
+grammar to support this. Perhaps @ would be better?
+
+USE "hexascii"
+
+becomes:
+
+import hexascii
+
+
+hexascii@fromstr()
+
+becomes:
+  hexascii.fromstr()
+
+--------------------------------------------------------------------------------
+
+1. is there a way to do intrinsic functions,
+so that rather than being expanded as a function call, they get expanded inline?
+
+The best example of this might be hexascii_fromstr("03")
+which could be generated inline as int("03", base=16) rather than calling a function.
+
+e.g. bit_and(left, right) would be generated as:
+  def bit_and(left, right):
+    return left & right
+
+It would be used as
+
+  value<-bit_and(a, b)
+
+which is:
+
+  value = bit_and(a, b)
+
+But an intrinsic would generate
+  value = (a & b)
+
+So as long as it was a function with no side effects (effectively a lambda)
+it could be expanded inline.
+
+This might be hard to write in pseudo code to generate the lambda.
+Need to think how this would translate to different target languages like
+C/PHP and others.
+
+One way to do this might be to use a magic comment, annotation, or naming convention
+on a function, so that the generator can build a table of intrinsic functions, and
+when it sees a function call, consult the table, and either do a normal function
+call, or inline the code.
+
+This does mean that the source needs to be available in order to inline the
+code (and that the underlying language supports reflection). In C, for example,
+this might more naturally be a #define macro. Java would be harder as the
+source could not be introspected.
+
+Perhaps a more generic macro facility is required, where any function that is
+an intrinsic could return a string which is the code template, and the
+generator then applies that template via normal macro expansion. That would
+then work in any language - the underlying function, rather than being the
+code that is called, could return the string representation of that code.
+For some languages like python, source introspection might still be usable,
+so effectively calling the function returns the string representation of the
+source inside it.
+
+--------------------------------------------------------------------------------
+
+2. is there a way to do instrinsic procedures,
+so that they are expanded inline?
+
+See notes above too.
+
+e.g. def sort(a):
+       while True:
+         swapped = False
+         for i in range(0, len(a)-1):
+           if a[i+1] < a[i]:
+             t = a[i+1]
+             a[i+1] = a[i]
+             a[i] = t
+             swapped = True
+         if not swapped: break
+
+in use it would be:
+  code here
+  sort(a)
+  code here
+
+Which would generate:
+  code here
+       while True:
+         swapped = False
+         for i in range(0, len(a)-1):
+           if a[i+1] < a[i]:
+             t = a[i+1]
+             a[i+1] = a[i]
+             a[i] = t
+             swapped = True
+         if not swapped: break
+  code here
+
+Would need to be careful with variable names so they don't clash
+with the names in the outer scope - this might be quite dangerous
+if not handled carefully.
+
+
+--------------------------------------------------------------------------------
+
+building code
+
+Need a way to specify build rules etc, a very simple makefile or script.
+A nice way to do this would be to use a pcode program to specify the build
+steps and build rules. This could then be auto-generated into the target
+language and run as the target language.
+
+--------------------------------------------------------------------------------
 
 
 *** Add to the grammar and update notes for 'language extensions'
