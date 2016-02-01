@@ -250,16 +250,22 @@ from arrays import *
         if c == 0: # There were no statements in this for loop
             self.out("pass")
         self.outdent()
-        #self.out("")
 
     def CASE(self, p, i_expr):
         expr = p[i_expr]
         self.case_stack.append([0, expr])
 
-    def USE(self, p, i_string):
-        s = p[i_string]
-        s = s[1:-1] # remove quotes
-        self.out("from %s import *" % s)
+    def USE(self, p, i_string1, i_string2=None):
+        s1 = p[i_string1]
+        s1 = s1[1:-1] # remove quotes
+
+        if i_string2 != None:
+            s2 = p[i_string2]
+            s2 = s2[1:-1]
+            # use python aliasing
+            self.out("import %s as %s" % (s1, s2))
+        else:
+            self.out("import %s" % s1)
 
     def WHEN(self, p, i_expr):
         expr = p[i_expr]
@@ -357,6 +363,21 @@ from arrays import *
         params = p[i_params] # should be a list
         csvparams = self.lcsv(params)
         r = "%s(%s)" % (id, csvparams)
+        p[0] = r
+
+    def libproccall(self, p, i_libid, i_id, i_params):
+        libid = p[i_libid]
+        id = p[i_id]
+        params = p[i_params] # should be a list
+        csvparams = self.lcsv(params)
+        self.out("%s.%s(%s)" % (libid, id, csvparams))
+
+    def libfncall(self, p, i_libid, i_id, i_params):
+        libid = p[i_libid]
+        id = p[i_id]
+        params = p[i_params] # should be a list
+        csvparams = self.lcsv(params)
+        r = "%s.%s(%s)" % (libid, id, csvparams)
         p[0] = r
 
     def bracket(self, p, i_expr):

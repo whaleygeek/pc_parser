@@ -7,64 +7,17 @@ to develop the basis of an algorithm in pseudo code, and then
 convert this into Python to further develop it.
 
 JUST DONE
-tested hexascii ok
-
-
-
---------------------------------------------------------------------------------
-
-Looks like string contact of numbers does not work, as it would need to
-str() it - although it doesn't know until runtime what the value is of any
-expression, so you couldn't generate code to do this. It would look odd
-as it would str() everything.
-
-String literals would be known though. So if it is OUTPUT STRING as a special
-case it could drop the str(), and any expression could put str() around each
-part. Althought the expression at that point is just a string of symbols,
-not a list of parts, so you wouldn't know how to process them.
-
-For this to work, everything in an expression would have to be a list
-so it could be processed in parts, but then you would effectively be parsing
-it again.
-
-It might be better to solve this where it is needed by a different, more powerful
-runtime formatter function.
-
-
-
+USE AS tested and works.
+lib@fn() tested and works
+hexascii now well encapsulated
+included bit library from other project
 
 --------------------------------------------------------------------------------
+TODO
 
-feedback from real use projects:
+Push back to using project
+and re-test that the encapsulation works as wanted.
 
-0. import needs to maintain encapsulation
-
-Otherwise we get namespace pollution and variable clashes.
-
-i.e. USE "hexascii" needs to be import hexascii
-
-Then when we refer to hexascii_ in a function name, it needs to translate
-it to hexascii. (although we want to allow underscores in names, so perhaps
-some other symbol to mean a library qualifier)
-
-This will enforce better module encapsulation and stop module local variables
-becoming global and clashing with other names.
-
-how about single colon to mean a library binding?
-Make sure it doesn't clash with colon of CASE, we need to change the
-grammar to support this. Perhaps @ would be better?
-
-USE "hexascii"
-
-becomes:
-
-import hexascii
-
-
-hexascii@fromstr()
-
-becomes:
-  hexascii.fromstr()
 
 --------------------------------------------------------------------------------
 
@@ -119,6 +72,7 @@ source inside it.
 
 2. is there a way to do instrinsic procedures,
 so that they are expanded inline?
+This is less critical compared to intrinsic functions
 
 See notes above too.
 
@@ -170,8 +124,6 @@ language and run as the target language.
 
 *** Add to the grammar and update notes for 'language extensions'
 in README.md
-
-
 
 
 
@@ -272,6 +224,26 @@ and some traceability to the release date and time stamp of the conversion tool.
 
 Review all the spacing around operators to make sure it is consistent and good.
 
+
+
+--------------------------------------------------------------------------------
+
+Looks like string contact of numbers does not work, as it would need to
+str() it - although it doesn't know until runtime what the value is of any
+expression, so you couldn't generate code to do this. It would look odd
+as it would str() everything.
+
+String literals would be known though. So if it is OUTPUT STRING as a special
+case it could drop the str(), and any expression could put str() around each
+part. Althought the expression at that point is just a string of symbols,
+not a list of parts, so you wouldn't know how to process them.
+
+For this to work, everything in an expression would have to be a list
+so it could be processed in parts, but then you would effectively be parsing
+it again.
+
+It might be better to solve this where it is needed by a different, more powerful
+runtime formatter function.
 
 END.
 

@@ -8,14 +8,14 @@ keywords = (
 'WRITELINE',    'OUTPUT',       'USERINPUT',    'LEN',          'MOD',
 'NOT',          'FALSE',        'TRUE',         'AND',          'OR',
 'XOR',
-'WHEN',         'USE'
+'WHEN',         'USE',          'AT',           'AS'
 )
 
 tokens = keywords + (
 'PLUS',         'MINUS',        'TIMES',        'DIVIDE',
 'EQUAL',        'NOTEQUAL',     'LESS',         'LESSEQUAL',    'GREATER',
 'GREATEREQUAL', 'ASSIGN',       'LPAREN',       'RPAREN',       'LSQUARE',
-'RSQUARE',      'COMMA',        'COLON',        'COMMENT',
+'RSQUARE',      'COMMA',        'COLON',
 
 'ID',           'NUMBER',       'STRING'
 )
@@ -39,14 +39,14 @@ t_LSQUARE       = r'\['
 t_RSQUARE       = r'\]'
 t_COMMA         = r'\,'
 t_COLON         = r':'
+t_AT            = r'@'
 
 def t_comment(t):
     r"[ ]*\043[^\n]*"  # \043 is '#'
-    pass
+    pass #comments are stripped, they don't generate a lexval
 
 def t_STRING(t):
     r'\".*?\"'
-    #t.value = t.value[1:-1] # remove quotes
     return t
 
 def t_NUMBER(t):
@@ -58,18 +58,7 @@ def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value in keywords:
         t.type = t.value
-    #else:
-    #    class Identifier():
-    #        def __init__(self, name):
-    #            self.name = name
-    #        def __repr__(self):
-    #            return self.name
-    #
-    #    t.value = Identifier(t.value)
     return t
-
-#def t_COMMENT(t):
-#    r'#.*'
 
 t_ignore = " \t"
 

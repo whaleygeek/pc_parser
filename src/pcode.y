@@ -10,7 +10,7 @@
 %token WRITELINE OUTPUT USERINPUT LEN
 %token NOT FALSE TRUE
 
-%token ID NUMBER STRING
+%token ID NUMBER STRING AS AT
 
 %left OR
 %left AND
@@ -155,7 +155,8 @@ case_statement:
     ;
 
 use_statement:
-    USE STRING          {backend.USE(p, 2)}
+      USE STRING            {backend.USE(p, 2)}
+    | USE STRING AS STRING  {backend.USE(p, 2, 4)}
     ;
 
 fnproc_def_params:
@@ -193,11 +194,13 @@ fnproc_call_params:
     ;
 
 proc_call_statement:
-    ID LPAREN fnproc_call_params RPAREN             {backend.proccall(p, 1, 3)}
+      ID LPAREN fnproc_call_params RPAREN             {backend.proccall(p, 1, 3)}
+    | ID AT ID LPAREN fnproc_call_params RPAREN       {backend.libproccall(p, 1, 3, 5)}
     ;
 
 fn_call_expr:
-    ID LPAREN fnproc_call_params RPAREN             {backend.fncall(p, 1, 3)}
+      ID LPAREN fnproc_call_params RPAREN             {backend.fncall(p, 1, 3)}
+    | ID AT ID LPAREN fnproc_call_params RPAREN       {backend.libfncall(p, 1, 3, 5)}
     ;
 
 expr:

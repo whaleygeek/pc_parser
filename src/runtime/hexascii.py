@@ -7,12 +7,12 @@ import arrays
 # n <- hexascii_fromstr("A3")
 # n <- hexascii_fromstr("DEADBEEF")
 
-def hexascii_fromstr(s):
+def fromstr(s):
     """Convert s as a hex string into a number.
     Supports 1,2,3,4 byte numbers."""
     return int(s, base=16)
 
-def hexascii_tostr(n, bytes=1):
+def tostr(n, bytes=1):
     """convert n into a hex string, honoring the bytes as the max width.
     Note that varargs by default are supported, so this should work."""
     n = n & 0xFFFFFFFF # negative numbers will be two's complement
@@ -35,7 +35,7 @@ def hexascii_tostr(n, bytes=1):
 
 # a <- hexascii_array("A01237EC12120D0A")
 
-def hexascii_array(s):
+def array(s):
     """Convert s as a hex string into an initialised array"""
     if len(s) % 2 != 0:
         s = '0' + s
@@ -43,7 +43,7 @@ def hexascii_array(s):
     for i in range(len(s)/2):
         o = i*2
         b = s[o:o+2]
-        n = hexascii_fromstr(b)
+        n = fromstr(b)
         l.append(n)
     return arrays.Array(l) # construct a new array
 

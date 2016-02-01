@@ -6,8 +6,10 @@ import pcode
 #----- TEST SYNTAX ------------------------------------------------------------
 
 class TestExtensionsSyntax(unittest.TestCase):
+    #TODO: DRY as below
     IMPORTS = "from fileio import *\nfrom arrays import *\n"
 
+    #--------------------------------------------------------------------------
     def test_use(self):
         SRC = \
 """
@@ -15,7 +17,37 @@ USE "a"
 """
         EXPECTED = self.IMPORTS + \
 """
-from a import *
+import a
+"""
+        OUT = pcode.test(SRC)
+        self.assertEquals(EXPECTED, OUT)
+
+    #--------------------------------------------------------------------------
+    def test_use_call(self):
+        SRC = \
+"""
+USE "a"
+a@fn()
+"""
+        EXPECTED = self.IMPORTS + \
+"""
+import a
+a.fn()
+"""
+        OUT = pcode.test(SRC)
+        self.assertEquals(EXPECTED, OUT)
+
+    #--------------------------------------------------------------------------
+    def test_use_alias(self):
+        SRC = \
+"""
+USE "mystuff" AS "m"
+m@fn()
+"""
+        EXPECTED = self.IMPORTS + \
+"""
+import mystuff as m
+m.fn()
 """
         OUT = pcode.test(SRC)
         self.assertEquals(EXPECTED, OUT)
@@ -24,6 +56,7 @@ from a import *
 #----- TEST SYNTAX ------------------------------------------------------------
 
 class TestSyntax(unittest.TestCase):
+    #TODO: DRY as above
     IMPORTS = "from fileio import *\nfrom arrays import *\n"
 
     #--------------------------------------------------------------------------
@@ -1285,10 +1318,12 @@ import arrays
 
 class TestArrays(unittest.TestCase):
 
+    #--------------------------------------------------------------------------
     def test_1d_create(self):
         a = arrays.Array()
         #expect no exception
 
+    #--------------------------------------------------------------------------
     def test_1d_write_extend1(self):
         a = arrays.Array()
         a[0] = 99
@@ -1296,6 +1331,7 @@ class TestArrays(unittest.TestCase):
         actual = str(a)
         self.assertEquals(EXPECTED, actual)
 
+    #--------------------------------------------------------------------------
     def test_1d_write_existing(self):
         a = arrays.Array()
         a[0] = 99
@@ -1304,6 +1340,7 @@ class TestArrays(unittest.TestCase):
         actual = str(a)
         self.assertEquals(EXPECTED, actual)
 
+    #--------------------------------------------------------------------------
     def test_1d_write_extendmany(self):
         a = arrays.Array()
         a[0] = 99
@@ -1312,6 +1349,7 @@ class TestArrays(unittest.TestCase):
         actual = str(a)
         self.assertEquals(EXPECTED, actual)
 
+    #--------------------------------------------------------------------------
     def test_1d_read_missing(self):
         a = arrays.Array()
         a[0]=99
@@ -1320,6 +1358,7 @@ class TestArrays(unittest.TestCase):
         actual = str(a)
         self.assertEquals("[99]", actual)
 
+    #--------------------------------------------------------------------------
     def test_1d_read_existing(self):
         a = arrays.Array()
         a[0]=99
@@ -1327,32 +1366,38 @@ class TestArrays(unittest.TestCase):
         actual = a[10]
         self.assertEquals(1010, actual)
 
+    #--------------------------------------------------------------------------
     def test_1d_init(self):
         a = arrays.Array(10,9,8,7,6)
         EXPECTED = "[10, 9, 8, 7, 6]"
         self.assertEquals(EXPECTED, str(a))
 
+    #--------------------------------------------------------------------------
     def test_2d_create(self):
         a = arrays.Array2D()
         # expect no exception
 
+    #--------------------------------------------------------------------------
     def test_2d_write_extendxy1(self):
         a = arrays.Array2D()
         a[0][0] = 99
         self.assertEquals("[[99]]", str(a))
 
+    #--------------------------------------------------------------------------
     def test_2d_write_extendx1(self):
         a = arrays.Array2D()
         a[0][0] = 99
         a[1][0] = 10
         self.assertEquals("[[99], [10]]", str(a))
 
+    #--------------------------------------------------------------------------
     def test_2d_write_extendy1(self):
         a = arrays.Array2D()
         a[0][0] = 99
         a[0][1] = 10
         self.assertEquals("[[99, 10]]", str(a))
 
+    #--------------------------------------------------------------------------
     def test_2d_write_existingxy(self):
         a = arrays.Array2D()
         a[0][0] = 99
@@ -1362,28 +1407,33 @@ class TestArrays(unittest.TestCase):
         a[0][1] = 2020
         self.assertEquals("[[1010, 2020]]", str(a))
 
+    #--------------------------------------------------------------------------
     def test_2d_write_expandmanyx(self):
         a = arrays.Array2D()
         a[3][0] = 33
         self.assertEquals("[[], [], [], [33]]", str(a))
 
+    #--------------------------------------------------------------------------
     def test_2d_write_expandmanyy(self):
         a = arrays.Array2D()
         a[0][3] = 33
         self.assertEquals("[[0, 0, 0, 33]]", str(a))
 
+    #--------------------------------------------------------------------------
     def test_2d_read_missingx(self):
         a = arrays.Array2D()
         a[0][0] = 10
         r = a[3][0]
         self.assertEquals(0, r)
 
+    #--------------------------------------------------------------------------
     def test_2d_read_missingy(self):
         a = arrays.Array2D()
         a[0][0] = 10
         r = a[0][3]
         self.assertEquals(0, r)
 
+    #--------------------------------------------------------------------------
     def test_2d_read_existing(self):
         a = arrays.Array2D()
         a[3][3] = 33
@@ -1400,18 +1450,21 @@ class TestFileIO(unittest.TestCase):
     FILENAME = "t_testio.txt"
     locks = {}
 
+    #--------------------------------------------------------------------------
     def remove_file(self, name):
         try:
             os.remove(name)
         except OSError:
             pass # ignore missing files
 
+    #--------------------------------------------------------------------------
     def create_file_blank(self, name):
         if os.path.exists(name):
             os.remove(name)
         f = open(name, "w")
         f.close()
 
+    #--------------------------------------------------------------------------
     def create_file_with(self, name, contents):
         if os.path.exists(name):
             os.remove(name)
@@ -1419,26 +1472,31 @@ class TestFileIO(unittest.TestCase):
         f.write(contents)
         f.close()
 
+    #--------------------------------------------------------------------------
     def lock_file(self, name):
         f = open(name, "w")
         self.locks[name] = f
 
+    #--------------------------------------------------------------------------
     def unlock_file(self, name):
         f = self.locks[name]
         f.close()
         del self.locks[name]
 
+    #--------------------------------------------------------------------------
     def file_exists(self, name):
         if os.path.exists(name) and os.path.isfile(name):
             return True
         return False
 
+    #--------------------------------------------------------------------------
     def get_file_contents(self, name):
         f = open(name)
         l = f.read()
         f.close()
         return l
 
+    #--------------------------------------------------------------------------
     def test_write_missing(self):
         """Should be possible to write to a file that does not exist"""
         self.remove_file(self.FILENAME)
@@ -1447,6 +1505,7 @@ class TestFileIO(unittest.TestCase):
         self.assertTrue(self.file_exists(self.FILENAME))
         self.assertEquals("data\n", self.get_file_contents(self.FILENAME))
 
+    #--------------------------------------------------------------------------
     def test_write_present(self):
         """Should be possible to write to a file that does exist"""
         self.create_file_blank(self.FILENAME)
@@ -1454,6 +1513,7 @@ class TestFileIO(unittest.TestCase):
 
         self.assertEquals("data\n", self.get_file_contents(self.FILENAME))
 
+    #--------------------------------------------------------------------------
     def test_write_locked(self):
         """Should not be possible to write to a locked file"""
         self.create_file_blank(self.FILENAME)
@@ -1466,6 +1526,7 @@ class TestFileIO(unittest.TestCase):
         finally:
             self.unlock_file(self.FILENAME)
 
+    #--------------------------------------------------------------------------
     def test_write_add1(self):
         """Should be possible to add a line to an existing file"""
         self.create_file_blank(self.FILENAME)
@@ -1473,6 +1534,7 @@ class TestFileIO(unittest.TestCase):
 
         self.assertEquals("data\n", self.get_file_contents(self.FILENAME))
 
+    #--------------------------------------------------------------------------
     def test_write_expand_many(self):
         """Should be possible to write a line anywhere in an existing file"""
         self.create_file_blank(self.FILENAME)
@@ -1480,6 +1542,7 @@ class TestFileIO(unittest.TestCase):
 
         self.assertEquals("\n\n\n\n\n\n\n\n\ndata\n", self.get_file_contents(self.FILENAME))
 
+    #--------------------------------------------------------------------------
     def test_write_expand_line(self):
         """Should be possible to expand an existing line in a file without damaging others"""
         self.create_file_blank(self.FILENAME)
@@ -1489,6 +1552,7 @@ class TestFileIO(unittest.TestCase):
 
         self.assertEquals("longer data expanded\nmore data\n", self.get_file_contents(self.FILENAME))
 
+    #--------------------------------------------------------------------------
     def test_write_shrink_line(self):
         """Should be possible to shrink an existing line in a file without damaging others"""
         self.create_file_blank(self.FILENAME)
@@ -1498,6 +1562,7 @@ class TestFileIO(unittest.TestCase):
 
         self.assertEquals("a\nmore data\n", self.get_file_contents(self.FILENAME))
 
+    #--------------------------------------------------------------------------
     def test_read_missing(self):
         """If you read from a missing file, should get an exception"""
         self.remove_file(self.FILENAME)
@@ -1507,6 +1572,7 @@ class TestFileIO(unittest.TestCase):
         except fileio.FileIOException:
             pass # expected
 
+    #--------------------------------------------------------------------------
     def test_read_present(self):
         """If you read a line from a present file, that is missing, should get an exception"""
         self.create_file_blank(self.FILENAME)
@@ -1516,6 +1582,7 @@ class TestFileIO(unittest.TestCase):
         except fileio.FileIOException:
             pass # expected
 
+    #--------------------------------------------------------------------------
     def test_read_missing_line(self):
         """If you read a line from a file beyond it's end, should get an exception"""
         self.create_file_with(self.FILENAME, "one\n")
@@ -1525,6 +1592,7 @@ class TestFileIO(unittest.TestCase):
         except fileio.FileIOException:
             pass # expected
 
+    #--------------------------------------------------------------------------
     def test_read_present_line(self):
         """If you read a line from a file where the file exists, should get correct data back"""
         self.create_file_with(self.FILENAME, "one\ntwo\nthree\nfour\n")
@@ -1537,38 +1605,42 @@ class TestFileIO(unittest.TestCase):
 import hexascii
 
 class TestHexAscii(unittest.TestCase):
+
+    #--------------------------------------------------------------------------
     def test_fromstr(self):
         """Convert s as a hex string into a number. Supports 1,2,3,4 byte numbers."""
-        r = hexascii.hexascii_fromstr("A5")
+        r = hexascii.fromstr("A5")
         self.assertEquals(int("A5", base=16), r)
 
-        r = hexascii.hexascii_fromstr("A55A")
+        r = hexascii.fromstr("A55A")
         self.assertEquals(int("A55A", base=16), r)
 
-        r = hexascii.hexascii_fromstr("A55AFF")
+        r = hexascii.fromstr("A55AFF")
         self.assertEquals(int("A55AFF", base=16), r)
 
-        r = hexascii.hexascii_fromstr("A55AFFCC")
+        r = hexascii.fromstr("A55AFFCC")
         self.assertEquals(int("A55AFFCC", base=16), r)
 
+    #--------------------------------------------------------------------------
     def test_tostr(self):
         """convert n into a hex string, honoring the bytes as the max width.
         Note that varargs by default are supported, so this should work."""
-        r = hexascii.hexascii_tostr(255, bytes=1)
+        r = hexascii.tostr(255, bytes=1)
         self.assertEquals("FF", r)
 
-        r = hexascii.hexascii_tostr(255<<8, bytes=2)
+        r = hexascii.tostr(255<<8, bytes=2)
         self.assertEquals("FF00", r)
 
-        r = hexascii.hexascii_tostr(255<<16, bytes=3)
+        r = hexascii.tostr(255<<16, bytes=3)
         self.assertEquals("FF0000", r)
 
-        r = hexascii.hexascii_tostr(255<<24, bytes=4)
+        r = hexascii.tostr(255<<24, bytes=4)
         self.assertEquals("FF000000", r)
 
+    #--------------------------------------------------------------------------
     def test_array(self):
         """Convert s as a hex string into an initialised array"""
-        r = hexascii.hexascii_array("01022AFF")
+        r = hexascii.array("01022AFF")
         # expand array for easy equality testing
         l = [r[0], r[1], r[2], r[3]]
         self.assertEquals([1,2,42,255], l)
@@ -1581,13 +1653,17 @@ import mockio
 #TODO duplicated helper code with next class - refactor into parent class and reuse
 
 class TestExtensionRuntime(unittest.TestCase):
+
+    #--------------------------------------------------------------------------
     def setUp(self):
         mockio.reset()
 
+    #--------------------------------------------------------------------------
     def pc2py(self, contents, mockio=False):
         """Turn pcode into python"""
         return pcode.test(contents, mockio)
 
+    #--------------------------------------------------------------------------
     def runpy(self, name, contents):
         """Create and run a python file"""
         NAME = "t_run"
@@ -1599,12 +1675,14 @@ class TestExtensionRuntime(unittest.TestCase):
         m = importlib.import_module(name)
         return m # the module instance
 
+    #--------------------------------------------------------------------------
     def runpc(self, name, contents, mockio=False):
         """Compile pcode into py and create and run it as a py file"""
         py = self.pc2py(contents, mockio)
         m = self.runpy(name, py)
         return m # the module instance
 
+    #--------------------------------------------------------------------------
     def test_use(self):
         f = open("test_use.py", "w")
         f.write(
@@ -1618,28 +1696,43 @@ def a():
         SRC = \
 """
 USE "test_use"
-a()
+test_use@a()
 """
         m = self.runpc("t_use", SRC, mockio=True)
         self.assertEquals(["in a"], mockio.outbuf)
 
+    #--------------------------------------------------------------------------
     def test_hexascii_tostr(self):
-        pass # TODO
-#USE "hexascii"
-#OUTPUT hexascii_tostr(42)
+        SRC = \
+"""
+USE "hexascii"
+OUTPUT hexascii@tostr(42)
+"""
+        m = self.runpc("t_hexascii_tostr", SRC, mockio=True)
+        self.assertEquals(['2A'], mockio.outbuf) # TODO
 
+    #--------------------------------------------------------------------------
     def test_hexascii_array(self):
-        pass # TODO
-#USE "hexascii"
-#a<-hexascii_array("01020304FF")
-#FOR i<-0 TO LEN(a)-1
-#    OUTPUT a[i]
-#ENDFOR
+        SRC = \
+"""
+USE "hexascii"
+a<-hexascii@array("01020304FF")
+FOR i<-0 TO LEN(a)-1
+    OUTPUT a[i]
+ENDFOR
+"""
+        m = self.runpc("t_hexascii_array", SRC, mockio=True)
+        self.assertEquals(['1','2','3','4','255'], mockio.outbuf) # TODO
 
+    #--------------------------------------------------------------------------
     def test_hexascii_fromstr(self):
-        pass
-#USE "hexascii"
-#OUTPUT hexascii_fromstr("FF")
+        SRC = \
+"""
+USE "hexascii"
+OUTPUT hexascii@fromstr("FF")
+"""
+        m = self.runpc("t_hexascii_fromstr", SRC, mockio=True)
+        self.assertEquals(['255'], mockio.outbuf)
 
 
 #----- TEST RUNTIME -----------------------------------------------------------
@@ -1651,13 +1744,16 @@ a()
 
 class TestRuntime(unittest.TestCase):
     """Test that the generated python runtime versions do the right thing"""
+    #--------------------------------------------------------------------------
     def setUp(self):
         mockio.reset()
 
+    #--------------------------------------------------------------------------
     def pc2py(self, contents, mockio=False):
         """Turn pcode into python"""
         return pcode.test(contents, mockio)
 
+    #--------------------------------------------------------------------------
     def runpy(self, name, contents):
         """Create and run a python file"""
         NAME = "t_run"
@@ -1669,6 +1765,7 @@ class TestRuntime(unittest.TestCase):
         m = importlib.import_module(name)
         return m # the module instance
 
+    #--------------------------------------------------------------------------
     def runpc(self, name, contents, mockio=False):
         """Compile pcode into py and create and run it as a py file"""
         py = self.pc2py(contents, mockio)
@@ -2333,5 +2430,9 @@ OUTPUT a
 
 
 if __name__ == "__main__":
+    print("\n\n\n")
+    print("*" * 80)
+    print("TESTING\n")
     unittest.main()
+
 
