@@ -37,9 +37,18 @@ lex.lex()
 # Build the back-end generator
 #TODO: parse command line args to get name of backend generator
 # import the module by name
-# call code in pcode_parser that sets it's emit instance.
+# python pcode.py lang=c      cgen
+# python pcode.py lang=py     pygen
+# python pcode.py lang=java   javagen
+# python pcode.py lang=php    phpgen
+# python pcode.py lang=bash   bashgen
+# python pcode.py lang=lua    luagen
+# python pcode.py lang=ruby   rubygen
+# python pcode.py lang=sql    sqlgen  # i.e. sql procedures and functions
+# python pcode.py lang=cpp    cppgen  # cplusplus
 
 import pygen
+import cgen
 
 # Build the parser
 from pcode_parser import * # this is the generated parser
@@ -75,6 +84,8 @@ def test(src, mockio=False):
 def mock_translate(src):
     """A version of translate that mocks a few things, like IO"""
     generator = pygen.MockGenerator(emit=emit)
+    #generator = cgen.MockGenerator(emit=emit)
+    ###TODO: switchable back end switches here
     set_backend(generator)
 
     y.parse(src)
@@ -82,6 +93,9 @@ def mock_translate(src):
 
 def translate(src):
     generator = pygen.Generator(emit=emit)
+    #generator = cgen.Generator(emit=emit) # TESTING
+    #generator = cgen.Generator(emit=emit)
+    ###TODO: switchable back end switches here
     set_backend(generator)
 
     y.parse(src)
