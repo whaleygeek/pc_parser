@@ -48,7 +48,7 @@ lex.lex()
 # python pcode.py lang=cpp    cppgen  # cplusplus
 
 import pygen
-import cgen
+#import cgen
 
 # Build the parser
 from pcode_parser import * # this is the generated parser
