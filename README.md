@@ -27,11 +27,13 @@ RELEASE NOTE
 SMOKE TEST
 ---
 Either:
+
     git clone https://github.com/whaleygeek/pc_parser
-Or:
-    Press the DOWNLOAD AS ZIP and unzip the zip archive
+
+Or: Press the DOWNLOAD AS ZIP and unzip the zip archive
 
 Then:
+
     cd pc_parser/build/release
     python pcode.zip < test.pc > test.py
     python test.py
