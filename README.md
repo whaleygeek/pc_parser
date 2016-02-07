@@ -26,17 +26,23 @@ RELEASE NOTE
 
 SMOKE TEST
 ---
+Either:
+    git clone https://github.com/whaleygeek/pc_parser
+Or:
+    Press the DOWNLOAD AS ZIP and unzip the zip archive
 
+Then:
+    cd pc_parser/build/release
     python pcode.zip < test.pc > test.py
     python test.py
 
 KNOWN ISSUES
 ---
 1. fileio.py and arrays.py have to be in your directory
-2. ambiguities on global variables in functions depending on where declared
-3. can't write to global variables in functions 
-4. python 2 support only
-5. It strips out all your comments
+2. there are ambiguities on global variables in functions depending on where declared
+3. you can't write to global variables in functions 
+4. python 2 support only (at the moment)
+5. It strips out all your comments (at the moment)
 6. No documentation at all (but read the AQA spec)
 http://filestore.aqa.org.uk/subjects/AQA-GCSE-COMPSCI-W-TRB-PSEU.PDF
 
