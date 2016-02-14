@@ -77,3 +77,8 @@ name of the file can now be a string variable as well as a string literal:
     writeline("myfile-with,name.txt", 4, "data")
     writeline(myfilename, 5, data)
 
+
+Note, OCR have also released a similar set of Pseduo Code guidelines here:
+(section 5e)
+
+http://www.ocr.org.uk/Images/170845-specification-accredited-as-level-gce-computer-science-h046.pdf
