@@ -1,4 +1,4 @@
-# pc_parser
+# Pseudo Code Parser for the AQA Pseudo Code format
 A simple pseudo-code parser, that generates runnable python code.
 
 Inspired by this:
